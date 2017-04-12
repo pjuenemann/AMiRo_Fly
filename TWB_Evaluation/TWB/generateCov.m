@@ -21,5 +21,5 @@ M = csvread('cleanflight_data_log_F3.csv', 1, 0);
 % Generate Covariance-Matrix for
 % altitude, magnetometerZ, accelerometerX, accelerometerY, accelerometerZ, gyroscopeZ
 % C = cov(M(:,[11 10 5 6 7 4]));
-C = cov(M(:,[5 6 8 9 10 4]));
+C = cov(M(:,[2:11]));
 end
