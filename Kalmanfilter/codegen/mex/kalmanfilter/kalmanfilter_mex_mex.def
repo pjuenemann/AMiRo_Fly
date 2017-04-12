@@ -1,0 +1,8 @@
+LIBRARY kalmanfilter_mex.mexw64
+EXPORTS
+mexFunction
+emlrtMexFcnProperties
+kalmanfilter
+kalmanfilter_initialize
+kalmanfilter_terminate
+kalmanfilter_atexit
