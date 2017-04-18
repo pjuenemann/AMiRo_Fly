@@ -2,8 +2,8 @@
 
 #include "sharedTrackingLibrary_sfun.h"
 #include "sharedTrackingLibrary_sfun_debug_macros.h"
-#include "c8_s51dhbM5MSl1aKB4b1sqy0_sharedTrackingLibrary.h"
-#include "c8_sjOadNODU1o7GnnhIh7lV5E_sharedTrackingLibrary.h"
+#include "c8_s7ItMq5ORbJIw7R5JGTHTVC_sharedTrackingLibrary.h"
+#include "c8_sFywiTZeQa1EYv2NwJ5ncFC_sharedTrackingLibrary.h"
 #include "c9_sharedTrackingLibrary.h"
 
 /* Type Definitions */
@@ -31,14 +31,14 @@ unsigned int sf_sharedTrackingLibrary_method_dispatcher(SimStruct *simstructPtr,
   unsigned int chartFileNumber, const char* specsCksum, int_T method, void *data)
 {
   if (chartFileNumber==8) {
-    if (!strcmp(specsCksum, "s51dhbM5MSl1aKB4b1sqy0")) {
-      c8_s51dhbM5MSl1aKB4b1sqy0_sharedTrackingLibrary_method_dispatcher
+    if (!strcmp(specsCksum, "s7ItMq5ORbJIw7R5JGTHTVC")) {
+      c8_s7ItMq5ORbJIw7R5JGTHTVC_sharedTrackingLibrary_method_dispatcher
         (simstructPtr, method, data);
       return 1;
     }
 
-    if (!strcmp(specsCksum, "sjOadNODU1o7GnnhIh7lV5E")) {
-      c8_sjOadNODU1o7GnnhIh7lV5E_sharedTrackingLibrary_method_dispatcher
+    if (!strcmp(specsCksum, "sFywiTZeQa1EYv2NwJ5ncFC")) {
+      c8_sFywiTZeQa1EYv2NwJ5ncFC_sharedTrackingLibrary_method_dispatcher
         (simstructPtr, method, data);
       return 1;
     }
@@ -90,9 +90,9 @@ unsigned int sf_sharedTrackingLibrary_process_check_sum_call( int nlhs, mxArray 
            case 8:
             {
               extern void
-                sf_c8_sjOadNODU1o7GnnhIh7lV5E_sharedTrackingLibrary_get_check_sum
+                sf_c8_sFywiTZeQa1EYv2NwJ5ncFC_sharedTrackingLibrary_get_check_sum
                 (mxArray *plhs[]);
-              sf_c8_sjOadNODU1o7GnnhIh7lV5E_sharedTrackingLibrary_get_check_sum
+              sf_c8_sFywiTZeQa1EYv2NwJ5ncFC_sharedTrackingLibrary_get_check_sum
                 (plhs);
               break;
             }
@@ -159,22 +159,22 @@ unsigned int sf_sharedTrackingLibrary_autoinheritance_info( int nlhs, mxArray *
     switch (chartFileNumber) {
      case 8:
       {
-        if (strcmp(aiChksum, "lVtRs5qUIu1B5pscqTFzO") == 0) {
+        if (strcmp(aiChksum, "xEs6sKgumhCSAMWWWThzt") == 0) {
           extern mxArray
-            *sf_c8_s51dhbM5MSl1aKB4b1sqy0_sharedTrackingLibrary_get_autoinheritance_info
+            *sf_c8_s7ItMq5ORbJIw7R5JGTHTVC_sharedTrackingLibrary_get_autoinheritance_info
             (void);
           plhs[0] =
-            sf_c8_s51dhbM5MSl1aKB4b1sqy0_sharedTrackingLibrary_get_autoinheritance_info
+            sf_c8_s7ItMq5ORbJIw7R5JGTHTVC_sharedTrackingLibrary_get_autoinheritance_info
             ();
           break;
         }
 
-        if (strcmp(aiChksum, "s34UQQKnwGy0O39qiWAOYD") == 0) {
+        if (strcmp(aiChksum, "yMteaEVEBGKUzvkUSN016C") == 0) {
           extern mxArray
-            *sf_c8_sjOadNODU1o7GnnhIh7lV5E_sharedTrackingLibrary_get_autoinheritance_info
+            *sf_c8_sFywiTZeQa1EYv2NwJ5ncFC_sharedTrackingLibrary_get_autoinheritance_info
             (void);
           plhs[0] =
-            sf_c8_sjOadNODU1o7GnnhIh7lV5E_sharedTrackingLibrary_get_autoinheritance_info
+            sf_c8_sFywiTZeQa1EYv2NwJ5ncFC_sharedTrackingLibrary_get_autoinheritance_info
             ();
           break;
         }
@@ -185,7 +185,7 @@ unsigned int sf_sharedTrackingLibrary_autoinheritance_info( int nlhs, mxArray *
 
      case 9:
       {
-        if (strcmp(aiChksum, "242LD9oHifiRsdeO39N5xD") == 0) {
+        if (strcmp(aiChksum, "aTczqHQqvfqMmPD2yKjjDC") == 0) {
           extern mxArray *sf_c9_sharedTrackingLibrary_get_autoinheritance_info
             (void);
           plhs[0] = sf_c9_sharedTrackingLibrary_get_autoinheritance_info();
@@ -234,10 +234,10 @@ unsigned int sf_sharedTrackingLibrary_get_eml_resolved_functions_info( int nlhs,
      case 8:
       {
         extern const mxArray
-          *sf_c8_sjOadNODU1o7GnnhIh7lV5E_sharedTrackingLibrary_get_eml_resolved_functions_info
+          *sf_c8_sFywiTZeQa1EYv2NwJ5ncFC_sharedTrackingLibrary_get_eml_resolved_functions_info
           (void);
         mxArray *persistentMxArray = (mxArray *)
-          sf_c8_sjOadNODU1o7GnnhIh7lV5E_sharedTrackingLibrary_get_eml_resolved_functions_info
+          sf_c8_sFywiTZeQa1EYv2NwJ5ncFC_sharedTrackingLibrary_get_eml_resolved_functions_info
           ();
         plhs[0] = mxDuplicateArray(persistentMxArray);
         mxDestroyArray(persistentMxArray);
@@ -292,22 +292,22 @@ unsigned int sf_sharedTrackingLibrary_third_party_uses_info( int nlhs, mxArray *
     switch (chartFileNumber) {
      case 8:
       {
-        if (strcmp(tpChksum, "s51dhbM5MSl1aKB4b1sqy0") == 0) {
+        if (strcmp(tpChksum, "s7ItMq5ORbJIw7R5JGTHTVC") == 0) {
           extern mxArray
-            *sf_c8_s51dhbM5MSl1aKB4b1sqy0_sharedTrackingLibrary_third_party_uses_info
+            *sf_c8_s7ItMq5ORbJIw7R5JGTHTVC_sharedTrackingLibrary_third_party_uses_info
             (void);
           plhs[0] =
-            sf_c8_s51dhbM5MSl1aKB4b1sqy0_sharedTrackingLibrary_third_party_uses_info
+            sf_c8_s7ItMq5ORbJIw7R5JGTHTVC_sharedTrackingLibrary_third_party_uses_info
             ();
           break;
         }
 
-        if (strcmp(tpChksum, "sjOadNODU1o7GnnhIh7lV5E") == 0) {
+        if (strcmp(tpChksum, "sFywiTZeQa1EYv2NwJ5ncFC") == 0) {
           extern mxArray
-            *sf_c8_sjOadNODU1o7GnnhIh7lV5E_sharedTrackingLibrary_third_party_uses_info
+            *sf_c8_sFywiTZeQa1EYv2NwJ5ncFC_sharedTrackingLibrary_third_party_uses_info
             (void);
           plhs[0] =
-            sf_c8_sjOadNODU1o7GnnhIh7lV5E_sharedTrackingLibrary_third_party_uses_info
+            sf_c8_sFywiTZeQa1EYv2NwJ5ncFC_sharedTrackingLibrary_third_party_uses_info
             ();
           break;
         }
@@ -315,7 +315,7 @@ unsigned int sf_sharedTrackingLibrary_third_party_uses_info( int nlhs, mxArray *
 
      case 9:
       {
-        if (strcmp(tpChksum, "sc6h42bGBzKyRiOCNU1dgBB") == 0) {
+        if (strcmp(tpChksum, "sH67H5rpwduK8hr62k27AJ") == 0) {
           extern mxArray *sf_c9_sharedTrackingLibrary_third_party_uses_info(void);
           plhs[0] = sf_c9_sharedTrackingLibrary_third_party_uses_info();
           break;
@@ -352,22 +352,22 @@ unsigned int sf_sharedTrackingLibrary_jit_fallback_info( int nlhs, mxArray *
     switch (chartFileNumber) {
      case 8:
       {
-        if (strcmp(tpChksum, "s51dhbM5MSl1aKB4b1sqy0") == 0) {
+        if (strcmp(tpChksum, "s7ItMq5ORbJIw7R5JGTHTVC") == 0) {
           extern mxArray
-            *sf_c8_s51dhbM5MSl1aKB4b1sqy0_sharedTrackingLibrary_jit_fallback_info
+            *sf_c8_s7ItMq5ORbJIw7R5JGTHTVC_sharedTrackingLibrary_jit_fallback_info
             (void);
           plhs[0] =
-            sf_c8_s51dhbM5MSl1aKB4b1sqy0_sharedTrackingLibrary_jit_fallback_info
+            sf_c8_s7ItMq5ORbJIw7R5JGTHTVC_sharedTrackingLibrary_jit_fallback_info
             ();
           break;
         }
 
-        if (strcmp(tpChksum, "sjOadNODU1o7GnnhIh7lV5E") == 0) {
+        if (strcmp(tpChksum, "sFywiTZeQa1EYv2NwJ5ncFC") == 0) {
           extern mxArray
-            *sf_c8_sjOadNODU1o7GnnhIh7lV5E_sharedTrackingLibrary_jit_fallback_info
+            *sf_c8_sFywiTZeQa1EYv2NwJ5ncFC_sharedTrackingLibrary_jit_fallback_info
             (void);
           plhs[0] =
-            sf_c8_sjOadNODU1o7GnnhIh7lV5E_sharedTrackingLibrary_jit_fallback_info
+            sf_c8_sFywiTZeQa1EYv2NwJ5ncFC_sharedTrackingLibrary_jit_fallback_info
             ();
           break;
         }
@@ -375,7 +375,7 @@ unsigned int sf_sharedTrackingLibrary_jit_fallback_info( int nlhs, mxArray *
 
      case 9:
       {
-        if (strcmp(tpChksum, "sc6h42bGBzKyRiOCNU1dgBB") == 0) {
+        if (strcmp(tpChksum, "sH67H5rpwduK8hr62k27AJ") == 0) {
           extern mxArray *sf_c9_sharedTrackingLibrary_jit_fallback_info(void);
           plhs[0] = sf_c9_sharedTrackingLibrary_jit_fallback_info();
           break;
@@ -412,22 +412,22 @@ unsigned int sf_sharedTrackingLibrary_updateBuildInfo_args_info( int nlhs,
     switch (chartFileNumber) {
      case 8:
       {
-        if (strcmp(tpChksum, "s51dhbM5MSl1aKB4b1sqy0") == 0) {
+        if (strcmp(tpChksum, "s7ItMq5ORbJIw7R5JGTHTVC") == 0) {
           extern mxArray
-            *sf_c8_s51dhbM5MSl1aKB4b1sqy0_sharedTrackingLibrary_updateBuildInfo_args_info
+            *sf_c8_s7ItMq5ORbJIw7R5JGTHTVC_sharedTrackingLibrary_updateBuildInfo_args_info
             (void);
           plhs[0] =
-            sf_c8_s51dhbM5MSl1aKB4b1sqy0_sharedTrackingLibrary_updateBuildInfo_args_info
+            sf_c8_s7ItMq5ORbJIw7R5JGTHTVC_sharedTrackingLibrary_updateBuildInfo_args_info
             ();
           break;
         }
 
-        if (strcmp(tpChksum, "sjOadNODU1o7GnnhIh7lV5E") == 0) {
+        if (strcmp(tpChksum, "sFywiTZeQa1EYv2NwJ5ncFC") == 0) {
           extern mxArray
-            *sf_c8_sjOadNODU1o7GnnhIh7lV5E_sharedTrackingLibrary_updateBuildInfo_args_info
+            *sf_c8_sFywiTZeQa1EYv2NwJ5ncFC_sharedTrackingLibrary_updateBuildInfo_args_info
             (void);
           plhs[0] =
-            sf_c8_sjOadNODU1o7GnnhIh7lV5E_sharedTrackingLibrary_updateBuildInfo_args_info
+            sf_c8_sFywiTZeQa1EYv2NwJ5ncFC_sharedTrackingLibrary_updateBuildInfo_args_info
             ();
           break;
         }
@@ -435,7 +435,7 @@ unsigned int sf_sharedTrackingLibrary_updateBuildInfo_args_info( int nlhs,
 
      case 9:
       {
-        if (strcmp(tpChksum, "sc6h42bGBzKyRiOCNU1dgBB") == 0) {
+        if (strcmp(tpChksum, "sH67H5rpwduK8hr62k27AJ") == 0) {
           extern mxArray *sf_c9_sharedTrackingLibrary_updateBuildInfo_args_info
             (void);
           plhs[0] = sf_c9_sharedTrackingLibrary_updateBuildInfo_args_info();
