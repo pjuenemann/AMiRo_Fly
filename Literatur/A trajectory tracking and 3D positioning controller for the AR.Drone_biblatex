@@ -1,0 +1,9 @@
+@INPROCEEDINGS{6842321, 
+author={L. V. Santana and A. S. Brandão and M. Sarcinelli-Filho and R. Carelli}, 
+booktitle={2014 International Conference on Unmanned Aircraft Systems (ICUAS)}, 
+title={A trajectory tracking and 3D positioning controller for the AR.Drone quadrotor}, 
+year={2014}, 
+pages={756-767}, 
+keywords={Kalman filters;Lyapunov methods;autonomous aerial vehicles;closed loop systems;control engineering computing;control system synthesis;helicopters;mobile robots;nonlinear control systems;sensor fusion;stability;trajectory control;3D positioning controller;AR.Drone Parrot quadrotor;AR.Drone dynamic model;KF;Kalman Filter;Lyapunov theory;closed-loop stability;flight missions;inertial data fusion;nonlinear controller design;trajectory tracking controller;visual data fusion;Kalman filters;Mathematical model;Sensors;State estimation;Vehicle dynamics;Visualization}, 
+doi={10.1109/ICUAS.2014.6842321}, 
+month={May},}

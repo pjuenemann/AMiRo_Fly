@@ -4,7 +4,7 @@ clc;
 
 open_system('ControllerNL');
 t_end = 10;
-Ts = 0.05;
+Ts = 1/100; %0.05;
 dt = 1/100;
 
 k1 = 0.5;
@@ -20,7 +20,7 @@ k10 = 0.5;
 k11 = 0.5;
 k12 = 0.5;
 
-a = 0.2;
+a = 1;
 k1 = a;
 k2 = a;
 k3 = a;
@@ -34,13 +34,13 @@ k10 = a;
 k11 = a;
 k12 = a;
 
-p = 100;
+p = 5;
 kp1 = p;
 kp2 = p;
 kp3 = p;
 kp4 = p;
 
-d = 50;
+d = 10;
 kd1 = d;
 kd2 = d;
 kd3 = d;
@@ -64,7 +64,18 @@ H_Drone(5,11) = 1;
 t = [0:dt:t_end]';
 x = linspace(0,0,size(t,1))';
 y = linspace(0,0,size(t,1))';
-z = linspace(0,5,size(t,1))';
+
+
+z = linspace(0,8,size(t,1))';
+z = linspace(0,8,401);
+zz = linspace(8,8.05,10);
+zzz = linspace(8.05,7.98,10);
+z = [z, zz, zzz, linspace(8,8,580)]';
+
+z = linspace(0,2,200);
+zz = sin(t([201:end])')+1;
+z = [z, zz]';
+
 v_x = linspace(0,0,size(t,1))';
 v_y = linspace(0,0,size(t,1))';
 phi = linspace(0,0,size(t,1))';
@@ -76,8 +87,18 @@ data_Drone = [t, v_x, v_y, phi, theta, psi];
 %delta = 1/1000;
 %z = awgn(z,delta,'measured');
 
-x_d = [0 0 5 0];
+x_d = [0 0 8 0];
 sim('ControllerNL');
-x_z = simout();
+x_z = simout(:,2);
+u = simout1();
+i = simout2();
+subplot(2,1,1);
 plot(t,x_z, t,z);
-legend('EKF_z', 'real_z');
+legend('EKF\_{z}', 'Real\_{z}');
+xlabel('t/s');
+ylabel('Pose\_z/m');
+subplot(2,1,2);
+plot(t,u(:,1));
+legend('u\_z`');
+xlabel('t/s');
+ylabel('u\z´/-');
