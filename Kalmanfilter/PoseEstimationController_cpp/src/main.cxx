@@ -8,7 +8,7 @@
 // #define DEBUG_MSG_
 // #define SUCCESS_MSG_
 #define WARNING_MSG_
-// #define ERROR_MSG_
+#define ERROR_MSG_
 #include <MSG.h>
 
 #include <iostream>
@@ -83,6 +83,7 @@ using namespace rsc::misc;
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdint.h>  // int32
+#include <errno.h>
 
 // #include <ControllerAreaNetwork.h>
 
@@ -219,6 +220,10 @@ int main(int argc, char **argv) {
 
   // TTY stuff initialization
   int fd = open(serialInterface.c_str(), O_RDWR);
+  if (fd < 0) {
+    ERROR_MSG("Error opening " << serialInterface << ": " << strerror(errno) << "\n");
+    return -1;
+  }
   char buf = '#';
   write(fd, &buf, 1);
   
