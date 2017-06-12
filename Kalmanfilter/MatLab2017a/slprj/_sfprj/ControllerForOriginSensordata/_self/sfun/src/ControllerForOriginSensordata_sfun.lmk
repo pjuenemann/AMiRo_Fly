@@ -7,6 +7,7 @@ LIBFLAGS =
 
 OBJECTS = \
 	"ControllerForOriginSensordata_sfun.obj"\
+	"c2_ControllerForOriginSensordata.obj"\
 	"ControllerForOriginSensordata_sfun_registry.obj"\
 	"lccstub.obj"\
 
@@ -17,6 +18,8 @@ ControllerForOriginSensordata_sfun.mexw64 : $(MAKEFILE) $(OBJECTS)
 	$(LD) $(LDFLAGS) -o ControllerForOriginSensordata_sfun.mexw64 @ControllerForOriginSensordata_sfun.lmko
 ControllerForOriginSensordata_sfun.obj :	"ControllerForOriginSensordata_sfun.c"
 	$(CC) $(CFLAGS) $(INCLUDE_PATH) "ControllerForOriginSensordata_sfun.c"
+c2_ControllerForOriginSensordata.obj :	"c2_ControllerForOriginSensordata.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c2_ControllerForOriginSensordata.c"
 ControllerForOriginSensordata_sfun_registry.obj :	"ControllerForOriginSensordata_sfun_registry.c"
 	$(CC) $(CFLAGS) $(INCLUDE_PATH) "ControllerForOriginSensordata_sfun_registry.c"
 lccstub.obj :	"C:\Program Files\MATLAB\R2017a\sys\lcc64\lcc64\mex\lccstub.c"

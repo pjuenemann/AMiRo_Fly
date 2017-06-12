@@ -2,6 +2,7 @@
 
 #include "ControllerForOriginSensordata_sfun.h"
 #include "ControllerForOriginSensordata_sfun_debug_macros.h"
+#include "c2_ControllerForOriginSensordata.h"
 
 /* Type Definitions */
 
@@ -28,6 +29,12 @@ unsigned int sf_ControllerForOriginSensordata_method_dispatcher(SimStruct
   *simstructPtr, unsigned int chartFileNumber, const char* specsCksum, int_T
   method, void *data)
 {
+  if (chartFileNumber==2) {
+    c2_ControllerForOriginSensordata_method_dispatcher(simstructPtr, method,
+      data);
+    return 1;
+  }
+
   return 0;
 }
 
@@ -59,6 +66,14 @@ unsigned int sf_ControllerForOriginSensordata_process_check_sum_call( int nlhs,
       unsigned int chartFileNumber;
       chartFileNumber = (unsigned int)mxGetScalar(prhs[2]);
       switch (chartFileNumber) {
+       case 2:
+        {
+          extern void sf_c2_ControllerForOriginSensordata_get_check_sum(mxArray *
+            plhs[]);
+          sf_c2_ControllerForOriginSensordata_get_check_sum(plhs);
+          break;
+        }
+
        default:
         ((real_T *)mxGetPr((plhs[0])))[0] = (real_T)(0.0);
         ((real_T *)mxGetPr((plhs[0])))[1] = (real_T)(0.0);
@@ -113,6 +128,20 @@ unsigned int sf_ControllerForOriginSensordata_autoinheritance_info( int nlhs,
     unsigned int chartFileNumber;
     chartFileNumber = (unsigned int)mxGetScalar(prhs[1]);
     switch (chartFileNumber) {
+     case 2:
+      {
+        if (strcmp(aiChksum, "AAAivM2iVlbenyE7PWVGZ") == 0) {
+          extern mxArray
+            *sf_c2_ControllerForOriginSensordata_get_autoinheritance_info(void);
+          plhs[0] = sf_c2_ControllerForOriginSensordata_get_autoinheritance_info
+            ();
+          break;
+        }
+
+        plhs[0] = mxCreateDoubleMatrix(0,0,mxREAL);
+        break;
+      }
+
      default:
       plhs[0] = mxCreateDoubleMatrix(0,0,mxREAL);
     }
@@ -148,6 +177,18 @@ unsigned int sf_ControllerForOriginSensordata_get_eml_resolved_functions_info
     unsigned int chartFileNumber;
     chartFileNumber = (unsigned int)mxGetScalar(prhs[1]);
     switch (chartFileNumber) {
+     case 2:
+      {
+        extern const mxArray
+          *sf_c2_ControllerForOriginSensordata_get_eml_resolved_functions_info
+          (void);
+        mxArray *persistentMxArray = (mxArray *)
+          sf_c2_ControllerForOriginSensordata_get_eml_resolved_functions_info();
+        plhs[0] = mxDuplicateArray(persistentMxArray);
+        mxDestroyArray(persistentMxArray);
+        break;
+      }
+
      default:
       plhs[0] = mxCreateDoubleMatrix(0,0,mxREAL);
     }
@@ -183,6 +224,16 @@ unsigned int sf_ControllerForOriginSensordata_third_party_uses_info( int nlhs,
     unsigned int chartFileNumber;
     chartFileNumber = (unsigned int)mxGetScalar(prhs[1]);
     switch (chartFileNumber) {
+     case 2:
+      {
+        if (strcmp(tpChksum, "sBN8spUFbMLIeg4fn8lhyxB") == 0) {
+          extern mxArray
+            *sf_c2_ControllerForOriginSensordata_third_party_uses_info(void);
+          plhs[0] = sf_c2_ControllerForOriginSensordata_third_party_uses_info();
+          break;
+        }
+      }
+
      default:
       plhs[0] = mxCreateDoubleMatrix(0,0,mxREAL);
     }
@@ -211,6 +262,16 @@ unsigned int sf_ControllerForOriginSensordata_jit_fallback_info( int nlhs,
     unsigned int chartFileNumber;
     chartFileNumber = (unsigned int)mxGetScalar(prhs[1]);
     switch (chartFileNumber) {
+     case 2:
+      {
+        if (strcmp(tpChksum, "sBN8spUFbMLIeg4fn8lhyxB") == 0) {
+          extern mxArray *sf_c2_ControllerForOriginSensordata_jit_fallback_info
+            (void);
+          plhs[0] = sf_c2_ControllerForOriginSensordata_jit_fallback_info();
+          break;
+        }
+      }
+
      default:
       plhs[0] = mxCreateDoubleMatrix(0,0,mxREAL);
     }
@@ -239,6 +300,17 @@ unsigned int sf_ControllerForOriginSensordata_updateBuildInfo_args_info( int
     unsigned int chartFileNumber;
     chartFileNumber = (unsigned int)mxGetScalar(prhs[1]);
     switch (chartFileNumber) {
+     case 2:
+      {
+        if (strcmp(tpChksum, "sBN8spUFbMLIeg4fn8lhyxB") == 0) {
+          extern mxArray
+            *sf_c2_ControllerForOriginSensordata_updateBuildInfo_args_info(void);
+          plhs[0] =
+            sf_c2_ControllerForOriginSensordata_updateBuildInfo_args_info();
+          break;
+        }
+      }
+
      default:
       plhs[0] = mxCreateDoubleMatrix(0,0,mxREAL);
     }
@@ -251,7 +323,7 @@ void ControllerForOriginSensordata_debug_initialize(struct SfDebugInstanceStruct
   debugInstance)
 {
   _ControllerForOriginSensordataMachineNumber_ = sf_debug_initialize_machine
-    (debugInstance,"ControllerForOriginSensordata","sfun",0,0,0,0,0);
+    (debugInstance,"ControllerForOriginSensordata","sfun",0,1,0,0,0);
   sf_debug_set_machine_event_thresholds(debugInstance,
     _ControllerForOriginSensordataMachineNumber_,0,0);
   sf_debug_set_machine_data_thresholds(debugInstance,

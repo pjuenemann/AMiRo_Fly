@@ -1,0 +1,97 @@
+<!-- saved from url=(0014)about:internet -->
+<html>
+<body>
+<script src="resources/eml_report_loadable_data.js"></script>
+<pre class="code">
+<span class="srcline"><span class="lineno"><a href="1,1" id="srcline1"> 1</a></span><span class="line"><span class="keyword">function</span> [<span class="var type0" id="S2T0U3">Z</span>,<span class="var type0" id="S3T0U4">Y</span>,<span class="var type0" id="S4T0U5">X</span>] = fcn(<span class="var type1" id="S5T1U8">data</span>)</span></span>
+<span class="srcline"><span class="lineno"><a href="1,2" id="srcline2"> 2</a></span><span class="line">    <span class="comment">%% Process sensor data through algorithm</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,3" id="srcline3"> 3</a></span><span class="line">    <span class="mxinfo " id="T2:U2"><span class="var type1" id="S6T2U11">gyroscope</span> = <span class="mxinfo " id="T2:U4"><span class="var type1" id="S5T1U13">data</span>(<span class="mxinfo " id="T3:U6">1</span>,<span class="mxinfo " id="T2:U7">[<span class="mxinfo " id="T4:U8">1</span>:<span class="mxinfo " id="T4:U9">3</span>]</span>)</span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="1,4" id="srcline4"> 4</a></span><span class="line">    <span class="mxinfo " id="T5:U10"><span class="var type1" id="S7T5U22">AHRS</span> = <span class="mxinfo " id="T5:U12"><span class="fcn" id="F8N2:B24">MadgwickAHRS</span>(<span class="string">'SamplePeriod'</span>, <span class="mxinfo " id="T4:U13">1/256</span>, <span class="string">'Beta'</span>, <span class="mxinfo " id="T4:U14">0.1</span>)</span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="1,5" id="srcline5"> 5</a></span><span class="line">    <span class="comment">% AHRS = MahonyAHRS('SamplePeriod', 1/256, 'Kp', 0.5);</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,6" id="srcline6"> 6</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="1,7" id="srcline7"> 7</a></span><span class="line">    <span class="mxinfo " id="T7:U15"><span class="var type1" id="S9T7U33">quaternion</span> = <span class="mxinfo " id="T7:U17">zeros(<span class="mxinfo " id="T4:U18">1</span>, <span class="mxinfo " id="T4:U19">4</span>)</span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="1,8" id="srcline8"> 8</a></span><span class="line">    <span class="var type1" id="S7T5U41">AHRS</span>.Update(<span class="mxinfo " id="T2:U21"><span class="mxinfo " id="T2:U22"><span class="var type1" id="S6T2U45">gyroscope</span>(<span class="mxinfo " id="T3:U24">1</span>,<span class="mxinfo " id="T8:U25">:</span>)</span> * (<span class="mxinfo " id="T4:U26">pi/180</span>)</span>, <span class="var type0" id="S12T0U54">accelerometer</span>(<span class="mxinfo " id="T4:U27">1</span>,<span class="message error" id="M1F1C">:</span>), <span class="var type0" id="S13T0U58">magnetometer</span>(1,:));	<span class="comment">% gyroscope units must be radians</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,9" id="srcline9"> 9</a></span><span class="line">    <span class="mxinfo " id="T7:U28"><span class="var type1" id="S9T7U63">quaternion</span> = <span class="mxinfo " id="T7:U30"><span class="var type1" id="S7T5U65">AHRS</span>.Quaternion</span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="1,10" id="srcline10">10</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="1,11" id="srcline11">11</a></span><span class="line">    <span class="var type0" id="S14T0U69">euler</span> = quatern2euler(<span class="message error" id="M2F1C">quaternConj(<span class="var type1" id="S9T7U75">quaternion</span>)</span>) * (180/pi);	<span class="comment">% use conjugate for sensor frame relative to Earth and convert to degrees.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,12" id="srcline12">12</a></span><span class="line">    <span class="var type0" id="S2T0U83">Z</span> = <span class="var type0" id="S14T0U85"><span class="message error" id="M3F1C">euler</span></span>(1,1);</span></span>
+<span class="srcline"><span class="lineno"><a href="1,13" id="srcline13">13</a></span><span class="line">    <span class="var type0" id="S3T0U90">Y</span> = <span class="var type0" id="S14T0U92"><span class="message error" id="M4F1C">euler</span></span>(1,2);</span></span>
+<span class="srcline"><span class="lineno"><a href="1,14" id="srcline14">14</a></span><span class="line">    <span class="var type0" id="S4T0U97">X</span> = <span class="var type0" id="S14T0U99"><span class="message error" id="M5F1C">euler</span></span>(1,3);</span></span>
+<span class="srcline"><span class="lineno"><a href="1,15" id="srcline15">15</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="1,16" id="srcline16">16</a></span><span class="line"><span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,17" id="srcline17">17</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="1,18" id="srcline18">18</a></span><span class="line"><span class="comment">% function obj = MadgwickAHRS(varargin)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,19" id="srcline19">19</a></span><span class="line"><span class="comment">%     for i = 1:2:nargin</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,20" id="srcline20">20</a></span><span class="line"><span class="comment">%         if  strcmp(varargin{i}, 'SamplePeriod'), obj.SamplePeriod = varargin{i+1};</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,21" id="srcline21">21</a></span><span class="line"><span class="comment">%         elseif  strcmp(varargin{i}, 'Quaternion'), obj.Quaternion = varargin{i+1};</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,22" id="srcline22">22</a></span><span class="line"><span class="comment">%         elseif  strcmp(varargin{i}, 'Beta'), obj.Beta = varargin{i+1};</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,23" id="srcline23">23</a></span><span class="line"><span class="comment">%         else error('Invalid argument');</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,24" id="srcline24">24</a></span><span class="line"><span class="comment">%         end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,25" id="srcline25">25</a></span><span class="line"><span class="comment">%     end;</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,26" id="srcline26">26</a></span><span class="line"><span class="comment">% end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,27" id="srcline27">27</a></span><span class="line"><span class="comment">% function obj = Update(obj, Gyroscope, Accelerometer, Magnetometer)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,28" id="srcline28">28</a></span><span class="line"><span class="comment">%     q = obj.Quaternion; % short name local variable for readability</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,29" id="srcline29">29</a></span><span class="line"><span class="comment">% </span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,30" id="srcline30">30</a></span><span class="line"><span class="comment">%     % Normalise accelerometer measurement</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,31" id="srcline31">31</a></span><span class="line"><span class="comment">%     if(norm(Accelerometer) == 0), return; end	% handle NaN</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,32" id="srcline32">32</a></span><span class="line"><span class="comment">%     Accelerometer = Accelerometer / norm(Accelerometer);	% normalise magnitude</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,33" id="srcline33">33</a></span><span class="line"><span class="comment">% </span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,34" id="srcline34">34</a></span><span class="line"><span class="comment">%     % Normalise magnetometer measurement</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,35" id="srcline35">35</a></span><span class="line"><span class="comment">%     if(norm(Magnetometer) == 0), return; end	% handle NaN</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,36" id="srcline36">36</a></span><span class="line"><span class="comment">%     Magnetometer = Magnetometer / norm(Magnetometer);	% normalise magnitude</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,37" id="srcline37">37</a></span><span class="line"><span class="comment">% </span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,38" id="srcline38">38</a></span><span class="line"><span class="comment">%     % Reference direction of Earth's magnetic feild</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,39" id="srcline39">39</a></span><span class="line"><span class="comment">%     h = quaternProd(q, quaternProd([0 Magnetometer], quaternConj(q)));</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,40" id="srcline40">40</a></span><span class="line"><span class="comment">%     b = [0 norm([h(2) h(3)]) 0 h(4)];</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,41" id="srcline41">41</a></span><span class="line"><span class="comment">% </span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,42" id="srcline42">42</a></span><span class="line"><span class="comment">%     % Gradient decent algorithm corrective step</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,43" id="srcline43">43</a></span><span class="line"><span class="comment">%     F = [2*(q(2)*q(4) - q(1)*q(3)) - Accelerometer(1)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,44" id="srcline44">44</a></span><span class="line"><span class="comment">%         2*(q(1)*q(2) + q(3)*q(4)) - Accelerometer(2)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,45" id="srcline45">45</a></span><span class="line"><span class="comment">%         2*(0.5 - q(2)^2 - q(3)^2) - Accelerometer(3)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,46" id="srcline46">46</a></span><span class="line"><span class="comment">%         2*b(2)*(0.5 - q(3)^2 - q(4)^2) + 2*b(4)*(q(2)*q(4) - q(1)*q(3)) - Magnetometer(1)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,47" id="srcline47">47</a></span><span class="line"><span class="comment">%         2*b(2)*(q(2)*q(3) - q(1)*q(4)) + 2*b(4)*(q(1)*q(2) + q(3)*q(4)) - Magnetometer(2)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,48" id="srcline48">48</a></span><span class="line"><span class="comment">%         2*b(2)*(q(1)*q(3) + q(2)*q(4)) + 2*b(4)*(0.5 - q(2)^2 - q(3)^2) - Magnetometer(3)];</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,49" id="srcline49">49</a></span><span class="line"><span class="comment">%     J = [-2*q(3),                 	2*q(4),                    -2*q(1),                         2*q(2)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,50" id="srcline50">50</a></span><span class="line"><span class="comment">%         2*q(2),                 	2*q(1),                    	2*q(4),                         2*q(3)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,51" id="srcline51">51</a></span><span class="line"><span class="comment">%         0,                         -4*q(2),                    -4*q(3),                         0</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,52" id="srcline52">52</a></span><span class="line"><span class="comment">%         -2*b(4)*q(3),               2*b(4)*q(4),               -4*b(2)*q(3)-2*b(4)*q(1),       -4*b(2)*q(4)+2*b(4)*q(2)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,53" id="srcline53">53</a></span><span class="line"><span class="comment">%         -2*b(2)*q(4)+2*b(4)*q(2),	2*b(2)*q(3)+2*b(4)*q(1),	2*b(2)*q(2)+2*b(4)*q(4),       -2*b(2)*q(1)+2*b(4)*q(3)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,54" id="srcline54">54</a></span><span class="line"><span class="comment">%         2*b(2)*q(3),                2*b(2)*q(4)-4*b(4)*q(2),	2*b(2)*q(1)-4*b(4)*q(3),        2*b(2)*q(2)];</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,55" id="srcline55">55</a></span><span class="line"><span class="comment">%     step = (J'*F);</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,56" id="srcline56">56</a></span><span class="line"><span class="comment">%     step = step / norm(step);	% normalise step magnitude</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,57" id="srcline57">57</a></span><span class="line"><span class="comment">% </span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,58" id="srcline58">58</a></span><span class="line"><span class="comment">%     % Compute rate of change of quaternion</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,59" id="srcline59">59</a></span><span class="line"><span class="comment">%     qDot = 0.5 * quaternProd(q, [0 Gyroscope(1) Gyroscope(2) Gyroscope(3)]) - obj.Beta * step';</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,60" id="srcline60">60</a></span><span class="line"><span class="comment">% </span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,61" id="srcline61">61</a></span><span class="line"><span class="comment">%     % Integrate to yield quaternion</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,62" id="srcline62">62</a></span><span class="line"><span class="comment">%     q = q + qDot * obj.SamplePeriod;</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,63" id="srcline63">63</a></span><span class="line"><span class="comment">%     obj.Quaternion = q / norm(q); % normalise quaternion</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,64" id="srcline64">64</a></span><span class="line"><span class="comment">% end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,65" id="srcline65">65</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="1,66" id="srcline66">66</a></span><span class="line"><span class="comment">% function obj = UpdateIMU(obj, Gyroscope, Accelerometer)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,67" id="srcline67">67</a></span><span class="line"><span class="comment">%     q = obj.Quaternion; % short name local variable for readability</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,68" id="srcline68">68</a></span><span class="line"><span class="comment">% </span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,69" id="srcline69">69</a></span><span class="line"><span class="comment">%     % Normalise accelerometer measurement</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,70" id="srcline70">70</a></span><span class="line"><span class="comment">%     if(norm(Accelerometer) == 0), return; end	% handle NaN</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,71" id="srcline71">71</a></span><span class="line"><span class="comment">%     Accelerometer = Accelerometer / norm(Accelerometer);	% normalise magnitude</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,72" id="srcline72">72</a></span><span class="line"><span class="comment">% </span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,73" id="srcline73">73</a></span><span class="line"><span class="comment">%     % Gradient decent algorithm corrective step</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,74" id="srcline74">74</a></span><span class="line"><span class="comment">%     F = [2*(q(2)*q(4) - q(1)*q(3)) - Accelerometer(1)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,75" id="srcline75">75</a></span><span class="line"><span class="comment">%         2*(q(1)*q(2) + q(3)*q(4)) - Accelerometer(2)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,76" id="srcline76">76</a></span><span class="line"><span class="comment">%         2*(0.5 - q(2)^2 - q(3)^2) - Accelerometer(3)];</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,77" id="srcline77">77</a></span><span class="line"><span class="comment">%     J = [-2*q(3),	2*q(4),    -2*q(1),	2*q(2)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,78" id="srcline78">78</a></span><span class="line"><span class="comment">%         2*q(2),     2*q(1),     2*q(4),	2*q(3)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,79" id="srcline79">79</a></span><span class="line"><span class="comment">%         0,         -4*q(2),    -4*q(3),	0    ];</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,80" id="srcline80">80</a></span><span class="line"><span class="comment">%     step = (J'*F);</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,81" id="srcline81">81</a></span><span class="line"><span class="comment">%     step = step / norm(step);	% normalise step magnitude</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,82" id="srcline82">82</a></span><span class="line"><span class="comment">% </span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,83" id="srcline83">83</a></span><span class="line"><span class="comment">%     % Compute rate of change of quaternion</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,84" id="srcline84">84</a></span><span class="line"><span class="comment">%     qDot = 0.5 * quaternProd(q, [0 Gyroscope(1) Gyroscope(2) Gyroscope(3)]) - obj.Beta * step';</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,85" id="srcline85">85</a></span><span class="line"><span class="comment">% </span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,86" id="srcline86">86</a></span><span class="line"><span class="comment">%     % Integrate to yield quaternion</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,87" id="srcline87">87</a></span><span class="line"><span class="comment">%     q = q + qDot * obj.SamplePeriod;</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,88" id="srcline88">88</a></span><span class="line"><span class="comment">%     obj.Quaternion = q / norm(q); % normalise quaternion</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,89" id="srcline89">89</a></span><span class="line"><span class="comment">% end</span></span></span>
+</pre>
+</body>
+</html>

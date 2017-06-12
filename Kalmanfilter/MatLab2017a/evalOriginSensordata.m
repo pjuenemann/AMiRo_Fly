@@ -6,15 +6,26 @@ filename = 'JsonFilesForMatLab/x-richtung_kippen_merged_for_Matlab.txt';
 filename = 'JsonFilesForMatLab/x-richtung_merged_for_Matlab.txt';
 % filename = 'JsonFilesForMatLab/y-richtung_kippen_merged_for_Matlab.txt';
 % filename = 'JsonFilesForMatLab/y-richtung_merged_for_Matlab.txt';
-filename = 'JsonFilesForMatLab/z-richtung_merged_for_Matlab.txt';
+% filename = 'JsonFilesForMatLab/z-richtung_merged_for_Matlab.txt';
+filename = 'JsonFilesForMatLab/z-richtung_merged_0206.txt';
 [sensordataTWB, sensordataFC] = importFCsensorData(filename);
 
 
 open_system('ControllerForOriginSensordata');
-t_end = sensordataFC(end,1) - sensordataFC(1,1) + 0.5;
+t_end = sensordataFC(end,1) + (60 - sensordataFC(1,1)) + 0.5;
 dtFC = sensordataFC(2,1) - sensordataFC(1,1);
 dtTWB = sensordataTWB(2,1) - sensordataTWB(1,1);
 dt = dtFC;
+t_offsetFC = 60 - sensordataFC(1,1);
+sensordataFC(:,1) = sensordataFC(:,1) + t_offsetFC;
+idx = find(sensordataFC(:,1) >= 60);
+sensordataFC(idx,1) = sensordataFC(idx,1) - 60;
+
+t_offsetTWB = 60 - sensordataTWB(1,1);
+sensordataTWB(:,1) = sensordataTWB(:,1) + t_offsetTWB;
+idx = find(sensordataTWB(:,1) >= 60);
+sensordataTWB(idx,1) = sensordataTWB(idx,1) - 60;
+
 
 a = 1;
 k1 = a;
@@ -78,7 +89,7 @@ dataTWB = sensordataTWB(:,[1:4]);
 % 10: magnetometerZ
 % 11: baroAlt
 % 12: baroTmp
-dataDrone = sensordataFC(:,[1, 5, 6, 8, 9, 10]);
+dataDrone = sensordataFC; %(:,[1, 5, 6, 8, 9, 10]);
 
 initialState = zeros(12,1);
 initialState([1:3],1) = sensordataTWB(1,[2:4]);
@@ -93,7 +104,7 @@ subplot(3,1,1);
 plot(t, state(:,2), dataTWB(:,1) - repmat(dataTWB(1,1), [size(dataTWB,1), 1]), dataTWB(:,2));
 legend('EKF\_{X}', 'Real\_{X}');
 xlabel('t/s');
-ylabel('Pose\_Z/m');
+ylabel('Pose\_X/m');
 subplot(3,1,2);
 plot(t, state(:,3), dataTWB(:,1) - repmat(dataTWB(1,1), [size(dataTWB,1), 1]), dataTWB(:,3));
 legend('EKF\_{Y}', 'Real\_{Y}');
