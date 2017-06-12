@@ -144,10 +144,10 @@ namespace twbTrackingProcess {
 	}
 
 	/** \brief Waits with the given synchronized queue for new tracking data for the given marker. It returns an tracking error object, if the TRACKING_TIMEOUT has been reached. */
-	static TrackingObject getNextTrackingObject(boost::shared_ptr<rsc::threading::SynchronizedQueue<boost::shared_ptr<twbTracking::proto::ObjectList>>> trackingQueue, int trackingMarkerID) {
+	static TrackingObject getNextTrackingObject(boost::shared_ptr<rsc::threading::SynchronizedQueue<boost::shared_ptr<twbTracking::proto::ObjectList>>> trackingQueue, int trackingMarkerID, const uint32_t trackingTimeout = TRACKING_TIMEOUT) {
 		boost::shared_ptr<twbTracking::proto::ObjectList> data;
 		try {
-			data = boost::static_pointer_cast<twbTracking::proto::ObjectList>(trackingQueue->pop(TRACKING_TIMEOUT));
+			data = boost::static_pointer_cast<twbTracking::proto::ObjectList>(trackingQueue->pop(trackingTimeout));
 			return readTracking(data, trackingMarkerID);
 		} catch (rsc::threading::QueueEmptyException ex) {
 			return createErrorTracking();
@@ -155,11 +155,11 @@ namespace twbTrackingProcess {
 	}
 
 	/** \brief Waits with the given synchronized queue for any new tracking data. It returns an tracking error object in the vector, if the TRACKING_TIMEOUT has been reached. */
-	static std::vector<TrackingObject> getNextTrackingObjects(boost::shared_ptr<rsc::threading::SynchronizedQueue<boost::shared_ptr<twbTracking::proto::ObjectList>>> trackingQueue) {
+	static std::vector<TrackingObject> getNextTrackingObjects(boost::shared_ptr<rsc::threading::SynchronizedQueue<boost::shared_ptr<twbTracking::proto::ObjectList>>> trackingQueue, const uint32_t trackingTimeout = TRACKING_TIMEOUT) {
 		boost::shared_ptr<twbTracking::proto::ObjectList> data;
 		std::vector<TrackingObject> positions;
 		try {
-			data = boost::static_pointer_cast<twbTracking::proto::ObjectList>(trackingQueue->pop(TRACKING_TIMEOUT));
+			data = boost::static_pointer_cast<twbTracking::proto::ObjectList>(trackingQueue->pop(trackingTimeout));
 			for (int i = 0; i < data->object_size(); i++) {
 				TrackingObject tracking = readTracking(data, data->object(i).id());
 				positions.push_back(tracking);

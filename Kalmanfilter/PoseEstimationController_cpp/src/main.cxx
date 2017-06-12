@@ -91,6 +91,38 @@ using namespace rsc::misc;
 
 using namespace std;
 
+void rt_OneStep(void);
+void rt_OneStep(void)
+{
+  static boolean_T OverrunFlag = false;
+
+  /* Disable interrupts here */
+
+  /* Check for overrun */
+  if (OverrunFlag) {
+    rtmSetErrorStatus(rtM, "Overrun");
+    return;
+  }
+
+  OverrunFlag = true;
+
+  /* Save FPU context here (if necessary) */
+  /* Re-enable timer or interrupt here */
+  /* Set model inputs here */
+
+  /* Step the model for base rate */
+  PoseEstimationController_step();
+
+  /* Get model outputs here */
+
+  /* Indicate task complete */
+  OverrunFlag = false;
+
+  /* Disable interrupts here */
+  /* Restore FPU context here (if necessary) */
+  /* Enable interrupts here */
+}
+
 inline Eigen::Quaterniond
 euler2Quaternion( const double roll,
                   const double pitch,
@@ -108,8 +140,14 @@ euler2Quaternion( const double roll,
 class task: public rsc::threading::PeriodicTask {
 public:
 
-    task(int fd, const unsigned int& ms = 10) :
-            rsc::threading::PeriodicTask(ms), fd(fd){
+    task(const std::string interface, boost::shared_ptr<rsc::threading::SynchronizedQueue<boost::shared_ptr<twbTracking::proto::ObjectList>>>trackingQueue, int32_t markerId, const unsigned int& ms = 10) :
+            rsc::threading::PeriodicTask(ms), trackingQueue(trackingQueue), markerId(markerId) {
+        fd = open(interface.c_str(), O_RDWR);
+        if (fd < 0) {
+            ERROR_MSG("Error opening " << interface << ": " << strerror(errno) << "\n");
+        }
+        char buf = '#';
+        write(fd, &buf, 1);
     }
 
     virtual ~task() {
@@ -126,9 +164,25 @@ public:
                 if (buffer[i] == '\n') {
                     // Decode data and put into struct
                     decode_85(decoded.data, (uint8_t*) buf_decode, 55);
-                    // TODO Check for TWB data
+                    // Check for TWB data
+                    // TODO Add non blocking request for TWB data
+                    trackingObjectList = twbTrackingProcess::getNextTrackingObjects(trackingQueue, 1);
+                    if (trackingObjectList.size() != 0) {
+                        if (trackingObjectList.at(0).id >= 0) {
+                            for (int idx = 0; idx < trackingObjectList.size(); idx++) {
+                                if ( trackingObjectList.at(idx).id == markerId) {
+                                    // TODO Do something with the coordinates
+                                    //  trackingObjectList.at(idx).pos.x;
+                                    //  trackingObjectList.at(idx).pos.y;
+                                    //  trackingObjectList.at(idx).pos.theta;
+                                }
+                            
+                            }
+                        }
+                    }
                     // TODO Include KF
                     INFO_MSG(decoded.values.accSmooth[0] << ", " << decoded.values.accSmooth[1] << ", " << decoded.values.accSmooth[2] << ", " << decoded.values.gyroADC[0] << ", " << decoded.values.gyroADC[1] << ", " << decoded.values.gyroADC[2] << ", " << decoded.values.baroAlt << ", " << decoded.values.baroTemp << ", " << decoded.values.magADC[0] << ", " << decoded.values.magADC[1] << ", " << decoded.values.magADC[2] << "\n");
+                    rt_OneStep();
                     // TODO Process the controller and send the commands to the FC
                     {
                       uint8_t inbuf[4] = {0,0,0x05,0xDC}; // 1 byte: ROLL command, 2 byte: 0 = "empty byte" to have 4 bytes for encoding with base85, 3, 4 bytes: value (3: high byte, 4: low byte)
@@ -167,12 +221,16 @@ public:
 private:
 
     int fd;
+    boost::shared_ptr<rsc::threading::SynchronizedQueue<boost::shared_ptr<twbTracking::proto::ObjectList>>> trackingQueue;
+    int32_t markerId;
     char buffer[MAXBYTES];
     char buf_decode[55];
     uint8_t buf[5];
     sensorData_t decoded;
     int count_decode = 0;
     int count_msgs = 0;
+    twbTracking::proto::ObjectList trackingPoseList;
+    std::vector<twbTrackingProcess::TrackingObject> trackingObjectList;
 
 };
 
@@ -184,10 +242,12 @@ int main(int argc, char **argv) {
   std::string rsbInScope = "/twb";
   std::string serialInterface = "/dev/ttyACM0";
   uint32_t rsbPeriod = 10;
+  int32_t markerId = -1;
 
   po::options_description options("Allowed options");
   options.add_options()("help,h", "Display a help message.")
     ("inscope,o", po::value < std::string > (&rsbInScope), "Scope for receiving TWB messages")
+    ("markerId,i", po::value < int32_t > (&markerId), "Marker ID attached to drone")
     ("period,t", po::value < uint32_t > (&rsbPeriod), "Update interval in milliseconds (Should meet the RT interval of the filter)")
     ("serialInterface,s", po::value< std::string > (&serialInterface), "Serial interface location");
 
@@ -207,14 +267,18 @@ int main(int argc, char **argv) {
   // afterwards, let program options handle argument errors
   po::notify(vm);
 
-  // Register new converter for std::vector<int>
-  boost::shared_ptr< rsb::converter::ProtocolBufferConverter<rst::geometry::Pose> >
-      converter(new rsb::converter::ProtocolBufferConverter<rst::geometry::Pose>());
-  rsb::converter::converterRepository<std::string>()->registerConverter(converter);
+  // Register new converter
+  twbTrackingProcess::registerTracking();  
+  rsb::converter::ProtocolBufferConverter<twbTracking::proto::Object>::Ptr converterObject(new rsb::converter::ProtocolBufferConverter<twbTracking::proto::Object>);
+  rsb::converter::converterRepository<std::string>()->registerConverter(converterObject);
 
-  // Prepare RSB informer
+  // Prepare RSB
   rsb::Factory& factory = rsb::getFactory();
-  // TODO Include TWB listener
+  // TODO Revert if you realy want to work with the TWB
+//  rsb::ListenerPtr trackingListener = factory.createListener(rsbInScope, twbTrackingProcess::getTrackingRSBConfig());
+  rsb::ListenerPtr trackingListener = factory.createListener(rsbInScope);
+  boost::shared_ptr<rsc::threading::SynchronizedQueue<boost::shared_ptr<twbTracking::proto::ObjectList>>>trackingQueue(new rsc::threading::SynchronizedQueue<boost::shared_ptr<twbTracking::proto::ObjectList>>(1));
+  trackingListener->addHandler(rsb::HandlerPtr(new rsb::util::QueuePushHandler<twbTracking::proto::ObjectList>(trackingQueue)));
 
   // Init the CAN interface
 //   ControllerAreaNetwork CAN;
@@ -230,11 +294,11 @@ int main(int argc, char **argv) {
   write(fd, &buf, 1);
   
   // Init KF
-//   PoseEstimationController_initialize();
+  PoseEstimationController_initialize();
   
   // Periodic task excecution
   rsc::threading::ThreadedTaskExecutor exec;
-  exec.schedule(rsc::threading::TaskPtr(new task(rsbPeriod, fd)));
+  exec.schedule(rsc::threading::TaskPtr(new task(serialInterface, trackingQueue, markerId, rsbPeriod)));
 
   // Wait until finish
   rsc::misc::initSignalWaiter();
