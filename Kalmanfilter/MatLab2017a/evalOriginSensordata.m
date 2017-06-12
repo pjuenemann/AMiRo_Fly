@@ -8,6 +8,8 @@ filename = 'JsonFilesForMatLab/x-richtung_merged_for_Matlab.txt';
 % filename = 'JsonFilesForMatLab/y-richtung_merged_for_Matlab.txt';
 % filename = 'JsonFilesForMatLab/z-richtung_merged_for_Matlab.txt';
 filename = 'JsonFilesForMatLab/z-richtung_merged_0206.txt';
+filename = 'JsonFilesForMatLab/x-richtung_merged_0206.txt';
+filename = 'JsonFilesForMatLab/y-richtung_merged_0206.txt';
 [sensordataTWB, sensordataFC] = importFCsensorData(filename);
 
 
