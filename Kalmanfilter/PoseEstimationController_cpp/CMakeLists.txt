@@ -1,7 +1,9 @@
 cmake_minimum_required (VERSION 2.6)
 
 # Set the project name to the name of the folder
-INCLUDE("$ENV{MUROX_CMAKE_MODULES}/setProjectName.cmake")
+string (REGEX MATCH "[^/]+$" PROJECT_NAME "${CMAKE_CURRENT_BINARY_DIR}")
+message (STATUS "Set PROJECT_NAME to ${PROJECT_NAME}")
+project ("${PROJECT_NAME}")
 
 
 # Read the pkg-config modules
@@ -20,12 +22,26 @@ else()
     pkg_check_modules(RST rstsandbox${RST_V})
 endif()
 
-# Get modules
+# Get BOOST modules (If this does not work, define it via the cross compiler environment)
 SET (BOOST_COMPONENTS regex date_time program_options system thread)
-INCLUDE("$ENV{MUROX_CMAKE_MODULES}/findPackageBoost.cmake")
+SET (Boost_ADDITIONAL_VERSIONS "1.55" "1.55.0")
+FIND_PACKAGE(Boost QUIET COMPONENTS "${BOOST_COMPONENTS}" PATH $ENV{BOOST_ROOT} $ENV{BOOST_INCLUDEDIR} $ENV{BOOST_LIBRARYDIR})
+IF (NOT Boost_FOUND)
+  SET(Boost_LIBRARIES "")
+  MESSAGE(STATUS "Boost module NOT found, using the cross compiler env. in $ENV{SDKTARGETSYSROOT}")
+  SET(Boost_FOUND "TRUE")
+  FOREACH (BOOST_COMP ${BOOST_COMPONENTS})
+   SET(Boost_LIBRARIES "${Boost_LIBRARIES};-lboost_${BOOST_COMP}")
+  ENDFOREACH ()
+  SET(Boost_INCLUDE_DIR "$ENV{SDKTARGETSYSROOT}/usr/include")
+  SET(Boost_INCLUDE_DIRS "$ENV{SDKTARGETSYSROOT}/usr/include")
+ENDIF()
+
 
 # Get the compiler specific includes and store them in GXX_INCLUDES
-INCLUDE("$ENV{MUROX_CMAKE_MODULES}/setCompilerIncludes.cmake")
+set (test "${CMAKE_CXX_COMPILER}${CMAKE_CXX_COMPILER_ARG1}")
+execute_process(COMMAND printCompilerIncludes OUTPUT_VARIABLE GXX_INCLUDES)
+message (STATUS "Set GXX_INCLUDES to ${GXX_INCLUDES}")
 
 # Set the include pathe
 include_directories(
@@ -72,7 +88,7 @@ target_link_libraries (
 )
 
 # Special flags for RST
-ADD_DEFINITIONS(${RST_CFLAGS} ${RSTSANDBOX_CFLAGS})
+ADD_DEFINITIONS(${RST_CFLAGS} ${RSTSANDBOX_CFLAGS} -std=c++11)
 
 # Set compiler flags as you like
 SET ( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wno-deprecated-declarations -O0 -g -Wno-write-strings -std=c++11" )
