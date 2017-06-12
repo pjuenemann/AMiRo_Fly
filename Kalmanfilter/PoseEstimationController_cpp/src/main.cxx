@@ -230,5 +230,6 @@ int main(int argc, char **argv) {
   exec.schedule(rsc::threading::TaskPtr(new task(rsbPeriod, fd)));
 
   // Wait until finish
+  rsc::misc::initSignalWaiter();
   return rsc::misc::suggestedExitCode(rsc::misc::waitForSignal());
 }
