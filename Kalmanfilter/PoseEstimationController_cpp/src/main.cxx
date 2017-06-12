@@ -65,6 +65,7 @@ typedef union {
 #include <rsb/Event.h>
 #include <rsb/Handler.h>
 #include <rsb/converter/Repository.h>
+#include <rsb/util/QueuePushHandler.h>
 using namespace rsb;
 
 // RST
@@ -74,10 +75,11 @@ using namespace rsb;
 #include <rsc/misc/SignalWaiter.h>
 #include <rsc/threading/PeriodicTask.h>
 #include <rsc/threading/ThreadedTaskExecutor.h>
+#include <rsc/threading/SynchronizedQueue.h>
 using namespace rsc::misc;
 
-// Proto types
-#include <rst/geometry/Pose.pb.h>
+// TWB
+#include <TwbTracking.h>
 
 #include <stdio.h>
 #include <unistd.h>

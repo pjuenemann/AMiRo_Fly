@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 2.6)
 
 # Set the project name to the name of the folder
-string (REGEX MATCH "[^/]+$" PROJECT_NAME "${CMAKE_CURRENT_BINARY_DIR}")
+string (REGEX MATCH "[^/]+$" PROJECT_NAME "${CMAKE_CURRENT_SOURCE_DIR}")
 message (STATUS "Set PROJECT_NAME to ${PROJECT_NAME}")
 project ("${PROJECT_NAME}")
 
@@ -45,29 +45,38 @@ message (STATUS "Set GXX_INCLUDES to ${GXX_INCLUDES}")
 
 # Set the include pathe
 include_directories(
-    ${RSB_INCLUDE_DIRS}                                             # RSB
-    ${RSC_INCLUDE_DIRS}                                             # RSC
-    ${RST_INCLUDE_DIRS}                                             # RSC
-    ${PROTOBUF_INCLUDE_DIRS}                                        # Protobuffer
-    "$ENV{MUROX_INCLUDE_DIRS}"                                      # Other includes like converters and stuff
-    ${CMAKE_CURRENT_BINARY_DIR}                                     # add the binary tree to the search path for
+    ${RSB_INCLUDE_DIRS}
+    ${RSC_INCLUDE_DIRS}
+    ${RST_INCLUDE_DIRS}
+    ${PROTOBUF_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_BINARY_DIR}
     ${GXX_INCLUDES}
     ${Boost_INCLUDE_DIR}
     ${EIGEN_INCLUDE_DIRS}
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src_matlab"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src_proto"
 )
 
 # Define the source
 SET (SOURCE src/main.cxx
   src/base85.c
-  src/PoseEstimationController.c
-  src/const_params.c
-  src/dbiemohljmgdohdb_norm.c
-  src/iecjgdjeaimokfcj_mrdivide.c
-  src/rt_atan2d_snf.c
-  src/rtGetInf.c
-  src/rtGetNaN.c
-  src/rt_nonfinite.c
+  # MATLAB STUFF
+  src_matlab/PoseEstimationController.c
+  src_matlab/const_params.c
+  src_matlab/dbiemohljmgdohdb_norm.c
+  src_matlab/iecjgdjeaimokfcj_mrdivide.c
+  src_matlab/rt_atan2d_snf.c
+  src_matlab/rtGetInf.c
+  src_matlab/rtGetNaN.c
+  src_matlab/rt_nonfinite.c
+  # PROTO STUFF
+  src_proto/enum.pb.cc
+  src_proto/loc.pb.cc
+  src_proto/pose.pb.cc
+  src_proto/rotation.pb.cc
+  src_proto/shapes.pb.cc
+  src_proto/vertex.pb.cc
 )
 
 LINK_DIRECTORIES (
