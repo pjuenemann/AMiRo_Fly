@@ -1,8 +1,8 @@
-set MATLAB=C:\Program Files\MATLAB\R2017a
+call "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" AMD64
 
 cd .
 
-if "%1"=="" ("C:\PROGRA~1\MATLAB\R2017a\bin\win64\gmake"  -f PoseEstimationController.mk all) else ("C:\PROGRA~1\MATLAB\R2017a\bin\win64\gmake"  -f PoseEstimationController.mk %1)
+if "%1"=="" (nmake  -f PoseEstimationController.mk all) else (nmake  -f PoseEstimationController.mk %1)
 @if errorlevel 1 goto error_exit
 
 exit /B 0

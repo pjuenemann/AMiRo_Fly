@@ -1,5 +1,5 @@
 MODEL=PoseEstimationController
-NUMST=2
+NUMST=1
 NCSTATES=0
 HAVESTDIO
 TERMFCN=0

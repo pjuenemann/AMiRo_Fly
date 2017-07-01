@@ -52,7 +52,7 @@ Entry Point Functions
 
 </h3>
 <p>
-Function: <a href="PoseEstimationController_c.html#fcn_PoseEstimationController_initialize">PoseEstimationController_initialize</a>
+Function: <a href="PoseEstimationController_cpp.html#fcn_PoseEstimationController_initialize">PoseEstimationController_initialize</a>
 </p>
 <table width="100%" class="AltRow" cellspacing="0">
 <tr class="even">
@@ -115,7 +115,7 @@ Header file
 
 </table>
 <p>
-Function: <a href="PoseEstimationController_c.html#fcn_PoseEstimationController_step">PoseEstimationController_step</a>
+Function: <a href="PoseEstimationController_cpp.html#fcn_PoseEstimationController_step">PoseEstimationController_step</a>
 </p>
 <table width="100%" class="AltRow" cellspacing="0">
 <tr class="even">
@@ -178,7 +178,7 @@ Header file
 
 </table>
 <p>
-Function: <a href="PoseEstimationController_c.html#fcn_measurementDroneFcn_o">measurementDroneFcn_o</a>
+Function: <a href="PoseEstimationController_cpp.html#fcn_measurementDroneFcn_o">measurementDroneFcn_o</a>
 </p>
 <table width="100%" class="AltRow" cellspacing="0">
 <tr class="even">
@@ -301,7 +301,7 @@ Header file
 
 </table>
 <p>
-Function: <a href="PoseEstimationController_c.html#fcn_measurementTWBFcn_h">measurementTWBFcn_h</a>
+Function: <a href="PoseEstimationController_cpp.html#fcn_measurementTWBFcn_h">measurementTWBFcn_h</a>
 </p>
 <table width="100%" class="AltRow" cellspacing="0">
 <tr class="even">
@@ -424,7 +424,7 @@ Header file
 
 </table>
 <p>
-Function: <a href="PoseEstimationController_c.html#fcn_stateTransitionFcn">stateTransitionFcn</a>
+Function: <a href="PoseEstimationController_cpp.html#fcn_stateTransitionFcn">stateTransitionFcn</a>
 </p>
 <table width="100%" class="AltRow" cellspacing="0">
 <tr class="even">
@@ -582,28 +582,28 @@ Dimension
 </tr>
 <tr class="even">
 <td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('PoseEstimationController:188')" name="code2model" class="code2model">&lt;Root&gt;/In1</a>
+<a href="matlab:coder.internal.code2model('PoseEstimationController:188')" name="code2model" class="code2model">&lt;Root&gt;/TWB_data </a>
 </td>
 <td width="26%" align="left" valign="top">
-rtU.In1
+rtU.TWB_data
 </td>
 <td width="21%" align="left" valign="top">
 real_T
 </td>
 <td width="10%" align="right" valign="top">
-1
+[3]
 </td>
 
 </tr>
 <tr class="odd">
 <td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('PoseEstimationController:189')" name="code2model" class="code2model">&lt;Root&gt;/In2</a>
+<a href="matlab:coder.internal.code2model('PoseEstimationController:189')" name="code2model" class="code2model">&lt;Root&gt;/drone_raw_data</a>
 </td>
 <td width="26%" align="left" valign="top">
-rtU.In2
+rtU.drone_raw_data
 </td>
 <td width="21%" align="left" valign="top">
-real_T
+uint8_T
 </td>
 <td width="10%" align="right" valign="top">
 [11]
@@ -612,16 +612,16 @@ real_T
 </tr>
 <tr class="even">
 <td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('PoseEstimationController:190')" name="code2model" class="code2model">&lt;Root&gt;/In3</a>
+<a href="matlab:coder.internal.code2model('PoseEstimationController:190')" name="code2model" class="code2model">&lt;Root&gt;/x_desired</a>
 </td>
 <td width="26%" align="left" valign="top">
-rtU.In3
+rtU.x_desired
 </td>
 <td width="21%" align="left" valign="top">
 real_T
 </td>
 <td width="10%" align="right" valign="top">
-1
+[4]
 </td>
 
 </tr>
@@ -663,10 +663,10 @@ Dimension
 </tr>
 <tr class="even">
 <td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('PoseEstimationController:191')" name="code2model" class="code2model">&lt;Root&gt;/Out1</a>
+<a href="matlab:coder.internal.code2model('PoseEstimationController:191')" name="code2model" class="code2model">&lt;Root&gt;/x</a>
 </td>
 <td width="26%" align="left" valign="top">
-rtY.Out1
+rtY.x
 </td>
 <td width="21%" align="left" valign="top">
 real_T
@@ -678,13 +678,13 @@ real_T
 </tr>
 <tr class="odd">
 <td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('PoseEstimationController:192')" name="code2model" class="code2model">&lt;Root&gt;/Out2</a>
+<a href="matlab:coder.internal.code2model('PoseEstimationController:192')" name="code2model" class="code2model">&lt;Root&gt;/u</a>
 </td>
 <td width="26%" align="left" valign="top">
-rtY.Out2
+rtY.u
 </td>
 <td width="21%" align="left" valign="top">
-real_T
+uint8_T
 </td>
 <td width="10%" align="right" valign="top">
 [4]
