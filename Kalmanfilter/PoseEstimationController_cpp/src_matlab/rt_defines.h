@@ -1,23 +1,22 @@
-/*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- *
- * File: rt_defines.h
- *
- * Code generated for Simulink model 'PoseEstimationController'.
- *
- * Model version                  : 1.4
- * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Mon Jun 12 11:18:41 2017
- */
-
+//
+// Academic License - for use in teaching, academic research, and meeting
+// course requirements at degree granting institutions only.  Not for
+// government, commercial, or other organizational use.
+//
+// File: rt_defines.h
+//
+// Code generated for Simulink model 'PoseEstimationController'.
+//
+// Model version                  : 1.8
+// Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
+// C/C++ source code generated on : Wed Jun 21 09:25:03 2017
+//
 #ifndef RTW_HEADER_rt_defines_h_
 #define RTW_HEADER_rt_defines_h_
 
-/*===========*
- * Constants *
- *===========*/
+//===========*
+//  Constants *
+// ===========
 #define RT_PI                          3.14159265358979323846
 #define RT_PIF                         3.1415927F
 #define RT_LN_10                       2.30258509299404568402
@@ -27,27 +26,27 @@
 #define RT_E                           2.7182818284590452354
 #define RT_EF                          2.7182817F
 
-/*
- * UNUSED_PARAMETER(x)
- *   Used to specify that a function parameter (argument) is required but not
- *   accessed by the function body.
- */
+//
+//  UNUSED_PARAMETER(x)
+//    Used to specify that a function parameter (argument) is required but not
+//    accessed by the function body.
+
 #ifndef UNUSED_PARAMETER
 # if defined(__LCC__)
-#   define UNUSED_PARAMETER(x)                                   /* do nothing */
+#   define UNUSED_PARAMETER(x)                                   // do nothing
 # else
 
-/*
- * This is the semi-ANSI standard way of indicating that an
- * unused function parameter is required.
- */
+//
+//  This is the semi-ANSI standard way of indicating that an
+//  unused function parameter is required.
+
 #   define UNUSED_PARAMETER(x)         (void) (x)
 # endif
 #endif
-#endif                                 /* RTW_HEADER_rt_defines_h_ */
+#endif                                 // RTW_HEADER_rt_defines_h_
 
-/*
- * File trailer for generated code.
- *
- * [EOF]
- */
+//
+// File trailer for generated code.
+//
+// [EOF]
+//
