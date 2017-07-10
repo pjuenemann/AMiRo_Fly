@@ -166,22 +166,29 @@ namespace twbTrackingProcess {
 
 	/** \brief Waits with the given synchronized queue for any new tracking data. It returns an tracking error object in the vector, if the TRACKING_TIMEOUT has been reached. */
 	static std::vector<TrackingObject> getNextTrackingObjects(boost::shared_ptr<rsc::threading::SynchronizedQueue<boost::shared_ptr<twbTracking::proto::ObjectList>>> trackingQueue, const int32_t trackingTimeout = TRACKING_TIMEOUT) {
+                INFO_MSG("TrackingGetNext");
 		boost::shared_ptr<twbTracking::proto::ObjectList> data;
 		std::vector<TrackingObject> positions;
                 //if Queue is full
                 if (TRACKING_TIMEOUT < 0) {
                     try{
+                        INFO_MSG("Try1");
                         trackingQueue->tryPop();
+                        INFO_MSG("Try11");
                     } catch (...) {
+                        INFO_MSG("TrackingGetNext1");
                     }
                 } else {
                     try {
+                        INFO_MSG("Try2");
                         data = boost::static_pointer_cast<twbTracking::proto::ObjectList>(trackingQueue->pop(trackingTimeout));
+                        INFO_MSG("Try22");
                         for (int i = 0; i < data->object_size(); i++) {
                             TrackingObject tracking = readTracking(data, data->object(i).id());
                             positions.push_back(tracking);
                         }
                     } catch (rsc::threading::QueueEmptyException ex) {
+                        INFO_MSG("TrackingGetNext2");
                         positions.clear();
                         TrackingObject obj = createErrorTracking();
                         positions.push_back(obj);

@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'PoseEstimationController'.
 //
-// Model version                  : 1.13
+// Model version                  : 1.15
 // Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
-// C/C++ source code generated on : Sat Jul 01 13:49:21 2017
+// C/C++ source code generated on : Mon Jul 10 09:59:18 2017
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Custom Processor->Custom
@@ -843,305 +843,308 @@ void PoseEstimationController_step(void)
   // Outputs for Enabled SubSystem: '<S2>/Correct1' incorporates:
   //   EnablePort: '<S10>/Enable'
 
-  // MATLAB Function: '<S10>/Correct' incorporates:
-  //   Constant: '<S2>/R1'
-  //   DataStoreRead: '<S10>/Data Store ReadP'
-  //   DataStoreRead: '<S10>/Data Store ReadX'
-  //   DataStoreWrite: '<S10>/Data Store WriteP'
-  //   Sum: '<S4>/Add'
-
-  // MATLAB Function 'Extras/EKFCorrect_SLFcn_0Input/Correct': '<S14>:1'
-  // '<S14>:1:2' MeasurementFcn = coder.const(str2func(pM.FcnName));
-  // '<S14>:1:3' if pM.HasJacobian
-  // '<S14>:1:7' xNew = zeros(size(x),'like',x);
-  // '<S14>:1:8' PNew = zeros(size(P),'like',x);
-  // '<S14>:1:9' if pM.HasAdditiveNoise
-  // '<S14>:1:10' if pM.HasJacobian
-  // '<S14>:1:13' else
-  // '<S14>:1:14' [xNew,PNew] = matlabshared.tracking.internal.EKFCorrectorAdditive.correct(... 
-  // '<S14>:1:15'             yMeas,R,x,P,@(xx)MeasurementFcn(xx),[]);
-  measurementTWBFcn_h(rtDW.x, rtDW.b_z_f);
-  for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
-    memcpy(&rtDW.imvec[0], &rtDW.x[0], 12U * sizeof(real_T));
-    rtDW.cos_g = 1.4901161193847656E-8 * std::abs(rtDW.x[rtDW.i]);
-    if ((1.4901161193847656E-8 > rtDW.cos_g) || rtIsNaN(rtDW.cos_g)) {
-      rtDW.cos_g = 1.4901161193847656E-8;
-    }
-
-    rtDW.imvec[rtDW.i] = rtDW.x[rtDW.i] + rtDW.cos_g;
-    measurementTWBFcn_h(rtDW.imvec, rtDW.imz_g);
-    rtDW.dHdx_k[3 * rtDW.i] = (rtDW.imz_g[0] - rtDW.b_z_f[0]) / rtDW.cos_g;
-    rtDW.dHdx_k[1 + 3 * rtDW.i] = (rtDW.imz_g[1] - rtDW.b_z_f[1]) / rtDW.cos_g;
-    rtDW.dHdx_k[2 + 3 * rtDW.i] = (rtDW.imz_g[2] - rtDW.b_z_f[2]) / rtDW.cos_g;
-  }
-
-  for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
-    for (rtDW.i1 = 0; rtDW.i1 < 3; rtDW.i1++) {
-      rtDW.Pxy[rtDW.i0 + 12 * rtDW.i1] = 0.0;
-      for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
-        rtDW.Pxy[rtDW.i0 + 12 * rtDW.i1] += rtDW.P_j[12 * rtDW.i + rtDW.i0] *
-          rtDW.dHdx_k[3 * rtDW.i + rtDW.i1];
-      }
-    }
-  }
-
-  for (rtDW.i0 = 0; rtDW.i0 < 3; rtDW.i0++) {
-    for (rtDW.i1 = 0; rtDW.i1 < 12; rtDW.i1++) {
-      rtDW.gain_c[rtDW.i0 + 3 * rtDW.i1] = 0.0;
-      for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
-        rtDW.gain_c[rtDW.i0 + 3 * rtDW.i1] += rtDW.dHdx_k[3 * rtDW.i + rtDW.i0] *
-          rtDW.P_j[12 * rtDW.i1 + rtDW.i];
-      }
-    }
-
-    for (rtDW.i1 = 0; rtDW.i1 < 3; rtDW.i1++) {
-      rtDW.cos_g = 0.0;
-      for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
-        rtDW.cos_g += rtDW.gain_c[3 * rtDW.i + rtDW.i0] * rtDW.dHdx_k[3 * rtDW.i
-          + rtDW.i1];
-      }
-
-      rtDW.R[rtDW.i0 + 3 * rtDW.i1] = rtCP_R1_Value[3 * rtDW.i1 + rtDW.i0] +
-        rtDW.cos_g;
-    }
-  }
-
-  measurementTWBFcn_h(rtDW.x, rtDW.b_z_f);
-  rtDW.i = 0;
-  rtDW.r2 = 1;
-  rtDW.r3 = 2;
-  rtDW.cos_g = std::abs(rtDW.R[0]);
-  rtDW.b_idx_1 = std::abs(rtDW.R[1]);
-  if (rtDW.b_idx_1 > rtDW.cos_g) {
-    rtDW.cos_g = rtDW.b_idx_1;
-    rtDW.i = 1;
-    rtDW.r2 = 0;
-  }
-
-  if (std::abs(rtDW.R[2]) > rtDW.cos_g) {
-    rtDW.i = 2;
-    rtDW.r2 = 1;
-    rtDW.r3 = 0;
-  }
-
-  rtDW.R[rtDW.r2] /= rtDW.R[rtDW.i];
-  rtDW.R[rtDW.r3] /= rtDW.R[rtDW.i];
-  rtDW.R[3 + rtDW.r2] -= rtDW.R[3 + rtDW.i] * rtDW.R[rtDW.r2];
-  rtDW.R[3 + rtDW.r3] -= rtDW.R[3 + rtDW.i] * rtDW.R[rtDW.r3];
-  rtDW.R[6 + rtDW.r2] -= rtDW.R[6 + rtDW.i] * rtDW.R[rtDW.r2];
-  rtDW.R[6 + rtDW.r3] -= rtDW.R[6 + rtDW.i] * rtDW.R[rtDW.r3];
-  if (std::abs(rtDW.R[3 + rtDW.r3]) > std::abs(rtDW.R[3 + rtDW.r2])) {
-    rtDW.rtemp = rtDW.r2;
-    rtDW.r2 = rtDW.r3;
-    rtDW.r3 = rtDW.rtemp;
-  }
-
-  rtDW.R[3 + rtDW.r3] /= rtDW.R[3 + rtDW.r2];
-  rtDW.R[6 + rtDW.r3] -= rtDW.R[3 + rtDW.r3] * rtDW.R[6 + rtDW.r2];
-  for (rtDW.rtemp = 0; rtDW.rtemp < 12; rtDW.rtemp++) {
-    rtDW.gain_c[rtDW.rtemp + 12 * rtDW.i] = rtDW.Pxy[rtDW.rtemp] / rtDW.R[rtDW.i];
-    rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r2] = rtDW.Pxy[12 + rtDW.rtemp] -
-      rtDW.gain_c[12 * rtDW.i + rtDW.rtemp] * rtDW.R[3 + rtDW.i];
-    rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r3] = rtDW.Pxy[24 + rtDW.rtemp] -
-      rtDW.gain_c[12 * rtDW.i + rtDW.rtemp] * rtDW.R[6 + rtDW.i];
-    rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r2] /= rtDW.R[3 + rtDW.r2];
-    rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r3] -= rtDW.gain_c[12 * rtDW.r2 +
-      rtDW.rtemp] * rtDW.R[6 + rtDW.r2];
-    rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r3] /= rtDW.R[6 + rtDW.r3];
-    rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r2] -= rtDW.gain_c[12 * rtDW.r3 +
-      rtDW.rtemp] * rtDW.R[3 + rtDW.r3];
-    rtDW.gain_c[rtDW.rtemp + 12 * rtDW.i] -= rtDW.gain_c[12 * rtDW.r3 +
-      rtDW.rtemp] * rtDW.R[rtDW.r3];
-    rtDW.gain_c[rtDW.rtemp + 12 * rtDW.i] -= rtDW.gain_c[12 * rtDW.r2 +
-      rtDW.rtemp] * rtDW.R[rtDW.r2];
-    for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
-      rtDW.Jacobian[rtDW.rtemp + 12 * rtDW.i0] = 0.0;
-      rtDW.Jacobian[rtDW.rtemp + 12 * rtDW.i0] += rtDW.dHdx_k[3 * rtDW.i0] *
-        rtDW.gain_c[rtDW.rtemp];
-      rtDW.Jacobian[rtDW.rtemp + 12 * rtDW.i0] += rtDW.dHdx_k[3 * rtDW.i0 + 1] *
-        rtDW.gain_c[rtDW.rtemp + 12];
-      rtDW.Jacobian[rtDW.rtemp + 12 * rtDW.i0] += rtDW.dHdx_k[3 * rtDW.i0 + 2] *
-        rtDW.gain_c[rtDW.rtemp + 24];
-    }
-
-    for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
-      rtDW.cos_g = 0.0;
-      for (rtDW.i1 = 0; rtDW.i1 < 12; rtDW.i1++) {
-        rtDW.cos_g += rtDW.Jacobian[12 * rtDW.i1 + rtDW.rtemp] * rtDW.P_j[12 *
-          rtDW.i0 + rtDW.i1];
-      }
-
-      rtDW.Jacobian_m[rtDW.rtemp + 12 * rtDW.i0] = rtDW.P_j[12 * rtDW.i0 +
-        rtDW.rtemp] - rtDW.cos_g;
-    }
-  }
-
-  rtDW.rtb_TWB_gain_idx_0 -= rtDW.b_z_f[0];
-  rtDW.rtb_TWB_gain_idx_1 -= rtDW.b_z_f[1];
-  rtDW.rtb_TWB_gain_idx_2 = (rtDW.rtb_TWB_gain_idx_2 - rtDW.UnitDelay_f[2]) -
-    rtDW.b_z_f[2];
-  for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
-    // DataStoreWrite: '<S10>/Data Store WriteP' incorporates:
-    //   MATLAB Function: '<S10>/Correct'
-
-    memcpy(&rtDW.P_j[rtDW.i0 * 12], &rtDW.Jacobian_m[rtDW.i0 * 12], 12U * sizeof
-           (real_T));
-
-    // DataStoreWrite: '<S10>/Data Store WriteX' incorporates:
+  // Inport: '<Root>/enableTWB'
+  if (rtU.enableTWB) {
+    // MATLAB Function: '<S10>/Correct' incorporates:
+    //   Constant: '<S2>/R1'
+    //   DataStoreRead: '<S10>/Data Store ReadP'
     //   DataStoreRead: '<S10>/Data Store ReadX'
-    //   MATLAB Function: '<S10>/Correct'
+    //   DataStoreWrite: '<S10>/Data Store WriteP'
+    //   Sum: '<S4>/Add'
 
-    rtDW.x[rtDW.i0] += (rtDW.gain_c[rtDW.i0 + 12] * rtDW.rtb_TWB_gain_idx_1 +
-                        rtDW.gain_c[rtDW.i0] * rtDW.rtb_TWB_gain_idx_0) +
-      rtDW.gain_c[rtDW.i0 + 24] * rtDW.rtb_TWB_gain_idx_2;
+    // MATLAB Function 'Extras/EKFCorrect_SLFcn_0Input/Correct': '<S14>:1'
+    // '<S14>:1:2' MeasurementFcn = coder.const(str2func(pM.FcnName));
+    // '<S14>:1:3' if pM.HasJacobian
+    // '<S14>:1:7' xNew = zeros(size(x),'like',x);
+    // '<S14>:1:8' PNew = zeros(size(P),'like',x);
+    // '<S14>:1:9' if pM.HasAdditiveNoise
+    // '<S14>:1:10' if pM.HasJacobian
+    // '<S14>:1:13' else
+    // '<S14>:1:14' [xNew,PNew] = matlabshared.tracking.internal.EKFCorrectorAdditive.correct(... 
+    // '<S14>:1:15'             yMeas,R,x,P,@(xx)MeasurementFcn(xx),[]);
+    measurementTWBFcn_h(rtDW.x, rtDW.b_z_f);
+    for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
+      memcpy(&rtDW.imvec[0], &rtDW.x[0], 12U * sizeof(real_T));
+      rtDW.cos_g = 1.4901161193847656E-8 * std::abs(rtDW.x[rtDW.i]);
+      if ((1.4901161193847656E-8 > rtDW.cos_g) || rtIsNaN(rtDW.cos_g)) {
+        rtDW.cos_g = 1.4901161193847656E-8;
+      }
+
+      rtDW.imvec[rtDW.i] = rtDW.x[rtDW.i] + rtDW.cos_g;
+      measurementTWBFcn_h(rtDW.imvec, rtDW.imz_g);
+      rtDW.dHdx_k[3 * rtDW.i] = (rtDW.imz_g[0] - rtDW.b_z_f[0]) / rtDW.cos_g;
+      rtDW.dHdx_k[1 + 3 * rtDW.i] = (rtDW.imz_g[1] - rtDW.b_z_f[1]) / rtDW.cos_g;
+      rtDW.dHdx_k[2 + 3 * rtDW.i] = (rtDW.imz_g[2] - rtDW.b_z_f[2]) / rtDW.cos_g;
+    }
+
+    for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
+      for (rtDW.i1 = 0; rtDW.i1 < 3; rtDW.i1++) {
+        rtDW.Pxy[rtDW.i0 + 12 * rtDW.i1] = 0.0;
+        for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
+          rtDW.Pxy[rtDW.i0 + 12 * rtDW.i1] += rtDW.P_j[12 * rtDW.i + rtDW.i0] *
+            rtDW.dHdx_k[3 * rtDW.i + rtDW.i1];
+        }
+      }
+    }
+
+    for (rtDW.i0 = 0; rtDW.i0 < 3; rtDW.i0++) {
+      for (rtDW.i1 = 0; rtDW.i1 < 12; rtDW.i1++) {
+        rtDW.gain_c[rtDW.i0 + 3 * rtDW.i1] = 0.0;
+        for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
+          rtDW.gain_c[rtDW.i0 + 3 * rtDW.i1] += rtDW.dHdx_k[3 * rtDW.i + rtDW.i0]
+            * rtDW.P_j[12 * rtDW.i1 + rtDW.i];
+        }
+      }
+
+      for (rtDW.i1 = 0; rtDW.i1 < 3; rtDW.i1++) {
+        rtDW.cos_g = 0.0;
+        for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
+          rtDW.cos_g += rtDW.gain_c[3 * rtDW.i + rtDW.i0] * rtDW.dHdx_k[3 *
+            rtDW.i + rtDW.i1];
+        }
+
+        rtDW.R[rtDW.i0 + 3 * rtDW.i1] = rtCP_R1_Value[3 * rtDW.i1 + rtDW.i0] +
+          rtDW.cos_g;
+      }
+    }
+
+    measurementTWBFcn_h(rtDW.x, rtDW.b_z_f);
+    rtDW.i = 0;
+    rtDW.r2 = 1;
+    rtDW.r3 = 2;
+    rtDW.cos_g = std::abs(rtDW.R[0]);
+    rtDW.b_idx_1 = std::abs(rtDW.R[1]);
+    if (rtDW.b_idx_1 > rtDW.cos_g) {
+      rtDW.cos_g = rtDW.b_idx_1;
+      rtDW.i = 1;
+      rtDW.r2 = 0;
+    }
+
+    if (std::abs(rtDW.R[2]) > rtDW.cos_g) {
+      rtDW.i = 2;
+      rtDW.r2 = 1;
+      rtDW.r3 = 0;
+    }
+
+    rtDW.R[rtDW.r2] /= rtDW.R[rtDW.i];
+    rtDW.R[rtDW.r3] /= rtDW.R[rtDW.i];
+    rtDW.R[3 + rtDW.r2] -= rtDW.R[3 + rtDW.i] * rtDW.R[rtDW.r2];
+    rtDW.R[3 + rtDW.r3] -= rtDW.R[3 + rtDW.i] * rtDW.R[rtDW.r3];
+    rtDW.R[6 + rtDW.r2] -= rtDW.R[6 + rtDW.i] * rtDW.R[rtDW.r2];
+    rtDW.R[6 + rtDW.r3] -= rtDW.R[6 + rtDW.i] * rtDW.R[rtDW.r3];
+    if (std::abs(rtDW.R[3 + rtDW.r3]) > std::abs(rtDW.R[3 + rtDW.r2])) {
+      rtDW.rtemp = rtDW.r2;
+      rtDW.r2 = rtDW.r3;
+      rtDW.r3 = rtDW.rtemp;
+    }
+
+    rtDW.R[3 + rtDW.r3] /= rtDW.R[3 + rtDW.r2];
+    rtDW.R[6 + rtDW.r3] -= rtDW.R[3 + rtDW.r3] * rtDW.R[6 + rtDW.r2];
+    for (rtDW.rtemp = 0; rtDW.rtemp < 12; rtDW.rtemp++) {
+      rtDW.gain_c[rtDW.rtemp + 12 * rtDW.i] = rtDW.Pxy[rtDW.rtemp] /
+        rtDW.R[rtDW.i];
+      rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r2] = rtDW.Pxy[12 + rtDW.rtemp] -
+        rtDW.gain_c[12 * rtDW.i + rtDW.rtemp] * rtDW.R[3 + rtDW.i];
+      rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r3] = rtDW.Pxy[24 + rtDW.rtemp] -
+        rtDW.gain_c[12 * rtDW.i + rtDW.rtemp] * rtDW.R[6 + rtDW.i];
+      rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r2] /= rtDW.R[3 + rtDW.r2];
+      rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r3] -= rtDW.gain_c[12 * rtDW.r2 +
+        rtDW.rtemp] * rtDW.R[6 + rtDW.r2];
+      rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r3] /= rtDW.R[6 + rtDW.r3];
+      rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r2] -= rtDW.gain_c[12 * rtDW.r3 +
+        rtDW.rtemp] * rtDW.R[3 + rtDW.r3];
+      rtDW.gain_c[rtDW.rtemp + 12 * rtDW.i] -= rtDW.gain_c[12 * rtDW.r3 +
+        rtDW.rtemp] * rtDW.R[rtDW.r3];
+      rtDW.gain_c[rtDW.rtemp + 12 * rtDW.i] -= rtDW.gain_c[12 * rtDW.r2 +
+        rtDW.rtemp] * rtDW.R[rtDW.r2];
+      for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
+        rtDW.Jacobian[rtDW.rtemp + 12 * rtDW.i0] = 0.0;
+        rtDW.Jacobian[rtDW.rtemp + 12 * rtDW.i0] += rtDW.dHdx_k[3 * rtDW.i0] *
+          rtDW.gain_c[rtDW.rtemp];
+        rtDW.Jacobian[rtDW.rtemp + 12 * rtDW.i0] += rtDW.dHdx_k[3 * rtDW.i0 + 1]
+          * rtDW.gain_c[rtDW.rtemp + 12];
+        rtDW.Jacobian[rtDW.rtemp + 12 * rtDW.i0] += rtDW.dHdx_k[3 * rtDW.i0 + 2]
+          * rtDW.gain_c[rtDW.rtemp + 24];
+      }
+
+      for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
+        rtDW.cos_g = 0.0;
+        for (rtDW.i1 = 0; rtDW.i1 < 12; rtDW.i1++) {
+          rtDW.cos_g += rtDW.Jacobian[12 * rtDW.i1 + rtDW.rtemp] * rtDW.P_j[12 *
+            rtDW.i0 + rtDW.i1];
+        }
+
+        rtDW.Jacobian_m[rtDW.rtemp + 12 * rtDW.i0] = rtDW.P_j[12 * rtDW.i0 +
+          rtDW.rtemp] - rtDW.cos_g;
+      }
+    }
+
+    rtDW.rtb_TWB_gain_idx_0 -= rtDW.b_z_f[0];
+    rtDW.rtb_TWB_gain_idx_1 -= rtDW.b_z_f[1];
+    rtDW.rtb_TWB_gain_idx_2 = (rtDW.rtb_TWB_gain_idx_2 - rtDW.UnitDelay_f[2]) -
+      rtDW.b_z_f[2];
+    for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
+      // DataStoreWrite: '<S10>/Data Store WriteP' incorporates:
+      //   MATLAB Function: '<S10>/Correct'
+
+      memcpy(&rtDW.P_j[rtDW.i0 * 12], &rtDW.Jacobian_m[rtDW.i0 * 12], 12U *
+             sizeof(real_T));
+
+      // DataStoreWrite: '<S10>/Data Store WriteX' incorporates:
+      //   DataStoreRead: '<S10>/Data Store ReadX'
+      //   MATLAB Function: '<S10>/Correct'
+
+      rtDW.x[rtDW.i0] += (rtDW.gain_c[rtDW.i0 + 12] * rtDW.rtb_TWB_gain_idx_1 +
+                          rtDW.gain_c[rtDW.i0] * rtDW.rtb_TWB_gain_idx_0) +
+        rtDW.gain_c[rtDW.i0 + 24] * rtDW.rtb_TWB_gain_idx_2;
+    }
   }
 
+  // End of Inport: '<Root>/enableTWB'
   // End of Outputs for SubSystem: '<S2>/Correct1'
 
   // Outputs for Enabled SubSystem: '<S2>/Correct2' incorporates:
   //   EnablePort: '<S11>/Enable'
 
-  // MATLAB Function: '<S11>/Correct' incorporates:
-  //   Constant: '<S2>/R2'
-  //   DataStoreRead: '<S11>/Data Store ReadP'
-  //   DataStoreRead: '<S11>/Data Store ReadX'
-  //   DataStoreWrite: '<S11>/Data Store WriteP'
+  // Inport: '<Root>/enableDrone'
+  if (rtU.enableDrone) {
+    // MATLAB Function: '<S11>/Correct' incorporates:
+    //   Constant: '<S2>/R2'
+    //   DataStoreRead: '<S11>/Data Store ReadP'
+    //   DataStoreRead: '<S11>/Data Store ReadX'
+    //   DataStoreWrite: '<S11>/Data Store WriteP'
 
-  // MATLAB Function 'Extras/EKFCorrect_SLFcn_0Input/Correct': '<S15>:1'
-  // '<S15>:1:2' MeasurementFcn = coder.const(str2func(pM.FcnName));
-  // '<S15>:1:3' if pM.HasJacobian
-  // '<S15>:1:7' xNew = zeros(size(x),'like',x);
-  // '<S15>:1:8' PNew = zeros(size(P),'like',x);
-  // '<S15>:1:9' if pM.HasAdditiveNoise
-  // '<S15>:1:10' if pM.HasJacobian
-  // '<S15>:1:13' else
-  // '<S15>:1:14' [xNew,PNew] = matlabshared.tracking.internal.EKFCorrectorAdditive.correct(... 
-  // '<S15>:1:15'             yMeas,R,x,P,@(xx)MeasurementFcn(xx),[]);
-  measurementDroneFcn_o(rtDW.x, rtDW.b_z);
-  for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
-    memcpy(&rtDW.imvec[0], &rtDW.x[0], 12U * sizeof(real_T));
-    rtDW.cos_g = 1.4901161193847656E-8 * std::abs(rtDW.x[rtDW.i]);
-    if ((1.4901161193847656E-8 > rtDW.cos_g) || rtIsNaN(rtDW.cos_g)) {
-      rtDW.cos_g = 1.4901161193847656E-8;
+    // MATLAB Function 'Extras/EKFCorrect_SLFcn_0Input/Correct': '<S15>:1'
+    // '<S15>:1:2' MeasurementFcn = coder.const(str2func(pM.FcnName));
+    // '<S15>:1:3' if pM.HasJacobian
+    // '<S15>:1:7' xNew = zeros(size(x),'like',x);
+    // '<S15>:1:8' PNew = zeros(size(P),'like',x);
+    // '<S15>:1:9' if pM.HasAdditiveNoise
+    // '<S15>:1:10' if pM.HasJacobian
+    // '<S15>:1:13' else
+    // '<S15>:1:14' [xNew,PNew] = matlabshared.tracking.internal.EKFCorrectorAdditive.correct(... 
+    // '<S15>:1:15'             yMeas,R,x,P,@(xx)MeasurementFcn(xx),[]);
+    measurementDroneFcn_o(rtDW.x, rtDW.b_z);
+    for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
+      memcpy(&rtDW.imvec[0], &rtDW.x[0], 12U * sizeof(real_T));
+      rtDW.cos_g = 1.4901161193847656E-8 * std::abs(rtDW.x[rtDW.i]);
+      if ((1.4901161193847656E-8 > rtDW.cos_g) || rtIsNaN(rtDW.cos_g)) {
+        rtDW.cos_g = 1.4901161193847656E-8;
+      }
+
+      rtDW.imvec[rtDW.i] = rtDW.x[rtDW.i] + rtDW.cos_g;
+      measurementDroneFcn_o(rtDW.imvec, rtDW.imz_p);
+      for (rtDW.i0 = 0; rtDW.i0 < 5; rtDW.i0++) {
+        rtDW.dHdx[rtDW.i0 + 5 * rtDW.i] = (rtDW.imz_p[rtDW.i0] -
+          rtDW.b_z[rtDW.i0]) / rtDW.cos_g;
+      }
     }
 
-    rtDW.imvec[rtDW.i] = rtDW.x[rtDW.i] + rtDW.cos_g;
-    measurementDroneFcn_o(rtDW.imvec, rtDW.imz_p);
+    measurementDroneFcn_o(rtDW.x, rtDW.b_z);
+    for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
+      for (rtDW.i1 = 0; rtDW.i1 < 5; rtDW.i1++) {
+        rtDW.gain[rtDW.i0 + 12 * rtDW.i1] = 0.0;
+        for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
+          rtDW.gain[rtDW.i0 + 12 * rtDW.i1] += rtDW.P_j[12 * rtDW.i + rtDW.i0] *
+            rtDW.dHdx[5 * rtDW.i + rtDW.i1];
+        }
+      }
+    }
+
     for (rtDW.i0 = 0; rtDW.i0 < 5; rtDW.i0++) {
-      rtDW.dHdx[rtDW.i0 + 5 * rtDW.i] = (rtDW.imz_p[rtDW.i0] - rtDW.b_z[rtDW.i0])
-        / rtDW.cos_g;
-    }
-  }
-
-  measurementDroneFcn_o(rtDW.x, rtDW.b_z);
-  for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
-    for (rtDW.i1 = 0; rtDW.i1 < 5; rtDW.i1++) {
-      rtDW.gain[rtDW.i0 + 12 * rtDW.i1] = 0.0;
-      for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
-        rtDW.gain[rtDW.i0 + 12 * rtDW.i1] += rtDW.P_j[12 * rtDW.i + rtDW.i0] *
-          rtDW.dHdx[5 * rtDW.i + rtDW.i1];
+      for (rtDW.i1 = 0; rtDW.i1 < 12; rtDW.i1++) {
+        rtDW.dHdx_c[rtDW.i0 + 5 * rtDW.i1] = 0.0;
+        for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
+          rtDW.dHdx_c[rtDW.i0 + 5 * rtDW.i1] += rtDW.dHdx[5 * rtDW.i + rtDW.i0] *
+            rtDW.P_j[12 * rtDW.i1 + rtDW.i];
+        }
       }
-    }
-  }
 
-  for (rtDW.i0 = 0; rtDW.i0 < 5; rtDW.i0++) {
-    for (rtDW.i1 = 0; rtDW.i1 < 12; rtDW.i1++) {
-      rtDW.dHdx_c[rtDW.i0 + 5 * rtDW.i1] = 0.0;
-      for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
-        rtDW.dHdx_c[rtDW.i0 + 5 * rtDW.i1] += rtDW.dHdx[5 * rtDW.i + rtDW.i0] *
-          rtDW.P_j[12 * rtDW.i1 + rtDW.i];
+      for (rtDW.i1 = 0; rtDW.i1 < 5; rtDW.i1++) {
+        rtDW.cos_g = 0.0;
+        for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
+          rtDW.cos_g += rtDW.dHdx_c[5 * rtDW.i + rtDW.i0] * rtDW.dHdx[5 * rtDW.i
+            + rtDW.i1];
+        }
+
+        rtDW.dHdx_b[rtDW.i0 + 5 * rtDW.i1] = rtCP_R2_Value[5 * rtDW.i1 + rtDW.i0]
+          + rtDW.cos_g;
       }
     }
 
-    for (rtDW.i1 = 0; rtDW.i1 < 5; rtDW.i1++) {
-      rtDW.cos_g = 0.0;
-      for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
-        rtDW.cos_g += rtDW.dHdx_c[5 * rtDW.i + rtDW.i0] * rtDW.dHdx[5 * rtDW.i +
-          rtDW.i1];
+    iecjgdjeaimokfcj_mrdivide(rtDW.gain, rtDW.dHdx_b);
+    for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
+      for (rtDW.i1 = 0; rtDW.i1 < 12; rtDW.i1++) {
+        rtDW.Jacobian[rtDW.i0 + 12 * rtDW.i1] = 0.0;
+        for (rtDW.i = 0; rtDW.i < 5; rtDW.i++) {
+          rtDW.Jacobian[rtDW.i0 + 12 * rtDW.i1] += rtDW.gain[12 * rtDW.i +
+            rtDW.i0] * rtDW.dHdx[5 * rtDW.i1 + rtDW.i];
+        }
       }
 
-      rtDW.dHdx_b[rtDW.i0 + 5 * rtDW.i1] = rtCP_R2_Value[5 * rtDW.i1 + rtDW.i0]
-        + rtDW.cos_g;
-    }
-  }
+      for (rtDW.i1 = 0; rtDW.i1 < 12; rtDW.i1++) {
+        rtDW.cos_g = 0.0;
+        for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
+          rtDW.cos_g += rtDW.Jacobian[12 * rtDW.i + rtDW.i0] * rtDW.P_j[12 *
+            rtDW.i1 + rtDW.i];
+        }
 
-  iecjgdjeaimokfcj_mrdivide(rtDW.gain, rtDW.dHdx_b);
-  for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
-    for (rtDW.i1 = 0; rtDW.i1 < 12; rtDW.i1++) {
-      rtDW.Jacobian[rtDW.i0 + 12 * rtDW.i1] = 0.0;
-      for (rtDW.i = 0; rtDW.i < 5; rtDW.i++) {
-        rtDW.Jacobian[rtDW.i0 + 12 * rtDW.i1] += rtDW.gain[12 * rtDW.i + rtDW.i0]
-          * rtDW.dHdx[5 * rtDW.i1 + rtDW.i];
+        rtDW.Jacobian_m[rtDW.i0 + 12 * rtDW.i1] = rtDW.P_j[12 * rtDW.i1 +
+          rtDW.i0] - rtDW.cos_g;
       }
     }
 
-    for (rtDW.i1 = 0; rtDW.i1 < 12; rtDW.i1++) {
-      rtDW.cos_g = 0.0;
-      for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
-        rtDW.cos_g += rtDW.Jacobian[12 * rtDW.i + rtDW.i0] * rtDW.P_j[12 *
-          rtDW.i1 + rtDW.i];
-      }
+    // DataStoreWrite: '<S11>/Data Store WriteP' incorporates:
+    //   MATLAB Function: '<S11>/Correct'
 
-      rtDW.Jacobian_m[rtDW.i0 + 12 * rtDW.i1] = rtDW.P_j[12 * rtDW.i1 + rtDW.i0]
-        - rtDW.cos_g;
+    for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
+      memcpy(&rtDW.P_j[rtDW.i0 * 12], &rtDW.Jacobian_m[rtDW.i0 * 12], 12U *
+             sizeof(real_T));
     }
-  }
 
-  // DataStoreWrite: '<S11>/Data Store WriteP' incorporates:
-  //   MATLAB Function: '<S11>/Correct'
+    // Sum: '<S3>/Add' incorporates:
+    //   Gain: '<S9>/mag_scale'
+    //   MATLAB Function: '<S9>/MATLAB Function'
 
-  for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
-    memcpy(&rtDW.P_j[rtDW.i0 * 12], &rtDW.Jacobian_m[rtDW.i0 * 12], 12U * sizeof
-           (real_T));
-  }
+    rtDW.imz_p[0] = rtDW.UnitDelay_f[0];
+    rtDW.imz_p[1] = rtDW.UnitDelay_f[1];
+    rtDW.imz_p[2] = 0.6 * rtDW.accelerometer_idx_0;
+    rtDW.imz_p[3] = 0.6 * rtDW.accelerometer_idx_1;
+    rtDW.imz_p[4] = 0.6 * rtDW.accelerometer_idx_2;
 
-  // End of Outputs for SubSystem: '<S2>/Correct2'
-  // End of Outputs for SubSystem: '<S1>/Extended Kalman Filter'
+    // MATLAB Function: '<S11>/Correct' incorporates:
+    //   Sum: '<S3>/Add'
 
-  // Sum: '<S3>/Add' incorporates:
-  //   Gain: '<S9>/mag_scale'
-  //   MATLAB Function: '<S9>/MATLAB Function'
+    for (rtDW.i0 = 0; rtDW.i0 < 5; rtDW.i0++) {
+      rtDW.rtb_UnitDelay_f_c[rtDW.i0] = (rtDW.imz_p[rtDW.i0] -
+        rtDW.FunctionCaller[rtDW.i0]) - rtDW.b_z[rtDW.i0];
+    }
 
-  rtDW.imz_p[0] = rtDW.UnitDelay_f[0];
-  rtDW.imz_p[1] = rtDW.UnitDelay_f[1];
-  rtDW.imz_p[2] = 0.6 * rtDW.accelerometer_idx_0;
-  rtDW.imz_p[3] = 0.6 * rtDW.accelerometer_idx_1;
-  rtDW.imz_p[4] = 0.6 * rtDW.accelerometer_idx_2;
-
-  // Outputs for Atomic SubSystem: '<S1>/Extended Kalman Filter'
-  // Outputs for Enabled SubSystem: '<S2>/Correct2' incorporates:
-  //   EnablePort: '<S11>/Enable'
-
-  // MATLAB Function: '<S11>/Correct' incorporates:
-  //   Sum: '<S3>/Add'
-
-  for (rtDW.i0 = 0; rtDW.i0 < 5; rtDW.i0++) {
-    rtDW.rtb_UnitDelay_f_c[rtDW.i0] = (rtDW.imz_p[rtDW.i0] -
-      rtDW.FunctionCaller[rtDW.i0]) - rtDW.b_z[rtDW.i0];
-  }
-
-  // Outputs for Atomic SubSystem: '<S2>/Output'
-  for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
     // DataStoreWrite: '<S11>/Data Store WriteX' incorporates:
     //   DataStoreRead: '<S11>/Data Store ReadX'
     //   MATLAB Function: '<S11>/Correct'
 
-    rtDW.cos_g = 0.0;
-    for (rtDW.i0 = 0; rtDW.i0 < 5; rtDW.i0++) {
-      rtDW.cos_g += rtDW.gain[12 * rtDW.i0 + rtDW.i] *
-        rtDW.rtb_UnitDelay_f_c[rtDW.i0];
+    for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
+      rtDW.cos_g = 0.0;
+      for (rtDW.i1 = 0; rtDW.i1 < 5; rtDW.i1++) {
+        rtDW.cos_g += rtDW.gain[12 * rtDW.i1 + rtDW.i0] *
+          rtDW.rtb_UnitDelay_f_c[rtDW.i1];
+      }
+
+      rtDW.x[rtDW.i0] += rtDW.cos_g;
     }
 
-    rtDW.x[rtDW.i] += rtDW.cos_g;
-
     // End of DataStoreWrite: '<S11>/Data Store WriteX'
-
-    // DataStoreRead: '<S12>/Data Store Read'
-    rtDW.UnitDelay[rtDW.i] = rtDW.x[rtDW.i];
   }
 
-  // End of Outputs for SubSystem: '<S2>/Output'
+  // End of Inport: '<Root>/enableDrone'
   // End of Outputs for SubSystem: '<S2>/Correct2'
+
+  // Outputs for Atomic SubSystem: '<S2>/Output'
+  // DataStoreRead: '<S12>/Data Store Read'
+  memcpy(&rtDW.UnitDelay[0], &rtDW.x[0], 12U * sizeof(real_T));
+
+  // End of Outputs for SubSystem: '<S2>/Output'
 
   // Outputs for Atomic SubSystem: '<S2>/Predict'
   // MATLAB Function: '<S13>/Predict' incorporates:

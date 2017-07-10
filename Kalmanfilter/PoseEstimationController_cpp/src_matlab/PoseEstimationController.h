@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'PoseEstimationController'.
 //
-// Model version                  : 1.13
+// Model version                  : 1.15
 // Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
-// C/C++ source code generated on : Sat Jul 01 13:49:21 2017
+// C/C++ source code generated on : Mon Jul 10 09:59:18 2017
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Custom Processor->Custom
@@ -181,6 +181,8 @@ typedef struct {
   real_T TWB_data[3];                  // '<Root>/TWB_data '
   uint8_T drone_raw_data[11];          // '<Root>/drone_raw_data'
   real_T x_desired[4];                 // '<Root>/x_desired'
+  boolean_T enableTWB;                 // '<Root>/enableTWB'
+  boolean_T enableDrone;               // '<Root>/enableDrone'
 } ExtU;
 
 // External outputs (root outports fed by signals with auto storage)
