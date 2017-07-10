@@ -58,6 +58,18 @@ typedef union {
     } values;
 } sensorData_t;
 
+struct {
+    uint8_t u_z;
+    uint8_t u_psi;
+    uint8_t u_phi;
+    uint8_t u_theta;
+} output;
+
+struct {
+    uint8_t posX;
+    uint8_t posY;
+    uint8_t posZ;
+} dataTWB; 
 
 // RSB
 #include <rsb/Factory.h>
@@ -109,12 +121,22 @@ void rt_OneStep(void)
   /* Save FPU context here (if necessary) */
   /* Re-enable timer or interrupt here */
   /* Set model inputs here */
+  //ExtU rtU;
+  rtU.TWB_data[0] = dataTWB.posX;
+  rtU.TWB_data[1] = dataTWB.posY;
+  rtU.TWB_data[2] = dataTWB.posZ;
 
+  // Set x_desired 
+  rtU.x_desired[0] = 1;
+  rtU.x_desired[1] = 1;
+  rtU.x_desired[2] = 1;
   /* Step the model for base rate */
   PoseEstimationController_step();
-
   /* Get model outputs here */
-
+  output.u_z = rtY.u[0];
+  output.u_psi = rtY.u[1];
+  output.u_phi = rtY.u[2];
+  output.u_theta = rtY.u[3];
   /* Indicate task complete */
   OverrunFlag = false;
 
@@ -156,24 +178,27 @@ public:
     virtual void execute() {
 
           for(;;) {
-
+            // dataTwbAvailable = false;
             const int count = read(fd, buffer, MAXBYTES); //TODO: check when read finished
-
+            // if (fd == 0) dann überprüfe buffer 
             // Decode
             for (int i = 0; i < count; i++) {
-                if (buffer[i] == '\n') {
+                if (buffer[i] == '\n') {    //buffer leer, dann dekodieren und Berechnungen damit starten
                     // Decode data and put into struct
                     decode_85(decoded.data, (uint8_t*) buf_decode, 55);
                     // Check for TWB data
                     // TODO Add non blocking request for TWB data
-                    trackingObjectList = twbTrackingProcess::getNextTrackingObjects(trackingQueue, 1);
+                    trackingObjectList = twbTrackingProcess::getNextTrackingObjects(trackingQueue, -1);
+                    // überprüfen ob liste leer, dann nur mit FC Daten ausführen
                     if (trackingObjectList.size() != 0) {
                         if (trackingObjectList.at(0).id >= 0) {
                             for (int idx = 0; idx < trackingObjectList.size(); idx++) {
                                 if ( trackingObjectList.at(idx).id == markerId) {
                                     // TODO Do something with the coordinates
-                                    //  trackingObjectList.at(idx).pos.x;
-                                    //  trackingObjectList.at(idx).pos.y;
+                                    // dataTwbAvailable = true;
+                                    dataTWB.posX = trackingObjectList.at(idx).pos.x;
+                                    dataTWB.posY = trackingObjectList.at(idx).pos.y;
+                                    dataTWB.posZ = trackingObjectList.at(idx).pos.z;
                                     //  trackingObjectList.at(idx).pos.theta;
                                 }
                             
@@ -182,6 +207,18 @@ public:
                     }
                     // TODO Include KF
                     INFO_MSG(decoded.values.accSmooth[0] << ", " << decoded.values.accSmooth[1] << ", " << decoded.values.accSmooth[2] << ", " << decoded.values.gyroADC[0] << ", " << decoded.values.gyroADC[1] << ", " << decoded.values.gyroADC[2] << ", " << decoded.values.baroAlt << ", " << decoded.values.baroTemp << ", " << decoded.values.magADC[0] << ", " << decoded.values.magADC[1] << ", " << decoded.values.magADC[2] << "\n");
+                    // Set decoded data from FC sensors
+                    rtU.drone_raw_data[0] = decoded.values.gyroADC[0];
+                    rtU.drone_raw_data[1] = decoded.values.gyroADC[1];
+                    rtU.drone_raw_data[2] = decoded.values.gyroADC[2];
+                    rtU.drone_raw_data[3] = decoded.values.accSmooth[0];
+                    rtU.drone_raw_data[4] = decoded.values.accSmooth[1];
+                    rtU.drone_raw_data[5] = decoded.values.accSmooth[2];
+                    rtU.drone_raw_data[6] = decoded.values.magADC[0];
+                    rtU.drone_raw_data[7] = decoded.values.magADC[1];
+                    rtU.drone_raw_data[8] = decoded.values.magADC[2];
+                    rtU.drone_raw_data[9] = decoded.values.baroAlt;
+                    rtU.drone_raw_data[10] = decoded.values.baroTemp;
                     rt_OneStep();
                     // TODO Process the controller and send the commands to the FC
                     {
@@ -209,7 +246,7 @@ public:
                     count_decode = 0;
                     count_msgs++;
                     break;
-                } else {
+                } else {    //Solange noch was in buffer ist, fülle damit buf_decode
                     buf_decode[count_decode] = buffer[i];
                     count_decode++;
                 }
@@ -231,6 +268,7 @@ private:
     int count_msgs = 0;
     twbTracking::proto::ObjectList trackingPoseList;
     std::vector<twbTrackingProcess::TrackingObject> trackingObjectList;
+    // bool dataTwbAvailable;
 
 };
 

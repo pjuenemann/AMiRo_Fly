@@ -1,16 +1,16 @@
-/*
- * const_params.c
- *
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- *
- * Code generation for model "PoseEstimationController".
- *
- * Model version              : 1.4
- * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C source code generated on : Mon Jun 12 11:18:41 2017
- */
+//
+//  const_params.cpp
+//
+//  Academic License - for use in teaching, academic research, and meeting
+//  course requirements at degree granting institutions only.  Not for
+//  government, commercial, or other organizational use.
+//
+//  Code generation for model "PoseEstimationController".
+//
+//  Model version              : 1.8
+//  Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
+//  C++ source code generated on : Wed Jun 21 09:25:03 2017
+
 #include "rtwtypes.h"
 
 extern const real_T rtCP_pooled_299Jb13UAswe[25];

@@ -26,6 +26,7 @@ namespace twbTrackingProcess {
 	typedef struct {
 		float x;
 		float y;
+                float z;
 		float theta;
 	} TrackingPos;
 
@@ -64,6 +65,7 @@ namespace twbTrackingProcess {
 		obj.id = -1;
 		obj.pos.x = 0.0;
 		obj.pos.y = 0.0;
+                obj.pos.z = 0.0;
 		obj.pos.theta = 0.0;
 		return obj;
 	}
@@ -84,6 +86,7 @@ namespace twbTrackingProcess {
 			obj.id = trackingMarkerID;
 			obj.pos.x = pose2D.translation().x()*TRACKING_TO_METER;
 			obj.pos.y = pose2D.translation().y()*TRACKING_TO_METER;
+                        obj.pos.z = pose2D.translation().z()*TRACKING_TO_METER;
 			float angle = pose2D.rotation().z()*TRACKING_TO_RAD;
 			angle = fmod(angle, TRACKING_ANGLE_NORM);
 			if (angle < 0) angle += TRACKING_ANGLE_NORM;
@@ -144,31 +147,46 @@ namespace twbTrackingProcess {
 	}
 
 	/** \brief Waits with the given synchronized queue for new tracking data for the given marker. It returns an tracking error object, if the TRACKING_TIMEOUT has been reached. */
-	static TrackingObject getNextTrackingObject(boost::shared_ptr<rsc::threading::SynchronizedQueue<boost::shared_ptr<twbTracking::proto::ObjectList>>> trackingQueue, int trackingMarkerID, const uint32_t trackingTimeout = TRACKING_TIMEOUT) {
+	static TrackingObject getNextTrackingObject(boost::shared_ptr<rsc::threading::SynchronizedQueue<boost::shared_ptr<twbTracking::proto::ObjectList>>> trackingQueue, int trackingMarkerID, const int32_t trackingTimeout = TRACKING_TIMEOUT) {
 		boost::shared_ptr<twbTracking::proto::ObjectList> data;
-		try {
+                if (TRACKING_TIMEOUT < 0) {
+                    try{
+                        trackingQueue->tryPop();
+                    } catch (...) {
+                    }
+                } else {
+                    try {
 			data = boost::static_pointer_cast<twbTracking::proto::ObjectList>(trackingQueue->pop(trackingTimeout));
 			return readTracking(data, trackingMarkerID);
-		} catch (rsc::threading::QueueEmptyException ex) {
-			return createErrorTracking();
-		}
+                    } catch (rsc::threading::QueueEmptyException ex) {
+                        return createErrorTracking();
+                    }
+                }
 	}
 
 	/** \brief Waits with the given synchronized queue for any new tracking data. It returns an tracking error object in the vector, if the TRACKING_TIMEOUT has been reached. */
-	static std::vector<TrackingObject> getNextTrackingObjects(boost::shared_ptr<rsc::threading::SynchronizedQueue<boost::shared_ptr<twbTracking::proto::ObjectList>>> trackingQueue, const uint32_t trackingTimeout = TRACKING_TIMEOUT) {
+	static std::vector<TrackingObject> getNextTrackingObjects(boost::shared_ptr<rsc::threading::SynchronizedQueue<boost::shared_ptr<twbTracking::proto::ObjectList>>> trackingQueue, const int32_t trackingTimeout = TRACKING_TIMEOUT) {
 		boost::shared_ptr<twbTracking::proto::ObjectList> data;
 		std::vector<TrackingObject> positions;
-		try {
-			data = boost::static_pointer_cast<twbTracking::proto::ObjectList>(trackingQueue->pop(trackingTimeout));
-			for (int i = 0; i < data->object_size(); i++) {
-				TrackingObject tracking = readTracking(data, data->object(i).id());
-				positions.push_back(tracking);
-			}
-		} catch (rsc::threading::QueueEmptyException ex) {
-			positions.clear();
-			TrackingObject obj = createErrorTracking();
-			positions.push_back(obj);
-		}
+                //if Queue is full
+                if (TRACKING_TIMEOUT < 0) {
+                    try{
+                        trackingQueue->tryPop();
+                    } catch (...) {
+                    }
+                } else {
+                    try {
+                        data = boost::static_pointer_cast<twbTracking::proto::ObjectList>(trackingQueue->pop(trackingTimeout));
+                        for (int i = 0; i < data->object_size(); i++) {
+                            TrackingObject tracking = readTracking(data, data->object(i).id());
+                            positions.push_back(tracking);
+                        }
+                    } catch (rsc::threading::QueueEmptyException ex) {
+                        positions.clear();
+                        TrackingObject obj = createErrorTracking();
+                        positions.push_back(obj);
+                    }
+                }
 		return positions;
 	}
 }

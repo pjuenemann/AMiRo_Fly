@@ -62,14 +62,14 @@ include_directories(
 SET (SOURCE src/main.cxx
   src/base85.c
   # MATLAB STUFF
-  src_matlab/PoseEstimationController.c
-  src_matlab/const_params.c
-  src_matlab/dbiemohljmgdohdb_norm.c
+  src_matlab/PoseEstimationController.cpp
+  src_matlab/const_params.cpp
+  src_matlab/dbiemohljmgdohdb_norm.cpp
   src_matlab/iecjgdjeaimokfcj_mrdivide.c
-  src_matlab/rt_atan2d_snf.c
-  src_matlab/rtGetInf.c
-  src_matlab/rtGetNaN.c
-  src_matlab/rt_nonfinite.c
+  src_matlab/rt_atan2d_snf.cpp
+  src_matlab/rtGetInf.cpp
+  src_matlab/rtGetNaN.cpp
+  src_matlab/rt_nonfinite.cpp
   # PROTO STUFF
   src_proto/enum.pb.cc
   src_proto/loc.pb.cc

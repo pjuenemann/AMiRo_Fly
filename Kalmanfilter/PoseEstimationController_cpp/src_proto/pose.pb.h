@@ -32,7 +32,7 @@ namespace twbTracking {
 namespace proto {
 
 // Internal implementation detail -- do not call these.
-void  protobuf_AddDesc_pose_2eproto();
+void protobuf_AddDesc_pose_2eproto();
 void protobuf_AssignDesc_pose_2eproto();
 void protobuf_ShutdownFile_pose_2eproto();
 

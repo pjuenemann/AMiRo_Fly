@@ -1,21 +1,22 @@
-/*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- *
- * File: rt_atan2d_snf.c
- *
- * Code generated for Simulink model 'PoseEstimationController'.
- *
- * Model version                  : 1.4
- * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Mon Jun 12 11:18:41 2017
- */
-#include "rt_defines.h"
+//
+// Academic License - for use in teaching, academic research, and meeting
+// course requirements at degree granting institutions only.  Not for
+// government, commercial, or other organizational use.
+//
+// File: rt_atan2d_snf.cpp
+//
+// Code generated for Simulink model 'PoseEstimationController'.
+//
+// Model version                  : 1.8
+// Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
+// C/C++ source code generated on : Wed Jun 21 09:25:03 2017
+//
 #include "rtwtypes.h"
 #include "rtGetNaN.h"
 #include <math.h>
 #include "rt_atan2d_snf.h"
+
+#define RT_PI 3.14159265358979323846
 
 real_T rt_atan2d_snf(real_T u0, real_T u1)
 {
@@ -37,7 +38,7 @@ real_T rt_atan2d_snf(real_T u0, real_T u1)
       u1_0 = -1;
     }
 
-    y = atan2(u0_0, u1_0);
+    y = atan2((real_T)u0_0, (real_T)u1_0);
   } else if (u1 == 0.0) {
     if (u0 > 0.0) {
       y = RT_PI / 2.0;
@@ -53,8 +54,8 @@ real_T rt_atan2d_snf(real_T u0, real_T u1)
   return y;
 }
 
-/*
- * File trailer for generated code.
- *
- * [EOF]
- */
+//
+// File trailer for generated code.
+//
+// [EOF]
+//
