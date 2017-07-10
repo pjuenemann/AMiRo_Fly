@@ -197,7 +197,7 @@ public:
                     INFO_MSG("Decode");
                     // Check for TWB data
                     // TODO Add non blocking request for TWB data
-                    trackingObjectList = twbTrackingProcess::getNextTrackingObjects(trackingQueue, 1);
+                    trackingObjectList = twbTrackingProcess::getNextTrackingObjects(trackingQueue, -1);
                     INFO_MSG("Track");
                     // überprüfen ob liste leer, dann nur mit FC Daten ausführen
                     rtU.enableTWB = false;
