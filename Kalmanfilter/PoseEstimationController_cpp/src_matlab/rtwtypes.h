@@ -13,6 +13,7 @@
 //
 #ifndef RTWTYPES_H
 #define RTWTYPES_H
+#include "rt_defines.h"
 
 // Logical type definitions
 #if (!defined(__cplusplus))
