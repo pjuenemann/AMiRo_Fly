@@ -9,7 +9,7 @@
 //
 // Model version                  : 1.15
 // Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
-// C/C++ source code generated on : Mon Jul 10 09:59:18 2017
+// C/C++ source code generated on : Tue Jul 11 16:52:15 2017
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Custom Processor->Custom
@@ -144,13 +144,31 @@ void stateTransitionFcn(const real_T rtu_x[12], real_T rty_y[12])
   rtb_Add8_e = std::cos(rtu_x[10]);
 
   // SignalConversion: '<S7>/TmpSignal ConversionAtyInport1' incorporates:
+  //   Constant: '<S17>/K10'
+  //   Constant: '<S17>/K11'
+  //   Constant: '<S17>/K12'
+  //   Constant: '<S17>/K5'
+  //   Constant: '<S17>/K6'
+  //   Constant: '<S17>/K7'
+  //   Constant: '<S17>/K8'
+  //   Constant: '<S17>/K9'
+  //   Constant: '<S18>/K1'
+  //   Constant: '<S18>/K2'
+  //   Constant: '<S18>/K3'
+  //   Constant: '<S18>/K4'
   //   Constant: '<S7>/dt'
   //   Constant: '<S7>/dt1'
+  //   Product: '<S17>/Product'
+  //   Product: '<S17>/Product1'
+  //   Product: '<S17>/Product2'
+  //   Product: '<S17>/Product3'
   //   Product: '<S17>/Product4'
   //   Product: '<S17>/Product5'
   //   Product: '<S17>/Product6'
   //   Product: '<S17>/Product7'
   //   Product: '<S18>/Product13'
+  //   Product: '<S18>/Product14'
+  //   Product: '<S18>/Product15'
   //   Product: '<S18>/Product16'
   //   Product: '<S18>/Product17'
   //   Product: '<S18>/Product5'
@@ -193,15 +211,15 @@ void stateTransitionFcn(const real_T rtu_x[12], real_T rty_y[12])
   rty_y[2] = 0.01 * rtu_x[5] + rtu_x[2];
   rty_y[3] = rtb_Add3_c * rtu_x[6] - rtb_Add2_b * rtu_x[7];
   rty_y[4] = rtb_Add2_b * rtu_x[6] + rtb_Add3_c * rtu_x[7];
-  rty_y[5] = (rtDW.Add3 - rtu_x[5]) * 0.01 + rtu_x[5];
+  rty_y[5] = (5.234 * rtDW.Add3 - rtu_x[5] * 6.234) * 0.01 + rtu_x[5];
   rty_y[6] = (rtb_Add6_m * rtb_Add5_k * std::cos(rtu_x[8]) + rtb_Add8_e * std::
-              sin(rtu_x[9])) - rtu_x[6];
+              sin(rtu_x[9])) * 1.234 - 2.234 * rtu_x[6];
   rty_y[7] = (rtb_Add6_m * rtb_Add5_k - rtb_Add8_e * std::sin(rtu_x[8]) *
-              rtb_Add5_k) - rtu_x[7];
-  rty_y[8] = (rtDW.Add5 - rtu_x[8]) * 0.01 + rtu_x[8];
-  rty_y[9] = (rtDW.Add6 - rtu_x[9]) * 0.01 + rtu_x[9];
+              rtb_Add5_k) * 3.234 - 4.234 * rtu_x[7];
+  rty_y[8] = (9.234 * rtDW.Add5 - rtu_x[8] * 10.234) * 0.01 + rtu_x[8];
+  rty_y[9] = (11.234 * rtDW.Add6 - rtu_x[9] * 12.234) * 0.01 + rtu_x[9];
   rty_y[10] = rtu_x[11] * 0.01 + rtu_x[10];
-  rty_y[11] = (rtDW.Add4 - rtu_x[11]) * 0.01 + rtu_x[11];
+  rty_y[11] = (7.234 * rtDW.Add4 - rtu_x[11] * 8.234) * 0.01 + rtu_x[11];
 }
 
 // Function for MATLAB Function: '<S11>/Correct'
@@ -1194,10 +1212,10 @@ void PoseEstimationController_step(void)
   // Outport: '<Root>/u' incorporates:
   //   DataTypeConversion: '<S1>/Data Type Conversion'
 
-  rtY.u[0] = (uint8_T)rtDW.Add3;
-  rtY.u[1] = (uint8_T)rtDW.Add4;
-  rtY.u[2] = (uint8_T)rtDW.Add5;
-  rtY.u[3] = (uint8_T)rtDW.Add6;
+  rtY.u[0] = (uint16_T)rtDW.Add3;
+  rtY.u[1] = (uint16_T)rtDW.Add4;
+  rtY.u[2] = (uint16_T)rtDW.Add5;
+  rtY.u[3] = (uint16_T)rtDW.Add6;
 
   // Outputs for Atomic SubSystem: '<S1>/Extended Kalman Filter'
   // Outputs for Atomic SubSystem: '<S2>/Predict'
