@@ -130,6 +130,7 @@ void rt_OneStep(void)
   rtU.x_desired[0] = 1;
   rtU.x_desired[1] = 1;
   rtU.x_desired[2] = 1;
+  rtU.x_desired[3] = 0;
   /* Step the model for base rate */
   PoseEstimationController_step();
   /* Get model outputs here */
@@ -137,6 +138,9 @@ void rt_OneStep(void)
   output.u_psi = rtY.u[1];
   output.u_phi = rtY.u[2];
   output.u_theta = rtY.u[3];
+  /* Get state estimation after KF step */
+  INFO_MSG(rtY.x[0] << ", " << rtY.x[1] << ", " << rtY.x[2] << ", " << rtY.x[3] << ", " << rtY.x[4] << ", " << rtY.x[5] << ", " << rtY.x[6] << ", " << rtY.x[7] << ", " << rtY.x[8] << ", " << rtY.x[9] << ", " << rtY.x[10] << ", " << rtY.x[11]);
+  INFO_MSG((int) output.u_z << ", " << (int) output.u_psi << ", " << (int) output.u_phi << ", " << (int) output.u_theta);
   /* Indicate task complete */
   OverrunFlag = false;
 
@@ -180,22 +184,33 @@ public:
           for(;;) {
             // dataTwbAvailable = false;
             const int count = read(fd, buffer, MAXBYTES); //TODO: check when read finished
+            INFO_MSG(count);
             // if (fd == 0) dann überprüfe buffer 
             // Decode
+            rtU.enableDrone = false;
             for (int i = 0; i < count; i++) {
                 if (buffer[i] == '\n') {    //buffer leer, dann dekodieren und Berechnungen damit starten
                     // Decode data and put into struct
+                    INFO_MSG("Execute");
+                    rtU.enableDrone = true;
                     decode_85(decoded.data, (uint8_t*) buf_decode, 55);
+                    INFO_MSG("Decode");
                     // Check for TWB data
                     // TODO Add non blocking request for TWB data
                     trackingObjectList = twbTrackingProcess::getNextTrackingObjects(trackingQueue, -1);
+                    INFO_MSG("Track");
                     // überprüfen ob liste leer, dann nur mit FC Daten ausführen
+                    rtU.enableTWB = false;
                     if (trackingObjectList.size() != 0) {
+                        INFO_MSG("Execute1");
                         if (trackingObjectList.at(0).id >= 0) {
+                            INFO_MSG("Execute2");
                             for (int idx = 0; idx < trackingObjectList.size(); idx++) {
+                                INFO_MSG("Execute3");
                                 if ( trackingObjectList.at(idx).id == markerId) {
                                     // TODO Do something with the coordinates
                                     // dataTwbAvailable = true;
+                                    rtU.enableTWB = true;
                                     dataTWB.posX = trackingObjectList.at(idx).pos.x;
                                     dataTWB.posY = trackingObjectList.at(idx).pos.y;
                                     dataTWB.posZ = trackingObjectList.at(idx).pos.z;
@@ -205,8 +220,9 @@ public:
                             }
                         }
                     }
+                    INFO_MSG("Execute4");
                     // TODO Include KF
-                    INFO_MSG(decoded.values.accSmooth[0] << ", " << decoded.values.accSmooth[1] << ", " << decoded.values.accSmooth[2] << ", " << decoded.values.gyroADC[0] << ", " << decoded.values.gyroADC[1] << ", " << decoded.values.gyroADC[2] << ", " << decoded.values.baroAlt << ", " << decoded.values.baroTemp << ", " << decoded.values.magADC[0] << ", " << decoded.values.magADC[1] << ", " << decoded.values.magADC[2] << "\n");
+                    /* INFO_MSG(decoded.values.accSmooth[0] << ", " << decoded.values.accSmooth[1] << ", " << decoded.values.accSmooth[2] << ", " << decoded.values.gyroADC[0] << ", " << decoded.values.gyroADC[1] << ", " << decoded.values.gyroADC[2] << ", " << decoded.values.baroAlt << ", " << decoded.values.baroTemp << ", " << decoded.values.magADC[0] << ", " << decoded.values.magADC[1] << ", " << decoded.values.magADC[2] << "\n"); */
                     // Set decoded data from FC sensors
                     rtU.drone_raw_data[0] = decoded.values.gyroADC[0];
                     rtU.drone_raw_data[1] = decoded.values.gyroADC[1];
@@ -221,6 +237,7 @@ public:
                     rtU.drone_raw_data[10] = decoded.values.baroTemp;
                     rt_OneStep();
                     // TODO Process the controller and send the commands to the FC
+                    // 0: ROLL, 1: PITCH, 2: YAW, 3: THROTTLE
                     {
                       uint8_t inbuf[4] = {0,0,0x05,0xDC}; // 1 byte: ROLL command, 2 byte: 0 = "empty byte" to have 4 bytes for encoding with base85, 3, 4 bytes: value (3: high byte, 4: low byte)
                       encode_85(buf, inbuf, 4);                

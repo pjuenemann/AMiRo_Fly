@@ -1,0 +1,19 @@
+package twbTracking.proto;
+
+/**
+ * Rotation in all directions.
+ */
+message Rotation {
+    /**
+     * Rotation in x direction in degree
+     */
+    required float x = 1;
+    /**
+     * Rotation in y direction in degree
+     */
+    required float y = 2;
+    /**
+     * Rotation in z direction in degree
+     */
+    required float z = 3;
+} 

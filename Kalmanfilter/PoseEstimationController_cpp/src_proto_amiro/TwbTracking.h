@@ -149,7 +149,7 @@ namespace twbTrackingProcess {
 	/** \brief Waits with the given synchronized queue for new tracking data for the given marker. It returns an tracking error object, if the TRACKING_TIMEOUT has been reached. */
 	static TrackingObject getNextTrackingObject(boost::shared_ptr<rsc::threading::SynchronizedQueue<boost::shared_ptr<twbTracking::proto::ObjectList>>> trackingQueue, int trackingMarkerID, const int32_t trackingTimeout = TRACKING_TIMEOUT) {
 		boost::shared_ptr<twbTracking::proto::ObjectList> data;
-                if (trackingTimeout < 0) {
+                if (TRACKING_TIMEOUT < 0) {
                     try{
                         trackingQueue->tryPop();
                     } catch (...) {
@@ -170,7 +170,7 @@ namespace twbTrackingProcess {
 		boost::shared_ptr<twbTracking::proto::ObjectList> data;
 		std::vector<TrackingObject> positions;
                 //if Queue is full
-                if (trackingTimeout < 0) {
+                if (TRACKING_TIMEOUT < 0) {
                     try{
                         INFO_MSG("Try1");
                         trackingQueue->tryPop();

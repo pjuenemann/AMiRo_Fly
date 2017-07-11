@@ -16,8 +16,6 @@
 #include <math.h>
 #include "rt_atan2d_snf.h"
 
-#define RT_PI 3.14159265358979323846
-
 real_T rt_atan2d_snf(real_T u0, real_T u1)
 {
   real_T y;

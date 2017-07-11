@@ -14,12 +14,14 @@ if ($ENV{ARCH} MATCHES "arm")
     pkg_check_modules(RSB rsb0.13)
     pkg_check_modules(RSC rsc0.13)
     pkg_check_modules(RST rstsandbox0.13)
+    SET (SRC_PROTO_DIR "src_proto_amiro")
 else()
     set(RSB_V 0.16)
     set(RST_V 0.16)
     pkg_check_modules(RSB rsb${RSB_V})
     pkg_check_modules(RSC rsc${RSB_V})
     pkg_check_modules(RST rstsandbox${RST_V})
+    SET (SRC_PROTO_DIR "src_proto")
 endif()
 
 # Get BOOST modules (If this does not work, define it via the cross compiler environment)
@@ -43,6 +45,7 @@ set (test "${CMAKE_CXX_COMPILER}${CMAKE_CXX_COMPILER_ARG1}")
 execute_process(COMMAND printCompilerIncludes OUTPUT_VARIABLE GXX_INCLUDES)
 message (STATUS "Set GXX_INCLUDES to ${GXX_INCLUDES}")
 
+
 # Set the include pathe
 include_directories(
     ${RSB_INCLUDE_DIRS}
@@ -55,7 +58,7 @@ include_directories(
     ${EIGEN_INCLUDE_DIRS}
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
     "${CMAKE_CURRENT_SOURCE_DIR}/src_matlab"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src_proto"
+    "${CMAKE_CURRENT_SOURCE_DIR}/${SRC_PROTO_DIR}"
 )
 
 # Define the source
@@ -71,12 +74,12 @@ SET (SOURCE src/main.cxx
   src_matlab/rtGetNaN.cpp
   src_matlab/rt_nonfinite.cpp
   # PROTO STUFF
-  src_proto/enum.pb.cc
-  src_proto/loc.pb.cc
-  src_proto/pose.pb.cc
-  src_proto/rotation.pb.cc
-  src_proto/shapes.pb.cc
-  src_proto/vertex.pb.cc
+  ${SRC_PROTO_DIR}/enum.pb.cc
+  ${SRC_PROTO_DIR}/loc.pb.cc
+  ${SRC_PROTO_DIR}/pose.pb.cc
+  ${SRC_PROTO_DIR}/rotation.pb.cc
+  ${SRC_PROTO_DIR}/shapes.pb.cc
+  ${SRC_PROTO_DIR}/vertex.pb.cc
 )
 
 LINK_DIRECTORIES (
@@ -100,5 +103,5 @@ target_link_libraries (
 ADD_DEFINITIONS(${RST_CFLAGS} ${RSTSANDBOX_CFLAGS} -std=c++11)
 
 # Set compiler flags as you like
-SET ( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wno-deprecated-declarations -O0 -g -Wno-write-strings -std=c++11" )
-SET ( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -Wno-deprecated-declarations -O2 -Wno-write-strings -std=c++11" )
+SET ( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wno-deprecated-declarations -O0 -g -Wno-write-strings -std=c++0x" )
+SET ( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -Wno-deprecated-declarations -O2 -Wno-write-strings -std=c++0x" )
