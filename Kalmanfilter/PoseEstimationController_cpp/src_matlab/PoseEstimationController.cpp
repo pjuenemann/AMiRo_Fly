@@ -22,6 +22,31 @@
 #include "dbiemohljmgdohdb_norm.h"
 #include "rt_atan2d_snf.h"
 
+// Const parameters k1 to k12
+static const float k1 = 1.0;
+static const float k2 = 1.0;
+static const float k3 = 1.0;
+static const float k4 = 1.0;
+static const float k5 = 1.0;
+static const float k6 = 1.0;
+static const float k7 = 1.0;
+static const float k8 = 1.0;
+static const float k9 = 1.0;
+static const float k10 = 1.0;
+static const float k11 = 1.0;
+static const float k12 = 1.0;
+
+// Const parameters for kp1 to kp4 and kd1 to kd4
+static const float kp1 = 1.0;
+static const float kp2 = 1.0;
+static const float kp3 = 1.0;
+static const float kp4 = 1.0;
+
+static const float kd1 = 1.0;
+static const float kd2 = 1.0;
+static const float kd3 = 1.0;
+static const float kd4 = 1.0;
+
 // Block signals and states (auto storage)
 DW rtDW;
 
@@ -211,15 +236,15 @@ void stateTransitionFcn(const real_T rtu_x[12], real_T rty_y[12])
   rty_y[2] = 0.01 * rtu_x[5] + rtu_x[2];
   rty_y[3] = rtb_Add3_c * rtu_x[6] - rtb_Add2_b * rtu_x[7];
   rty_y[4] = rtb_Add2_b * rtu_x[6] + rtb_Add3_c * rtu_x[7];
-  rty_y[5] = (5.234 * rtDW.Add3 - rtu_x[5] * 6.234) * 0.01 + rtu_x[5];
+  rty_y[5] = (k5 * rtDW.Add3 - rtu_x[5] * k6) * 0.01 + rtu_x[5];
   rty_y[6] = (rtb_Add6_m * rtb_Add5_k * std::cos(rtu_x[8]) + rtb_Add8_e * std::
-              sin(rtu_x[9])) * 1.234 - 2.234 * rtu_x[6];
+              sin(rtu_x[9])) * k1 - k2 * rtu_x[6];
   rty_y[7] = (rtb_Add6_m * rtb_Add5_k - rtb_Add8_e * std::sin(rtu_x[8]) *
-              rtb_Add5_k) * 3.234 - 4.234 * rtu_x[7];
-  rty_y[8] = (9.234 * rtDW.Add5 - rtu_x[8] * 10.234) * 0.01 + rtu_x[8];
-  rty_y[9] = (11.234 * rtDW.Add6 - rtu_x[9] * 12.234) * 0.01 + rtu_x[9];
+              rtb_Add5_k) * k3 - k4 * rtu_x[7];
+  rty_y[8] = (k9 * rtDW.Add5 - rtu_x[8] * k10) * 0.01 + rtu_x[8];
+  rty_y[9] = (k11 * rtDW.Add6 - rtu_x[9] * k12) * 0.01 + rtu_x[9];
   rty_y[10] = rtu_x[11] * 0.01 + rtu_x[10];
-  rty_y[11] = (7.234 * rtDW.Add4 - rtu_x[11] * 8.234) * 0.01 + rtu_x[11];
+  rty_y[11] = (k7 * rtDW.Add4 - rtu_x[11] * k8) * 0.01 + rtu_x[11];
 }
 
 // Function for MATLAB Function: '<S11>/Correct'
@@ -812,7 +837,7 @@ void PoseEstimationController_step(void)
   //   Inport: '<Root>/x_desired'
   //   Sum: '<S8>/Add'
 
-  rtDW.b_idx_1 = (rtU.x_desired[0] - rtDW.UnitDelay[0]) * 5.0 - 10.0 *
+  rtDW.b_idx_1 = (rtU.x_desired[0] - rtDW.UnitDelay[0]) * kp1 - kd1 *
     rtDW.UnitDelay[3];
 
   // Trigonometry: '<S8>/sin'
@@ -824,7 +849,7 @@ void PoseEstimationController_step(void)
   //   Inport: '<Root>/x_desired'
   //   Sum: '<S8>/Add'
 
-  rtDW.c_t = (rtU.x_desired[1] - rtDW.UnitDelay[1]) * 5.0 - 10.0 *
+  rtDW.c_t = (rtU.x_desired[1] - rtDW.UnitDelay[1]) * kp2 - kd2 *
     rtDW.UnitDelay[4];
 
   // Sum: '<S8>/Add6' incorporates:
@@ -845,7 +870,7 @@ void PoseEstimationController_step(void)
   //   Inport: '<Root>/x_desired'
   //   Sum: '<S8>/Add'
 
-  rtDW.Add4 = (rtU.x_desired[3] - rtDW.UnitDelay[10]) * 5.0 - 10.0 *
+  rtDW.Add4 = (rtU.x_desired[3] - rtDW.UnitDelay[10]) * kp3 - kd3 *
     rtDW.UnitDelay[11];
 
   // Sum: '<S8>/Add3' incorporates:
@@ -854,7 +879,7 @@ void PoseEstimationController_step(void)
   //   Inport: '<Root>/x_desired'
   //   Sum: '<S8>/Add'
 
-  rtDW.Add3 = (rtU.x_desired[2] - rtDW.UnitDelay[2]) * 5.0 - 10.0 *
+  rtDW.Add3 = (rtU.x_desired[2] - rtDW.UnitDelay[2]) * kp4 - kd4 *
     rtDW.UnitDelay[5];
 
   // Outputs for Atomic SubSystem: '<S1>/Extended Kalman Filter'
