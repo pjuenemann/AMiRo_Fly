@@ -33,7 +33,7 @@
 <tr name="11" id="11">
 <td><a id="l11" class='ln'>11</a></td><td><span class="ct">// Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017</span></td></tr>
 <tr name="12" id="12">
-<td><a id="l12" class='ln'>12</a></td><td><span class="ct">// C/C++ source code generated on : Tue Jul 11 16:52:15 2017</span></td></tr>
+<td><a id="l12" class='ln'>12</a></td><td><span class="ct">// C/C++ source code generated on : Tue Jul 11 17:10:58 2017</span></td></tr>
 <tr name="13" id="13">
 <td><a id="l13" class='ln'>13</a></td><td><span class="ct">//</span></td></tr>
 <tr name="14" id="14">
@@ -2433,149 +2433,317 @@
 <tr name="1211" id="1211">
 <td><a id="l1211" class='ln'>1211</a></td><td></td></tr>
 <tr name="1212" id="1212">
-<td><a id="l1212" class='ln'>1212</a></td><td>  <span class="ct">// Outport: '<a class="ct blk" blk_line="1212">&lt;Root&gt;/u</a>' incorporates:</span></td></tr>
+<td><a id="l1212" class='ln'>1212</a></td><td>  <span class="ct">// Bias: '<a class="ct blk" blk_line="1212">&lt;S1&gt;/Bias</a>' incorporates:</span></td></tr>
 <tr name="1213" id="1213">
-<td><a id="l1213" class='ln'>1213</a></td><td>  <span class="ct">//   DataTypeConversion: '<a class="ct blk" blk_line="1213">&lt;S1&gt;/Data Type Conversion</a>'</span></td></tr>
+<td><a id="l1213" class='ln'>1213</a></td><td>  <span class="ct">//   Gain: '<a class="ct blk" blk_line="1213">&lt;S1&gt;/Gain8</a>'</span></td></tr>
 <tr name="1214" id="1214">
 <td><a id="l1214" class='ln'>1214</a></td><td></td></tr>
 <tr name="1215" id="1215">
-<td><a id="l1215" class='ln'>1215</a></td><td>  <a id="1215c3" class="tk">rtY</a>.<a id="1215c7" class="tk">u</a>[0] = (<a id="1215c15" class="tk">uint16_T</a>)<a id="1215c24" class="tk">rtDW</a>.<a id="1215c29" class="tk">Add3</a>;</td></tr>
+<td><a id="l1215" class='ln'>1215</a></td><td>  <a id="1215c3" class="tk">rtDW</a>.<a id="1215c8" class="tk">rtb_TWB_gain_idx_0</a> = 30.0 <a id="1215c34" class="tk">*</a> <a id="1215c36" class="tk">rtDW</a>.<a id="1215c41" class="tk">Add3</a> <a id="1215c46" class="tk">+</a> 1500.0;</td></tr>
 <tr name="1216" id="1216">
-<td><a id="l1216" class='ln'>1216</a></td><td>  <a id="1216c3" class="tk">rtY</a>.<a id="1216c7" class="tk">u</a>[1] = (<a id="1216c15" class="tk">uint16_T</a>)<a id="1216c24" class="tk">rtDW</a>.<a id="1216c29" class="tk">Add4</a>;</td></tr>
+<td><a id="l1216" class='ln'>1216</a></td><td></td></tr>
 <tr name="1217" id="1217">
-<td><a id="l1217" class='ln'>1217</a></td><td>  <a id="1217c3" class="tk">rtY</a>.<a id="1217c7" class="tk">u</a>[2] = (<a id="1217c15" class="tk">uint16_T</a>)<a id="1217c24" class="tk">rtDW</a>.<a id="1217c29" class="tk">Add5</a>;</td></tr>
+<td><a id="l1217" class='ln'>1217</a></td><td>  <span class="ct">// Saturate: '<a class="ct blk" blk_line="1217">&lt;S1&gt;/Saturation</a>'</span></td></tr>
 <tr name="1218" id="1218">
-<td><a id="l1218" class='ln'>1218</a></td><td>  <a id="1218c3" class="tk">rtY</a>.<a id="1218c7" class="tk">u</a>[3] = (<a id="1218c15" class="tk">uint16_T</a>)<a id="1218c24" class="tk">rtDW</a>.<a id="1218c29" class="tk">Add6</a>;</td></tr>
+<td><a id="l1218" class='ln'>1218</a></td><td>  <span class="kw">if</span> (<a id="1218c7" class="tk">rtDW</a>.<a id="1218c12" class="tk">rtb_TWB_gain_idx_0</a> <a id="1218c31" class="tk">&gt;</a> 3000.0) <span class="br">{</span></td></tr>
 <tr name="1219" id="1219">
-<td><a id="l1219" class='ln'>1219</a></td><td></td></tr>
+<td><a id="l1219" class='ln'>1219</a></td><td>    <span class="ct">// Outport: '<a class="ct blk" blk_line="1219">&lt;Root&gt;/u</a>' incorporates:</span></td></tr>
 <tr name="1220" id="1220">
-<td><a id="l1220" class='ln'>1220</a></td><td>  <span class="ct">// Outputs for Atomic SubSystem: '<a class="ct blk" blk_line="1220">&lt;S1&gt;/Extended Kalman Filter</a>'</span></td></tr>
+<td><a id="l1220" class='ln'>1220</a></td><td>    <span class="ct">//   DataTypeConversion: '<a class="ct blk" blk_line="1220">&lt;S1&gt;/Data Type Conversion</a>'</span></td></tr>
 <tr name="1221" id="1221">
-<td><a id="l1221" class='ln'>1221</a></td><td>  <span class="ct">// Outputs for Atomic SubSystem: '<a class="ct blk" blk_line="1221">&lt;S2&gt;/Predict</a>'</span></td></tr>
+<td><a id="l1221" class='ln'>1221</a></td><td></td></tr>
 <tr name="1222" id="1222">
-<td><a id="l1222" class='ln'>1222</a></td><td>  <span class="kw">for</span> (<a id="1222c8" class="tk">rtDW</a>.<a id="1222c13" class="tk">i</a> = 0; <a id="1222c20" class="tk">rtDW</a>.<a id="1222c25" class="tk">i</a> <a id="1222c27" class="tk">&lt;</a> 12; <a id="1222c33" class="tk">rtDW</a>.<a id="1222c38" class="tk">i</a><a id="1222c39" class="tk">++</a>) <span class="br">{</span></td></tr>
+<td><a id="l1222" class='ln'>1222</a></td><td>    <a id="1222c5" class="tk">rtY</a>.<a id="1222c9" class="tk">u</a>[0] = 3000U;</td></tr>
 <tr name="1223" id="1223">
-<td><a id="l1223" class='ln'>1223</a></td><td>    <span class="ct">// DataStoreWrite: '<a class="ct blk" blk_line="1223">&lt;S13&gt;/Data Store WriteP</a>' incorporates:</span></td></tr>
+<td><a id="l1223" class='ln'>1223</a></td><td>  <span class="br">}</span> <span class="kw">else</span> <span class="kw">if</span> (<a id="1223c14" class="tk">rtDW</a>.<a id="1223c19" class="tk">rtb_TWB_gain_idx_0</a> <a id="1223c38" class="tk">&lt;</a> 0.0) <span class="br">{</span></td></tr>
 <tr name="1224" id="1224">
-<td><a id="l1224" class='ln'>1224</a></td><td>    <span class="ct">//   Constant: '<a class="ct blk" blk_line="1224">&lt;S2&gt;/Q</a>'</span></td></tr>
+<td><a id="l1224" class='ln'>1224</a></td><td>    <span class="ct">// Outport: '<a class="ct blk" blk_line="1224">&lt;Root&gt;/u</a>' incorporates:</span></td></tr>
 <tr name="1225" id="1225">
-<td><a id="l1225" class='ln'>1225</a></td><td>    <span class="ct">//   MATLAB Function: '<a class="ct blk" blk_line="1225">&lt;S13&gt;/Predict</a>'</span></td></tr>
+<td><a id="l1225" class='ln'>1225</a></td><td>    <span class="ct">//   DataTypeConversion: '<a class="ct blk" blk_line="1225">&lt;S1&gt;/Data Type Conversion</a>'</span></td></tr>
 <tr name="1226" id="1226">
 <td><a id="l1226" class='ln'>1226</a></td><td></td></tr>
 <tr name="1227" id="1227">
-<td><a id="l1227" class='ln'>1227</a></td><td>    <span class="kw">for</span> (<a id="1227c10" class="tk">rtDW</a>.<a id="1227c15" class="tk">i0</a> = 0; <a id="1227c23" class="tk">rtDW</a>.<a id="1227c28" class="tk">i0</a> <a id="1227c31" class="tk">&lt;</a> 12; <a id="1227c37" class="tk">rtDW</a>.<a id="1227c42" class="tk">i0</a><a id="1227c44" class="tk">++</a>) <span class="br">{</span></td></tr>
+<td><a id="l1227" class='ln'>1227</a></td><td>    <a id="1227c5" class="tk">rtY</a>.<a id="1227c9" class="tk">u</a>[0] = 0U;</td></tr>
 <tr name="1228" id="1228">
-<td><a id="l1228" class='ln'>1228</a></td><td>      <a id="1228c7" class="tk">rtDW</a>.<a id="1228c12" class="tk">cos_g</a> = 0.0;</td></tr>
+<td><a id="l1228" class='ln'>1228</a></td><td>  <span class="br">}</span> <span class="kw">else</span> <span class="br">{</span></td></tr>
 <tr name="1229" id="1229">
-<td><a id="l1229" class='ln'>1229</a></td><td>      <span class="kw">for</span> (<a id="1229c12" class="tk">rtDW</a>.<a id="1229c17" class="tk">i1</a> = 0; <a id="1229c25" class="tk">rtDW</a>.<a id="1229c30" class="tk">i1</a> <a id="1229c33" class="tk">&lt;</a> 12; <a id="1229c39" class="tk">rtDW</a>.<a id="1229c44" class="tk">i1</a><a id="1229c46" class="tk">++</a>) <span class="br">{</span></td></tr>
+<td><a id="l1229" class='ln'>1229</a></td><td>    <span class="ct">// Outport: '<a class="ct blk" blk_line="1229">&lt;Root&gt;/u</a>' incorporates:</span></td></tr>
 <tr name="1230" id="1230">
-<td><a id="l1230" class='ln'>1230</a></td><td>        <a id="1230c9" class="tk">rtDW</a>.<a id="1230c14" class="tk">cos_g</a> <a id="1230c20" class="tk">+=</a> <a id="1230c23" class="tk">rtDW</a>.<a id="1230c28" class="tk">Jacobian_m</a>[12 <a id="1230c42" class="tk">*</a> <a id="1230c44" class="tk">rtDW</a>.<a id="1230c49" class="tk">i1</a> <a id="1230c52" class="tk">+</a> <a id="1230c54" class="tk">rtDW</a>.<a id="1230c59" class="tk">i</a>] <a id="1230c62" class="tk">*</a> <a id="1230c64" class="tk">rtDW</a>.<a id="1230c69" class="tk">Jacobian</a>[12 <a id="1230c81" class="tk">*</a></td></tr>
+<td><a id="l1230" class='ln'>1230</a></td><td>    <span class="ct">//   DataTypeConversion: '<a class="ct blk" blk_line="1230">&lt;S1&gt;/Data Type Conversion</a>'</span></td></tr>
 <tr name="1231" id="1231">
-<td><a id="l1231" class='ln'>1231</a></td><td>          <a id="1231c11" class="tk">rtDW</a>.<a id="1231c16" class="tk">i1</a> <a id="1231c19" class="tk">+</a> <a id="1231c21" class="tk">rtDW</a>.<a id="1231c26" class="tk">i0</a>];</td></tr>
+<td><a id="l1231" class='ln'>1231</a></td><td></td></tr>
 <tr name="1232" id="1232">
-<td><a id="l1232" class='ln'>1232</a></td><td>      <span class="br">}</span></td></tr>
+<td><a id="l1232" class='ln'>1232</a></td><td>    <a id="1232c5" class="tk">rtY</a>.<a id="1232c9" class="tk">u</a>[0] = (<a id="1232c17" class="tk">uint16_T</a>)<a id="1232c26" class="tk">rtDW</a>.<a id="1232c31" class="tk">rtb_TWB_gain_idx_0</a>;</td></tr>
 <tr name="1233" id="1233">
-<td><a id="l1233" class='ln'>1233</a></td><td></td></tr>
+<td><a id="l1233" class='ln'>1233</a></td><td>  <span class="br">}</span></td></tr>
 <tr name="1234" id="1234">
-<td><a id="l1234" class='ln'>1234</a></td><td>      <a id="1234c7" class="tk">rtDW</a>.<a id="1234c12" class="tk">P_j</a>[<a id="1234c16" class="tk">rtDW</a>.<a id="1234c21" class="tk">i</a> <a id="1234c23" class="tk">+</a> 12 <a id="1234c28" class="tk">*</a> <a id="1234c30" class="tk">rtDW</a>.<a id="1234c35" class="tk">i0</a>] = <a id="1234c41" class="tk">rtCP_Q_Value</a>[12 <a id="1234c57" class="tk">*</a> <a id="1234c59" class="tk">rtDW</a>.<a id="1234c64" class="tk">i0</a> <a id="1234c67" class="tk">+</a> <a id="1234c69" class="tk">rtDW</a>.<a id="1234c74" class="tk">i</a>] <a id="1234c77" class="tk">+</a></td></tr>
+<td><a id="l1234" class='ln'>1234</a></td><td></td></tr>
 <tr name="1235" id="1235">
-<td><a id="l1235" class='ln'>1235</a></td><td>        <a id="1235c9" class="tk">rtDW</a>.<a id="1235c14" class="tk">cos_g</a>;</td></tr>
+<td><a id="l1235" class='ln'>1235</a></td><td>  <span class="ct">// Bias: '<a class="ct blk" blk_line="1235">&lt;S1&gt;/Bias</a>' incorporates:</span></td></tr>
 <tr name="1236" id="1236">
-<td><a id="l1236" class='ln'>1236</a></td><td>    <span class="br">}</span></td></tr>
+<td><a id="l1236" class='ln'>1236</a></td><td>  <span class="ct">//   Gain: '<a class="ct blk" blk_line="1236">&lt;S1&gt;/Gain8</a>'</span></td></tr>
 <tr name="1237" id="1237">
 <td><a id="l1237" class='ln'>1237</a></td><td></td></tr>
 <tr name="1238" id="1238">
-<td><a id="l1238" class='ln'>1238</a></td><td>    <span class="ct">// End of DataStoreWrite: '<a class="ct blk" blk_line="1238">&lt;S13&gt;/Data Store WriteP</a>'</span></td></tr>
+<td><a id="l1238" class='ln'>1238</a></td><td>  <a id="1238c3" class="tk">rtDW</a>.<a id="1238c8" class="tk">rtb_TWB_gain_idx_0</a> = 30.0 <a id="1238c34" class="tk">*</a> <a id="1238c36" class="tk">rtDW</a>.<a id="1238c41" class="tk">Add4</a> <a id="1238c46" class="tk">+</a> 1500.0;</td></tr>
 <tr name="1239" id="1239">
 <td><a id="l1239" class='ln'>1239</a></td><td></td></tr>
 <tr name="1240" id="1240">
-<td><a id="l1240" class='ln'>1240</a></td><td>    <span class="ct">// DataStoreWrite: '<a class="ct blk" blk_line="1240">&lt;S13&gt;/Data Store WriteX</a>' incorporates:</span></td></tr>
+<td><a id="l1240" class='ln'>1240</a></td><td>  <span class="ct">// Saturate: '<a class="ct blk" blk_line="1240">&lt;S1&gt;/Saturation</a>'</span></td></tr>
 <tr name="1241" id="1241">
-<td><a id="l1241" class='ln'>1241</a></td><td>    <span class="ct">//   MATLAB Function: '<a class="ct blk" blk_line="1241">&lt;S13&gt;/Predict</a>'</span></td></tr>
+<td><a id="l1241" class='ln'>1241</a></td><td>  <span class="kw">if</span> (<a id="1241c7" class="tk">rtDW</a>.<a id="1241c12" class="tk">rtb_TWB_gain_idx_0</a> <a id="1241c31" class="tk">&gt;</a> 3000.0) <span class="br">{</span></td></tr>
 <tr name="1242" id="1242">
-<td><a id="l1242" class='ln'>1242</a></td><td></td></tr>
+<td><a id="l1242" class='ln'>1242</a></td><td>    <span class="ct">// Outport: '<a class="ct blk" blk_line="1242">&lt;Root&gt;/u</a>' incorporates:</span></td></tr>
 <tr name="1243" id="1243">
-<td><a id="l1243" class='ln'>1243</a></td><td>    <a id="1243c5" class="tk">rtDW</a>.<a id="1243c10" class="tk">x</a>[<a id="1243c12" class="tk">rtDW</a>.<a id="1243c17" class="tk">i</a>] = <a id="1243c22" class="tk">rtDW</a>.<a id="1243c27" class="tk">imvec</a>[<a id="1243c33" class="tk">rtDW</a>.<a id="1243c38" class="tk">i</a>];</td></tr>
+<td><a id="l1243" class='ln'>1243</a></td><td>    <span class="ct">//   DataTypeConversion: '<a class="ct blk" blk_line="1243">&lt;S1&gt;/Data Type Conversion</a>'</span></td></tr>
 <tr name="1244" id="1244">
 <td><a id="l1244" class='ln'>1244</a></td><td></td></tr>
 <tr name="1245" id="1245">
-<td><a id="l1245" class='ln'>1245</a></td><td>    <span class="ct">// Outport: '<a class="ct blk" blk_line="1245">&lt;Root&gt;/x</a>'</span></td></tr>
+<td><a id="l1245" class='ln'>1245</a></td><td>    <a id="1245c5" class="tk">rtY</a>.<a id="1245c9" class="tk">u</a>[1] = 3000U;</td></tr>
 <tr name="1246" id="1246">
-<td><a id="l1246" class='ln'>1246</a></td><td>    <a id="1246c5" class="tk">rtY</a>.<a id="1246c9" class="tk">x</a>[<a id="1246c11" class="tk">rtDW</a>.<a id="1246c16" class="tk">i</a>] = <a id="1246c21" class="tk">rtDW</a>.<a id="1246c26" class="tk">UnitDelay</a>[<a id="1246c36" class="tk">rtDW</a>.<a id="1246c41" class="tk">i</a>];</td></tr>
+<td><a id="l1246" class='ln'>1246</a></td><td>  <span class="br">}</span> <span class="kw">else</span> <span class="kw">if</span> (<a id="1246c14" class="tk">rtDW</a>.<a id="1246c19" class="tk">rtb_TWB_gain_idx_0</a> <a id="1246c38" class="tk">&lt;</a> 0.0) <span class="br">{</span></td></tr>
 <tr name="1247" id="1247">
-<td><a id="l1247" class='ln'>1247</a></td><td></td></tr>
+<td><a id="l1247" class='ln'>1247</a></td><td>    <span class="ct">// Outport: '<a class="ct blk" blk_line="1247">&lt;Root&gt;/u</a>' incorporates:</span></td></tr>
 <tr name="1248" id="1248">
-<td><a id="l1248" class='ln'>1248</a></td><td>    <span class="ct">// Update for UnitDelay: '<a class="ct blk" blk_line="1248">&lt;S1&gt;/Unit Delay</a>'</span></td></tr>
+<td><a id="l1248" class='ln'>1248</a></td><td>    <span class="ct">//   DataTypeConversion: '<a class="ct blk" blk_line="1248">&lt;S1&gt;/Data Type Conversion</a>'</span></td></tr>
 <tr name="1249" id="1249">
-<td><a id="l1249" class='ln'>1249</a></td><td>    <a id="1249c5" class="tk">rtDW</a>.<a id="1249c10" class="tk">UnitDelay_DSTATE</a>[<a id="1249c27" class="tk">rtDW</a>.<a id="1249c32" class="tk">i</a>] = <a id="1249c37" class="tk">rtDW</a>.<a id="1249c42" class="tk">UnitDelay</a>[<a id="1249c52" class="tk">rtDW</a>.<a id="1249c57" class="tk">i</a>];</td></tr>
+<td><a id="l1249" class='ln'>1249</a></td><td></td></tr>
 <tr name="1250" id="1250">
-<td><a id="l1250" class='ln'>1250</a></td><td>  <span class="br">}</span></td></tr>
+<td><a id="l1250" class='ln'>1250</a></td><td>    <a id="1250c5" class="tk">rtY</a>.<a id="1250c9" class="tk">u</a>[1] = 0U;</td></tr>
 <tr name="1251" id="1251">
-<td><a id="l1251" class='ln'>1251</a></td><td></td></tr>
+<td><a id="l1251" class='ln'>1251</a></td><td>  <span class="br">}</span> <span class="kw">else</span> <span class="br">{</span></td></tr>
 <tr name="1252" id="1252">
-<td><a id="l1252" class='ln'>1252</a></td><td>  <span class="ct">// End of Outputs for SubSystem: '<a class="ct blk" blk_line="1252">&lt;S2&gt;/Predict</a>'</span></td></tr>
+<td><a id="l1252" class='ln'>1252</a></td><td>    <span class="ct">// Outport: '<a class="ct blk" blk_line="1252">&lt;Root&gt;/u</a>' incorporates:</span></td></tr>
 <tr name="1253" id="1253">
-<td><a id="l1253" class='ln'>1253</a></td><td>  <span class="ct">// End of Outputs for SubSystem: '<a class="ct blk" blk_line="1253">&lt;S1&gt;/Extended Kalman Filter</a>'</span></td></tr>
+<td><a id="l1253" class='ln'>1253</a></td><td>    <span class="ct">//   DataTypeConversion: '<a class="ct blk" blk_line="1253">&lt;S1&gt;/Data Type Conversion</a>'</span></td></tr>
 <tr name="1254" id="1254">
 <td><a id="l1254" class='ln'>1254</a></td><td></td></tr>
 <tr name="1255" id="1255">
-<td><a id="l1255" class='ln'>1255</a></td><td>  <span class="ct">// Update for UnitDelay: '<a class="ct blk" blk_line="1255">&lt;S9&gt;/Unit Delay</a>' incorporates:</span></td></tr>
+<td><a id="l1255" class='ln'>1255</a></td><td>    <a id="1255c5" class="tk">rtY</a>.<a id="1255c9" class="tk">u</a>[1] = (<a id="1255c17" class="tk">uint16_T</a>)<a id="1255c26" class="tk">rtDW</a>.<a id="1255c31" class="tk">rtb_TWB_gain_idx_0</a>;</td></tr>
 <tr name="1256" id="1256">
-<td><a id="l1256" class='ln'>1256</a></td><td>  <span class="ct">//   Gain: '<a class="ct blk" blk_line="1256">&lt;S9&gt;/acc_scale</a>'</span></td></tr>
+<td><a id="l1256" class='ln'>1256</a></td><td>  <span class="br">}</span></td></tr>
 <tr name="1257" id="1257">
 <td><a id="l1257" class='ln'>1257</a></td><td></td></tr>
 <tr name="1258" id="1258">
-<td><a id="l1258" class='ln'>1258</a></td><td>  <a id="1258c3" class="tk">rtDW</a>.<a id="1258c8" class="tk">UnitDelay_DSTATE_b</a>[0] = 0.0047900390625 <a id="1258c48" class="tk">*</a> <a id="1258c50" class="tk">rtDW</a>.<a id="1258c55" class="tk">DataTypeConversion</a>[3];</td></tr>
+<td><a id="l1258" class='ln'>1258</a></td><td>  <span class="ct">// Bias: '<a class="ct blk" blk_line="1258">&lt;S1&gt;/Bias</a>' incorporates:</span></td></tr>
 <tr name="1259" id="1259">
-<td><a id="l1259" class='ln'>1259</a></td><td>  <a id="1259c3" class="tk">rtDW</a>.<a id="1259c8" class="tk">UnitDelay_DSTATE_b</a>[1] = 0.0047900390625 <a id="1259c48" class="tk">*</a> <a id="1259c50" class="tk">rtDW</a>.<a id="1259c55" class="tk">DataTypeConversion</a>[4];</td></tr>
+<td><a id="l1259" class='ln'>1259</a></td><td>  <span class="ct">//   Gain: '<a class="ct blk" blk_line="1259">&lt;S1&gt;/Gain8</a>'</span></td></tr>
 <tr name="1260" id="1260">
-<td><a id="l1260" class='ln'>1260</a></td><td>  <a id="1260c3" class="tk">rtDW</a>.<a id="1260c8" class="tk">UnitDelay_DSTATE_b</a>[2] = 0.0047900390625 <a id="1260c48" class="tk">*</a> <a id="1260c50" class="tk">rtDW</a>.<a id="1260c55" class="tk">DataTypeConversion</a>[5];</td></tr>
+<td><a id="l1260" class='ln'>1260</a></td><td></td></tr>
 <tr name="1261" id="1261">
-<td><a id="l1261" class='ln'>1261</a></td><td><span class="br">}</span></td></tr>
+<td><a id="l1261" class='ln'>1261</a></td><td>  <a id="1261c3" class="tk">rtDW</a>.<a id="1261c8" class="tk">rtb_TWB_gain_idx_0</a> = 30.0 <a id="1261c34" class="tk">*</a> <a id="1261c36" class="tk">rtDW</a>.<a id="1261c41" class="tk">Add5</a> <a id="1261c46" class="tk">+</a> 1500.0;</td></tr>
 <tr name="1262" id="1262">
 <td><a id="l1262" class='ln'>1262</a></td><td></td></tr>
 <tr name="1263" id="1263">
-<td><a id="l1263" class='ln'>1263</a></td><td><span class="ct">// Model initialize function</span></td></tr>
+<td><a id="l1263" class='ln'>1263</a></td><td>  <span class="ct">// Saturate: '<a class="ct blk" blk_line="1263">&lt;S1&gt;/Saturation</a>'</span></td></tr>
 <tr name="1264" id="1264">
-<td><a id="l1264" class='ln'>1264</a></td><td><span class="kw">void</span> <a id="1264c6" class="tk">PoseEstimationController_initialize</a>(<span class="kw">void</span>)</td></tr>
+<td><a id="l1264" class='ln'>1264</a></td><td>  <span class="kw">if</span> (<a id="1264c7" class="tk">rtDW</a>.<a id="1264c12" class="tk">rtb_TWB_gain_idx_0</a> <a id="1264c31" class="tk">&gt;</a> 3000.0) <span class="br">{</span></td></tr>
 <tr name="1265" id="1265">
-<td><a id="l1265" class='ln'>1265</a></td><td><span class="br">{</span></td></tr>
+<td><a id="l1265" class='ln'>1265</a></td><td>    <span class="ct">// Outport: '<a class="ct blk" blk_line="1265">&lt;Root&gt;/u</a>' incorporates:</span></td></tr>
 <tr name="1266" id="1266">
-<td><a id="l1266" class='ln'>1266</a></td><td>  <span class="ct">// Registration code</span></td></tr>
+<td><a id="l1266" class='ln'>1266</a></td><td>    <span class="ct">//   DataTypeConversion: '<a class="ct blk" blk_line="1266">&lt;S1&gt;/Data Type Conversion</a>'</span></td></tr>
 <tr name="1267" id="1267">
 <td><a id="l1267" class='ln'>1267</a></td><td></td></tr>
 <tr name="1268" id="1268">
-<td><a id="l1268" class='ln'>1268</a></td><td>  <span class="ct">// initialize non-finites</span></td></tr>
+<td><a id="l1268" class='ln'>1268</a></td><td>    <a id="1268c5" class="tk">rtY</a>.<a id="1268c9" class="tk">u</a>[2] = 3000U;</td></tr>
 <tr name="1269" id="1269">
-<td><a id="l1269" class='ln'>1269</a></td><td>  <a id="1269c3" class="tk">rt_InitInfAndNaN</a>(<span class="kw">sizeof</span>(<a id="1269c27" class="tk">real_T</a>));</td></tr>
+<td><a id="l1269" class='ln'>1269</a></td><td>  <span class="br">}</span> <span class="kw">else</span> <span class="kw">if</span> (<a id="1269c14" class="tk">rtDW</a>.<a id="1269c19" class="tk">rtb_TWB_gain_idx_0</a> <a id="1269c38" class="tk">&lt;</a> 0.0) <span class="br">{</span></td></tr>
 <tr name="1270" id="1270">
-<td><a id="l1270" class='ln'>1270</a></td><td></td></tr>
+<td><a id="l1270" class='ln'>1270</a></td><td>    <span class="ct">// Outport: '<a class="ct blk" blk_line="1270">&lt;Root&gt;/u</a>' incorporates:</span></td></tr>
 <tr name="1271" id="1271">
-<td><a id="l1271" class='ln'>1271</a></td><td>  <span class="ct">// Start for Atomic SubSystem: '<a class="ct blk" blk_line="1271">&lt;S1&gt;/Extended Kalman Filter</a>'</span></td></tr>
+<td><a id="l1271" class='ln'>1271</a></td><td>    <span class="ct">//   DataTypeConversion: '<a class="ct blk" blk_line="1271">&lt;S1&gt;/Data Type Conversion</a>'</span></td></tr>
 <tr name="1272" id="1272">
-<td><a id="l1272" class='ln'>1272</a></td><td>  <span class="ct">// Start for DataStoreMemory: '<a class="ct blk" blk_line="1272">&lt;S2&gt;/DataStoreMemory - P</a>'</span></td></tr>
+<td><a id="l1272" class='ln'>1272</a></td><td></td></tr>
 <tr name="1273" id="1273">
-<td><a id="l1273" class='ln'>1273</a></td><td>  <a id="1273c3" class="tk">memcpy</a>(<a id="1273c10" class="tk">&amp;</a><a id="1273c11" class="tk">rtDW</a>.<a id="1273c16" class="tk">P_j</a>[0], <a id="1273c24" class="tk">&amp;</a><a id="1273c25" class="tk">rtCP_DataStoreMemoryP_InitialVa</a>[0], 144U <a id="1273c66" class="tk">*</a> <span class="kw">sizeof</span>(<a id="1273c75" class="tk">real_T</a>));</td></tr>
+<td><a id="l1273" class='ln'>1273</a></td><td>    <a id="1273c5" class="tk">rtY</a>.<a id="1273c9" class="tk">u</a>[2] = 0U;</td></tr>
 <tr name="1274" id="1274">
-<td><a id="l1274" class='ln'>1274</a></td><td></td></tr>
+<td><a id="l1274" class='ln'>1274</a></td><td>  <span class="br">}</span> <span class="kw">else</span> <span class="br">{</span></td></tr>
 <tr name="1275" id="1275">
-<td><a id="l1275" class='ln'>1275</a></td><td>  <span class="ct">// End of Start for SubSystem: '<a class="ct blk" blk_line="1275">&lt;S1&gt;/Extended Kalman Filter</a>'</span></td></tr>
+<td><a id="l1275" class='ln'>1275</a></td><td>    <span class="ct">// Outport: '<a class="ct blk" blk_line="1275">&lt;Root&gt;/u</a>' incorporates:</span></td></tr>
 <tr name="1276" id="1276">
-<td><a id="l1276" class='ln'>1276</a></td><td><span class="br">}</span></td></tr>
+<td><a id="l1276" class='ln'>1276</a></td><td>    <span class="ct">//   DataTypeConversion: '<a class="ct blk" blk_line="1276">&lt;S1&gt;/Data Type Conversion</a>'</span></td></tr>
 <tr name="1277" id="1277">
 <td><a id="l1277" class='ln'>1277</a></td><td></td></tr>
 <tr name="1278" id="1278">
-<td><a id="l1278" class='ln'>1278</a></td><td><span class="ct">//</span></td></tr>
+<td><a id="l1278" class='ln'>1278</a></td><td>    <a id="1278c5" class="tk">rtY</a>.<a id="1278c9" class="tk">u</a>[2] = (<a id="1278c17" class="tk">uint16_T</a>)<a id="1278c26" class="tk">rtDW</a>.<a id="1278c31" class="tk">rtb_TWB_gain_idx_0</a>;</td></tr>
 <tr name="1279" id="1279">
-<td><a id="l1279" class='ln'>1279</a></td><td><span class="ct">// File trailer for generated code.</span></td></tr>
+<td><a id="l1279" class='ln'>1279</a></td><td>  <span class="br">}</span></td></tr>
 <tr name="1280" id="1280">
-<td><a id="l1280" class='ln'>1280</a></td><td><span class="ct">//</span></td></tr>
+<td><a id="l1280" class='ln'>1280</a></td><td></td></tr>
 <tr name="1281" id="1281">
-<td><a id="l1281" class='ln'>1281</a></td><td><span class="ct">// [EOF]</span></td></tr>
+<td><a id="l1281" class='ln'>1281</a></td><td>  <span class="ct">// Bias: '<a class="ct blk" blk_line="1281">&lt;S1&gt;/Bias</a>' incorporates:</span></td></tr>
 <tr name="1282" id="1282">
-<td><a id="l1282" class='ln'>1282</a></td><td><span class="ct">//</span></td></tr>
+<td><a id="l1282" class='ln'>1282</a></td><td>  <span class="ct">//   Gain: '<a class="ct blk" blk_line="1282">&lt;S1&gt;/Gain8</a>'</span></td></tr>
 <tr name="1283" id="1283">
 <td><a id="l1283" class='ln'>1283</a></td><td></td></tr>
+<tr name="1284" id="1284">
+<td><a id="l1284" class='ln'>1284</a></td><td>  <a id="1284c3" class="tk">rtDW</a>.<a id="1284c8" class="tk">rtb_TWB_gain_idx_0</a> = 30.0 <a id="1284c34" class="tk">*</a> <a id="1284c36" class="tk">rtDW</a>.<a id="1284c41" class="tk">Add6</a> <a id="1284c46" class="tk">+</a> 1500.0;</td></tr>
+<tr name="1285" id="1285">
+<td><a id="l1285" class='ln'>1285</a></td><td></td></tr>
+<tr name="1286" id="1286">
+<td><a id="l1286" class='ln'>1286</a></td><td>  <span class="ct">// Saturate: '<a class="ct blk" blk_line="1286">&lt;S1&gt;/Saturation</a>'</span></td></tr>
+<tr name="1287" id="1287">
+<td><a id="l1287" class='ln'>1287</a></td><td>  <span class="kw">if</span> (<a id="1287c7" class="tk">rtDW</a>.<a id="1287c12" class="tk">rtb_TWB_gain_idx_0</a> <a id="1287c31" class="tk">&gt;</a> 3000.0) <span class="br">{</span></td></tr>
+<tr name="1288" id="1288">
+<td><a id="l1288" class='ln'>1288</a></td><td>    <span class="ct">// Outport: '<a class="ct blk" blk_line="1288">&lt;Root&gt;/u</a>' incorporates:</span></td></tr>
+<tr name="1289" id="1289">
+<td><a id="l1289" class='ln'>1289</a></td><td>    <span class="ct">//   DataTypeConversion: '<a class="ct blk" blk_line="1289">&lt;S1&gt;/Data Type Conversion</a>'</span></td></tr>
+<tr name="1290" id="1290">
+<td><a id="l1290" class='ln'>1290</a></td><td></td></tr>
+<tr name="1291" id="1291">
+<td><a id="l1291" class='ln'>1291</a></td><td>    <a id="1291c5" class="tk">rtY</a>.<a id="1291c9" class="tk">u</a>[3] = 3000U;</td></tr>
+<tr name="1292" id="1292">
+<td><a id="l1292" class='ln'>1292</a></td><td>  <span class="br">}</span> <span class="kw">else</span> <span class="kw">if</span> (<a id="1292c14" class="tk">rtDW</a>.<a id="1292c19" class="tk">rtb_TWB_gain_idx_0</a> <a id="1292c38" class="tk">&lt;</a> 0.0) <span class="br">{</span></td></tr>
+<tr name="1293" id="1293">
+<td><a id="l1293" class='ln'>1293</a></td><td>    <span class="ct">// Outport: '<a class="ct blk" blk_line="1293">&lt;Root&gt;/u</a>' incorporates:</span></td></tr>
+<tr name="1294" id="1294">
+<td><a id="l1294" class='ln'>1294</a></td><td>    <span class="ct">//   DataTypeConversion: '<a class="ct blk" blk_line="1294">&lt;S1&gt;/Data Type Conversion</a>'</span></td></tr>
+<tr name="1295" id="1295">
+<td><a id="l1295" class='ln'>1295</a></td><td></td></tr>
+<tr name="1296" id="1296">
+<td><a id="l1296" class='ln'>1296</a></td><td>    <a id="1296c5" class="tk">rtY</a>.<a id="1296c9" class="tk">u</a>[3] = 0U;</td></tr>
+<tr name="1297" id="1297">
+<td><a id="l1297" class='ln'>1297</a></td><td>  <span class="br">}</span> <span class="kw">else</span> <span class="br">{</span></td></tr>
+<tr name="1298" id="1298">
+<td><a id="l1298" class='ln'>1298</a></td><td>    <span class="ct">// Outport: '<a class="ct blk" blk_line="1298">&lt;Root&gt;/u</a>' incorporates:</span></td></tr>
+<tr name="1299" id="1299">
+<td><a id="l1299" class='ln'>1299</a></td><td>    <span class="ct">//   DataTypeConversion: '<a class="ct blk" blk_line="1299">&lt;S1&gt;/Data Type Conversion</a>'</span></td></tr>
+<tr name="1300" id="1300">
+<td><a id="l1300" class='ln'>1300</a></td><td></td></tr>
+<tr name="1301" id="1301">
+<td><a id="l1301" class='ln'>1301</a></td><td>    <a id="1301c5" class="tk">rtY</a>.<a id="1301c9" class="tk">u</a>[3] = (<a id="1301c17" class="tk">uint16_T</a>)<a id="1301c26" class="tk">rtDW</a>.<a id="1301c31" class="tk">rtb_TWB_gain_idx_0</a>;</td></tr>
+<tr name="1302" id="1302">
+<td><a id="l1302" class='ln'>1302</a></td><td>  <span class="br">}</span></td></tr>
+<tr name="1303" id="1303">
+<td><a id="l1303" class='ln'>1303</a></td><td></td></tr>
+<tr name="1304" id="1304">
+<td><a id="l1304" class='ln'>1304</a></td><td>  <span class="ct">// Outputs for Atomic SubSystem: '<a class="ct blk" blk_line="1304">&lt;S1&gt;/Extended Kalman Filter</a>'</span></td></tr>
+<tr name="1305" id="1305">
+<td><a id="l1305" class='ln'>1305</a></td><td>  <span class="ct">// Outputs for Atomic SubSystem: '<a class="ct blk" blk_line="1305">&lt;S2&gt;/Predict</a>'</span></td></tr>
+<tr name="1306" id="1306">
+<td><a id="l1306" class='ln'>1306</a></td><td>  <span class="kw">for</span> (<a id="1306c8" class="tk">rtDW</a>.<a id="1306c13" class="tk">i</a> = 0; <a id="1306c20" class="tk">rtDW</a>.<a id="1306c25" class="tk">i</a> <a id="1306c27" class="tk">&lt;</a> 12; <a id="1306c33" class="tk">rtDW</a>.<a id="1306c38" class="tk">i</a><a id="1306c39" class="tk">++</a>) <span class="br">{</span></td></tr>
+<tr name="1307" id="1307">
+<td><a id="l1307" class='ln'>1307</a></td><td>    <span class="ct">// DataStoreWrite: '<a class="ct blk" blk_line="1307">&lt;S13&gt;/Data Store WriteP</a>' incorporates:</span></td></tr>
+<tr name="1308" id="1308">
+<td><a id="l1308" class='ln'>1308</a></td><td>    <span class="ct">//   Constant: '<a class="ct blk" blk_line="1308">&lt;S2&gt;/Q</a>'</span></td></tr>
+<tr name="1309" id="1309">
+<td><a id="l1309" class='ln'>1309</a></td><td>    <span class="ct">//   MATLAB Function: '<a class="ct blk" blk_line="1309">&lt;S13&gt;/Predict</a>'</span></td></tr>
+<tr name="1310" id="1310">
+<td><a id="l1310" class='ln'>1310</a></td><td></td></tr>
+<tr name="1311" id="1311">
+<td><a id="l1311" class='ln'>1311</a></td><td>    <span class="kw">for</span> (<a id="1311c10" class="tk">rtDW</a>.<a id="1311c15" class="tk">i0</a> = 0; <a id="1311c23" class="tk">rtDW</a>.<a id="1311c28" class="tk">i0</a> <a id="1311c31" class="tk">&lt;</a> 12; <a id="1311c37" class="tk">rtDW</a>.<a id="1311c42" class="tk">i0</a><a id="1311c44" class="tk">++</a>) <span class="br">{</span></td></tr>
+<tr name="1312" id="1312">
+<td><a id="l1312" class='ln'>1312</a></td><td>      <a id="1312c7" class="tk">rtDW</a>.<a id="1312c12" class="tk">cos_g</a> = 0.0;</td></tr>
+<tr name="1313" id="1313">
+<td><a id="l1313" class='ln'>1313</a></td><td>      <span class="kw">for</span> (<a id="1313c12" class="tk">rtDW</a>.<a id="1313c17" class="tk">i1</a> = 0; <a id="1313c25" class="tk">rtDW</a>.<a id="1313c30" class="tk">i1</a> <a id="1313c33" class="tk">&lt;</a> 12; <a id="1313c39" class="tk">rtDW</a>.<a id="1313c44" class="tk">i1</a><a id="1313c46" class="tk">++</a>) <span class="br">{</span></td></tr>
+<tr name="1314" id="1314">
+<td><a id="l1314" class='ln'>1314</a></td><td>        <a id="1314c9" class="tk">rtDW</a>.<a id="1314c14" class="tk">cos_g</a> <a id="1314c20" class="tk">+=</a> <a id="1314c23" class="tk">rtDW</a>.<a id="1314c28" class="tk">Jacobian_m</a>[12 <a id="1314c42" class="tk">*</a> <a id="1314c44" class="tk">rtDW</a>.<a id="1314c49" class="tk">i1</a> <a id="1314c52" class="tk">+</a> <a id="1314c54" class="tk">rtDW</a>.<a id="1314c59" class="tk">i</a>] <a id="1314c62" class="tk">*</a> <a id="1314c64" class="tk">rtDW</a>.<a id="1314c69" class="tk">Jacobian</a>[12 <a id="1314c81" class="tk">*</a></td></tr>
+<tr name="1315" id="1315">
+<td><a id="l1315" class='ln'>1315</a></td><td>          <a id="1315c11" class="tk">rtDW</a>.<a id="1315c16" class="tk">i1</a> <a id="1315c19" class="tk">+</a> <a id="1315c21" class="tk">rtDW</a>.<a id="1315c26" class="tk">i0</a>];</td></tr>
+<tr name="1316" id="1316">
+<td><a id="l1316" class='ln'>1316</a></td><td>      <span class="br">}</span></td></tr>
+<tr name="1317" id="1317">
+<td><a id="l1317" class='ln'>1317</a></td><td></td></tr>
+<tr name="1318" id="1318">
+<td><a id="l1318" class='ln'>1318</a></td><td>      <a id="1318c7" class="tk">rtDW</a>.<a id="1318c12" class="tk">P_j</a>[<a id="1318c16" class="tk">rtDW</a>.<a id="1318c21" class="tk">i</a> <a id="1318c23" class="tk">+</a> 12 <a id="1318c28" class="tk">*</a> <a id="1318c30" class="tk">rtDW</a>.<a id="1318c35" class="tk">i0</a>] = <a id="1318c41" class="tk">rtCP_Q_Value</a>[12 <a id="1318c57" class="tk">*</a> <a id="1318c59" class="tk">rtDW</a>.<a id="1318c64" class="tk">i0</a> <a id="1318c67" class="tk">+</a> <a id="1318c69" class="tk">rtDW</a>.<a id="1318c74" class="tk">i</a>] <a id="1318c77" class="tk">+</a></td></tr>
+<tr name="1319" id="1319">
+<td><a id="l1319" class='ln'>1319</a></td><td>        <a id="1319c9" class="tk">rtDW</a>.<a id="1319c14" class="tk">cos_g</a>;</td></tr>
+<tr name="1320" id="1320">
+<td><a id="l1320" class='ln'>1320</a></td><td>    <span class="br">}</span></td></tr>
+<tr name="1321" id="1321">
+<td><a id="l1321" class='ln'>1321</a></td><td></td></tr>
+<tr name="1322" id="1322">
+<td><a id="l1322" class='ln'>1322</a></td><td>    <span class="ct">// End of DataStoreWrite: '<a class="ct blk" blk_line="1322">&lt;S13&gt;/Data Store WriteP</a>'</span></td></tr>
+<tr name="1323" id="1323">
+<td><a id="l1323" class='ln'>1323</a></td><td></td></tr>
+<tr name="1324" id="1324">
+<td><a id="l1324" class='ln'>1324</a></td><td>    <span class="ct">// DataStoreWrite: '<a class="ct blk" blk_line="1324">&lt;S13&gt;/Data Store WriteX</a>' incorporates:</span></td></tr>
+<tr name="1325" id="1325">
+<td><a id="l1325" class='ln'>1325</a></td><td>    <span class="ct">//   MATLAB Function: '<a class="ct blk" blk_line="1325">&lt;S13&gt;/Predict</a>'</span></td></tr>
+<tr name="1326" id="1326">
+<td><a id="l1326" class='ln'>1326</a></td><td></td></tr>
+<tr name="1327" id="1327">
+<td><a id="l1327" class='ln'>1327</a></td><td>    <a id="1327c5" class="tk">rtDW</a>.<a id="1327c10" class="tk">x</a>[<a id="1327c12" class="tk">rtDW</a>.<a id="1327c17" class="tk">i</a>] = <a id="1327c22" class="tk">rtDW</a>.<a id="1327c27" class="tk">imvec</a>[<a id="1327c33" class="tk">rtDW</a>.<a id="1327c38" class="tk">i</a>];</td></tr>
+<tr name="1328" id="1328">
+<td><a id="l1328" class='ln'>1328</a></td><td></td></tr>
+<tr name="1329" id="1329">
+<td><a id="l1329" class='ln'>1329</a></td><td>    <span class="ct">// Outport: '<a class="ct blk" blk_line="1329">&lt;Root&gt;/x</a>'</span></td></tr>
+<tr name="1330" id="1330">
+<td><a id="l1330" class='ln'>1330</a></td><td>    <a id="1330c5" class="tk">rtY</a>.<a id="1330c9" class="tk">x</a>[<a id="1330c11" class="tk">rtDW</a>.<a id="1330c16" class="tk">i</a>] = <a id="1330c21" class="tk">rtDW</a>.<a id="1330c26" class="tk">UnitDelay</a>[<a id="1330c36" class="tk">rtDW</a>.<a id="1330c41" class="tk">i</a>];</td></tr>
+<tr name="1331" id="1331">
+<td><a id="l1331" class='ln'>1331</a></td><td></td></tr>
+<tr name="1332" id="1332">
+<td><a id="l1332" class='ln'>1332</a></td><td>    <span class="ct">// Update for UnitDelay: '<a class="ct blk" blk_line="1332">&lt;S1&gt;/Unit Delay</a>'</span></td></tr>
+<tr name="1333" id="1333">
+<td><a id="l1333" class='ln'>1333</a></td><td>    <a id="1333c5" class="tk">rtDW</a>.<a id="1333c10" class="tk">UnitDelay_DSTATE</a>[<a id="1333c27" class="tk">rtDW</a>.<a id="1333c32" class="tk">i</a>] = <a id="1333c37" class="tk">rtDW</a>.<a id="1333c42" class="tk">UnitDelay</a>[<a id="1333c52" class="tk">rtDW</a>.<a id="1333c57" class="tk">i</a>];</td></tr>
+<tr name="1334" id="1334">
+<td><a id="l1334" class='ln'>1334</a></td><td>  <span class="br">}</span></td></tr>
+<tr name="1335" id="1335">
+<td><a id="l1335" class='ln'>1335</a></td><td></td></tr>
+<tr name="1336" id="1336">
+<td><a id="l1336" class='ln'>1336</a></td><td>  <span class="ct">// End of Outputs for SubSystem: '<a class="ct blk" blk_line="1336">&lt;S2&gt;/Predict</a>'</span></td></tr>
+<tr name="1337" id="1337">
+<td><a id="l1337" class='ln'>1337</a></td><td>  <span class="ct">// End of Outputs for SubSystem: '<a class="ct blk" blk_line="1337">&lt;S1&gt;/Extended Kalman Filter</a>'</span></td></tr>
+<tr name="1338" id="1338">
+<td><a id="l1338" class='ln'>1338</a></td><td></td></tr>
+<tr name="1339" id="1339">
+<td><a id="l1339" class='ln'>1339</a></td><td>  <span class="ct">// Update for UnitDelay: '<a class="ct blk" blk_line="1339">&lt;S9&gt;/Unit Delay</a>' incorporates:</span></td></tr>
+<tr name="1340" id="1340">
+<td><a id="l1340" class='ln'>1340</a></td><td>  <span class="ct">//   Gain: '<a class="ct blk" blk_line="1340">&lt;S9&gt;/acc_scale</a>'</span></td></tr>
+<tr name="1341" id="1341">
+<td><a id="l1341" class='ln'>1341</a></td><td></td></tr>
+<tr name="1342" id="1342">
+<td><a id="l1342" class='ln'>1342</a></td><td>  <a id="1342c3" class="tk">rtDW</a>.<a id="1342c8" class="tk">UnitDelay_DSTATE_b</a>[0] = 0.0047900390625 <a id="1342c48" class="tk">*</a> <a id="1342c50" class="tk">rtDW</a>.<a id="1342c55" class="tk">DataTypeConversion</a>[3];</td></tr>
+<tr name="1343" id="1343">
+<td><a id="l1343" class='ln'>1343</a></td><td>  <a id="1343c3" class="tk">rtDW</a>.<a id="1343c8" class="tk">UnitDelay_DSTATE_b</a>[1] = 0.0047900390625 <a id="1343c48" class="tk">*</a> <a id="1343c50" class="tk">rtDW</a>.<a id="1343c55" class="tk">DataTypeConversion</a>[4];</td></tr>
+<tr name="1344" id="1344">
+<td><a id="l1344" class='ln'>1344</a></td><td>  <a id="1344c3" class="tk">rtDW</a>.<a id="1344c8" class="tk">UnitDelay_DSTATE_b</a>[2] = 0.0047900390625 <a id="1344c48" class="tk">*</a> <a id="1344c50" class="tk">rtDW</a>.<a id="1344c55" class="tk">DataTypeConversion</a>[5];</td></tr>
+<tr name="1345" id="1345">
+<td><a id="l1345" class='ln'>1345</a></td><td><span class="br">}</span></td></tr>
+<tr name="1346" id="1346">
+<td><a id="l1346" class='ln'>1346</a></td><td></td></tr>
+<tr name="1347" id="1347">
+<td><a id="l1347" class='ln'>1347</a></td><td><span class="ct">// Model initialize function</span></td></tr>
+<tr name="1348" id="1348">
+<td><a id="l1348" class='ln'>1348</a></td><td><span class="kw">void</span> <a id="1348c6" class="tk">PoseEstimationController_initialize</a>(<span class="kw">void</span>)</td></tr>
+<tr name="1349" id="1349">
+<td><a id="l1349" class='ln'>1349</a></td><td><span class="br">{</span></td></tr>
+<tr name="1350" id="1350">
+<td><a id="l1350" class='ln'>1350</a></td><td>  <span class="ct">// Registration code</span></td></tr>
+<tr name="1351" id="1351">
+<td><a id="l1351" class='ln'>1351</a></td><td></td></tr>
+<tr name="1352" id="1352">
+<td><a id="l1352" class='ln'>1352</a></td><td>  <span class="ct">// initialize non-finites</span></td></tr>
+<tr name="1353" id="1353">
+<td><a id="l1353" class='ln'>1353</a></td><td>  <a id="1353c3" class="tk">rt_InitInfAndNaN</a>(<span class="kw">sizeof</span>(<a id="1353c27" class="tk">real_T</a>));</td></tr>
+<tr name="1354" id="1354">
+<td><a id="l1354" class='ln'>1354</a></td><td></td></tr>
+<tr name="1355" id="1355">
+<td><a id="l1355" class='ln'>1355</a></td><td>  <span class="ct">// Start for Atomic SubSystem: '<a class="ct blk" blk_line="1355">&lt;S1&gt;/Extended Kalman Filter</a>'</span></td></tr>
+<tr name="1356" id="1356">
+<td><a id="l1356" class='ln'>1356</a></td><td>  <span class="ct">// Start for DataStoreMemory: '<a class="ct blk" blk_line="1356">&lt;S2&gt;/DataStoreMemory - P</a>'</span></td></tr>
+<tr name="1357" id="1357">
+<td><a id="l1357" class='ln'>1357</a></td><td>  <a id="1357c3" class="tk">memcpy</a>(<a id="1357c10" class="tk">&amp;</a><a id="1357c11" class="tk">rtDW</a>.<a id="1357c16" class="tk">P_j</a>[0], <a id="1357c24" class="tk">&amp;</a><a id="1357c25" class="tk">rtCP_DataStoreMemoryP_InitialVa</a>[0], 144U <a id="1357c66" class="tk">*</a> <span class="kw">sizeof</span>(<a id="1357c75" class="tk">real_T</a>));</td></tr>
+<tr name="1358" id="1358">
+<td><a id="l1358" class='ln'>1358</a></td><td></td></tr>
+<tr name="1359" id="1359">
+<td><a id="l1359" class='ln'>1359</a></td><td>  <span class="ct">// End of Start for SubSystem: '<a class="ct blk" blk_line="1359">&lt;S1&gt;/Extended Kalman Filter</a>'</span></td></tr>
+<tr name="1360" id="1360">
+<td><a id="l1360" class='ln'>1360</a></td><td><span class="br">}</span></td></tr>
+<tr name="1361" id="1361">
+<td><a id="l1361" class='ln'>1361</a></td><td></td></tr>
+<tr name="1362" id="1362">
+<td><a id="l1362" class='ln'>1362</a></td><td><span class="ct">//</span></td></tr>
+<tr name="1363" id="1363">
+<td><a id="l1363" class='ln'>1363</a></td><td><span class="ct">// File trailer for generated code.</span></td></tr>
+<tr name="1364" id="1364">
+<td><a id="l1364" class='ln'>1364</a></td><td><span class="ct">//</span></td></tr>
+<tr name="1365" id="1365">
+<td><a id="l1365" class='ln'>1365</a></td><td><span class="ct">// [EOF]</span></td></tr>
+<tr name="1366" id="1366">
+<td><a id="l1366" class='ln'>1366</a></td><td><span class="ct">//</span></td></tr>
+<tr name="1367" id="1367">
+<td><a id="l1367" class='ln'>1367</a></td><td></td></tr>
 </table>
 </pre>
 </body>

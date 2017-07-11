@@ -9,7 +9,7 @@
 //
 // Model version                  : 1.15
 // Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
-// C/C++ source code generated on : Tue Jul 11 16:52:15 2017
+// C/C++ source code generated on : Tue Jul 11 17:10:58 2017
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Custom Processor->Custom
@@ -1209,13 +1209,97 @@ void PoseEstimationController_step(void)
   // End of Outputs for SubSystem: '<S2>/Predict'
   // End of Outputs for SubSystem: '<S1>/Extended Kalman Filter'
 
-  // Outport: '<Root>/u' incorporates:
-  //   DataTypeConversion: '<S1>/Data Type Conversion'
+  // Bias: '<S1>/Bias' incorporates:
+  //   Gain: '<S1>/Gain8'
 
-  rtY.u[0] = (uint16_T)rtDW.Add3;
-  rtY.u[1] = (uint16_T)rtDW.Add4;
-  rtY.u[2] = (uint16_T)rtDW.Add5;
-  rtY.u[3] = (uint16_T)rtDW.Add6;
+  rtDW.rtb_TWB_gain_idx_0 = 30.0 * rtDW.Add3 + 1500.0;
+
+  // Saturate: '<S1>/Saturation'
+  if (rtDW.rtb_TWB_gain_idx_0 > 3000.0) {
+    // Outport: '<Root>/u' incorporates:
+    //   DataTypeConversion: '<S1>/Data Type Conversion'
+
+    rtY.u[0] = 3000U;
+  } else if (rtDW.rtb_TWB_gain_idx_0 < 0.0) {
+    // Outport: '<Root>/u' incorporates:
+    //   DataTypeConversion: '<S1>/Data Type Conversion'
+
+    rtY.u[0] = 0U;
+  } else {
+    // Outport: '<Root>/u' incorporates:
+    //   DataTypeConversion: '<S1>/Data Type Conversion'
+
+    rtY.u[0] = (uint16_T)rtDW.rtb_TWB_gain_idx_0;
+  }
+
+  // Bias: '<S1>/Bias' incorporates:
+  //   Gain: '<S1>/Gain8'
+
+  rtDW.rtb_TWB_gain_idx_0 = 30.0 * rtDW.Add4 + 1500.0;
+
+  // Saturate: '<S1>/Saturation'
+  if (rtDW.rtb_TWB_gain_idx_0 > 3000.0) {
+    // Outport: '<Root>/u' incorporates:
+    //   DataTypeConversion: '<S1>/Data Type Conversion'
+
+    rtY.u[1] = 3000U;
+  } else if (rtDW.rtb_TWB_gain_idx_0 < 0.0) {
+    // Outport: '<Root>/u' incorporates:
+    //   DataTypeConversion: '<S1>/Data Type Conversion'
+
+    rtY.u[1] = 0U;
+  } else {
+    // Outport: '<Root>/u' incorporates:
+    //   DataTypeConversion: '<S1>/Data Type Conversion'
+
+    rtY.u[1] = (uint16_T)rtDW.rtb_TWB_gain_idx_0;
+  }
+
+  // Bias: '<S1>/Bias' incorporates:
+  //   Gain: '<S1>/Gain8'
+
+  rtDW.rtb_TWB_gain_idx_0 = 30.0 * rtDW.Add5 + 1500.0;
+
+  // Saturate: '<S1>/Saturation'
+  if (rtDW.rtb_TWB_gain_idx_0 > 3000.0) {
+    // Outport: '<Root>/u' incorporates:
+    //   DataTypeConversion: '<S1>/Data Type Conversion'
+
+    rtY.u[2] = 3000U;
+  } else if (rtDW.rtb_TWB_gain_idx_0 < 0.0) {
+    // Outport: '<Root>/u' incorporates:
+    //   DataTypeConversion: '<S1>/Data Type Conversion'
+
+    rtY.u[2] = 0U;
+  } else {
+    // Outport: '<Root>/u' incorporates:
+    //   DataTypeConversion: '<S1>/Data Type Conversion'
+
+    rtY.u[2] = (uint16_T)rtDW.rtb_TWB_gain_idx_0;
+  }
+
+  // Bias: '<S1>/Bias' incorporates:
+  //   Gain: '<S1>/Gain8'
+
+  rtDW.rtb_TWB_gain_idx_0 = 30.0 * rtDW.Add6 + 1500.0;
+
+  // Saturate: '<S1>/Saturation'
+  if (rtDW.rtb_TWB_gain_idx_0 > 3000.0) {
+    // Outport: '<Root>/u' incorporates:
+    //   DataTypeConversion: '<S1>/Data Type Conversion'
+
+    rtY.u[3] = 3000U;
+  } else if (rtDW.rtb_TWB_gain_idx_0 < 0.0) {
+    // Outport: '<Root>/u' incorporates:
+    //   DataTypeConversion: '<S1>/Data Type Conversion'
+
+    rtY.u[3] = 0U;
+  } else {
+    // Outport: '<Root>/u' incorporates:
+    //   DataTypeConversion: '<S1>/Data Type Conversion'
+
+    rtY.u[3] = (uint16_T)rtDW.rtb_TWB_gain_idx_0;
+  }
 
   // Outputs for Atomic SubSystem: '<S1>/Extended Kalman Filter'
   // Outputs for Atomic SubSystem: '<S2>/Predict'

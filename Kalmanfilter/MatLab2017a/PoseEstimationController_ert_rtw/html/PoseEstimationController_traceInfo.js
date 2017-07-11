@@ -17,13 +17,17 @@ function RTW_Sid2UrlHash() {
  */
 	this.urlHashMap["PoseEstimationController:1"] = "PoseEstimationController.h:290";
 	/* <Root>/x */
-	this.urlHashMap["PoseEstimationController:191"] = "PoseEstimationController.cpp:1245&PoseEstimationController.h:190";
+	this.urlHashMap["PoseEstimationController:191"] = "PoseEstimationController.cpp:1329&PoseEstimationController.h:190";
 	/* <Root>/u */
-	this.urlHashMap["PoseEstimationController:192"] = "PoseEstimationController.cpp:1212&PoseEstimationController.h:191";
+	this.urlHashMap["PoseEstimationController:192"] = "PoseEstimationController.cpp:1219,1224,1229,1242,1247,1252,1265,1270,1275,1288,1293,1298&PoseEstimationController.h:191";
+	/* <S1>/Bias */
+	this.urlHashMap["PoseEstimationController:231"] = "PoseEstimationController.cpp:1212,1235,1258,1281";
 	/* <S1>/Data Type Conversion */
-	this.urlHashMap["PoseEstimationController:220"] = "PoseEstimationController.cpp:1213";
+	this.urlHashMap["PoseEstimationController:220"] = "PoseEstimationController.cpp:1220,1225,1230,1243,1248,1253,1266,1271,1276,1289,1294,1299";
 	/* <S1>/Extended Kalman Filter */
-	this.urlHashMap["PoseEstimationController:5"] = "PoseEstimationController.cpp:860,1210,1220,1253,1271,1275&PoseEstimationController.h:291";
+	this.urlHashMap["PoseEstimationController:5"] = "PoseEstimationController.cpp:860,1210,1304,1337,1355,1359&PoseEstimationController.h:291";
+	/* <S1>/Gain8 */
+	this.urlHashMap["PoseEstimationController:232"] = "PoseEstimationController.cpp:1213,1236,1259,1282";
 	/* <S1>/MeasurementDrone */
 	this.urlHashMap["PoseEstimationController:6"] = "PoseEstimationController.h:284,292";
 	/* <S1>/MeasurementTWB */
@@ -32,6 +36,8 @@ function RTW_Sid2UrlHash() {
 	this.urlHashMap["PoseEstimationController:21"] = "PoseEstimationController.h:271";
 	/* <S1>/Rate Transition1 */
 	this.urlHashMap["PoseEstimationController:22"] = "PoseEstimationController.h:272";
+	/* <S1>/Saturation */
+	this.urlHashMap["PoseEstimationController:233"] = "PoseEstimationController.cpp:1217,1240,1263,1286";
 	/* <S1>/Simulink Function1 */
 	this.urlHashMap["PoseEstimationController:23"] = "PoseEstimationController.cpp:70&PoseEstimationController.h:294";
 	/* <S1>/Simulink Function2 */
@@ -39,7 +45,7 @@ function RTW_Sid2UrlHash() {
 	/* <S1>/Simulink Function3 */
 	this.urlHashMap["PoseEstimationController:35"] = "PoseEstimationController.cpp:112&PoseEstimationController.h:296";
 	/* <S1>/Unit Delay */
-	this.urlHashMap["PoseEstimationController:147"] = "PoseEstimationController.cpp:344,1248&PoseEstimationController.h:114,132";
+	this.urlHashMap["PoseEstimationController:147"] = "PoseEstimationController.cpp:344,1332&PoseEstimationController.h:114,132";
 	/* <S1>/generateU */
 	this.urlHashMap["PoseEstimationController:148"] = "PoseEstimationController.h:297";
 	/* <S1>/raw_to_real_data */
@@ -49,7 +55,7 @@ function RTW_Sid2UrlHash() {
 	/* <S2>/Correct2 */
 	this.urlHashMap["PoseEstimationController:5:938"] = "PoseEstimationController.cpp:1024,1159&PoseEstimationController.h:300";
 	/* <S2>/DataStoreMemory - P */
-	this.urlHashMap["PoseEstimationController:5:14"] = "PoseEstimationController.cpp:54,1272&PoseEstimationController.h:116";
+	this.urlHashMap["PoseEstimationController:5:14"] = "PoseEstimationController.cpp:54,1356&PoseEstimationController.h:116";
 	/* <S2>/DataStoreMemory - x */
 	this.urlHashMap["PoseEstimationController:5:1"] = "PoseEstimationController.h:117";
 	/* <S2>/DataTypeConversion_Enable1 */
@@ -79,9 +85,9 @@ function RTW_Sid2UrlHash() {
 	/* <S2>/Output */
 	this.urlHashMap["PoseEstimationController:5:707"] = "PoseEstimationController.cpp:1161,1165&PoseEstimationController.h:301";
 	/* <S2>/Predict */
-	this.urlHashMap["PoseEstimationController:5:949"] = "PoseEstimationController.cpp:1167,1209,1221,1252&PoseEstimationController.h:302";
+	this.urlHashMap["PoseEstimationController:5:949"] = "PoseEstimationController.cpp:1167,1209,1305,1336&PoseEstimationController.h:302";
 	/* <S2>/Q */
-	this.urlHashMap["PoseEstimationController:5:530"] = "PoseEstimationController.cpp:51,1224";
+	this.urlHashMap["PoseEstimationController:5:530"] = "PoseEstimationController.cpp:51,1308";
 	/* <S2>/R1 */
 	this.urlHashMap["PoseEstimationController:5:531"] = "PoseEstimationController.cpp:45,867";
 	/* <S2>/R2 */
@@ -217,9 +223,9 @@ function RTW_Sid2UrlHash() {
 	/* <S9>/MATLAB Function */
 	this.urlHashMap["PoseEstimationController:211"] = "PoseEstimationController.cpp:371,1125&PoseEstimationController.h:308&dbiemohljmgdohdb_norm.cpp:18";
 	/* <S9>/Unit Delay */
-	this.urlHashMap["PoseEstimationController:226"] = "PoseEstimationController.cpp:353,359,1255&PoseEstimationController.h:115,143";
+	this.urlHashMap["PoseEstimationController:226"] = "PoseEstimationController.cpp:353,359,1339&PoseEstimationController.h:115,143";
 	/* <S9>/acc_scale */
-	this.urlHashMap["PoseEstimationController:207"] = "PoseEstimationController.cpp:1256";
+	this.urlHashMap["PoseEstimationController:207"] = "PoseEstimationController.cpp:1340";
 	/* <S9>/gyro_scale */
 	this.urlHashMap["PoseEstimationController:206"] = "PoseEstimationController.h:263";
 	/* <S9>/mag_scale */
@@ -274,12 +280,12 @@ ReadX */
 	this.urlHashMap["PoseEstimationController:5:949:80"] = "PoseEstimationController.cpp:1170";
 	/* <S13>/Data Store
 WriteP */
-	this.urlHashMap["PoseEstimationController:5:949:81"] = "PoseEstimationController.cpp:1223,1238";
+	this.urlHashMap["PoseEstimationController:5:949:81"] = "PoseEstimationController.cpp:1307,1322";
 	/* <S13>/Data Store
 WriteX */
-	this.urlHashMap["PoseEstimationController:5:949:82"] = "PoseEstimationController.cpp:1240";
+	this.urlHashMap["PoseEstimationController:5:949:82"] = "PoseEstimationController.cpp:1324";
 	/* <S13>/Predict */
-	this.urlHashMap["PoseEstimationController:5:949:83"] = "PoseEstimationController.cpp:1168,1225,1241&PoseEstimationController.h:92,305";
+	this.urlHashMap["PoseEstimationController:5:949:83"] = "PoseEstimationController.cpp:1168,1309,1325&PoseEstimationController.h:92,305";
 	/* <S13>/RegisterSimulinkFcn */
 	this.urlHashMap["PoseEstimationController:5:949:127"] = "PoseEstimationController.h:258";
 	/* <S14>:1 */
@@ -526,10 +532,14 @@ function RTW_rtwnameSIDMap() {
 	this.sidHashMap["PoseEstimationController:227"] = {rtwname: "<S1>/enableTWB"};
 	this.rtwnameHashMap["<S1>/enableDrone"] = {sid: "PoseEstimationController:228"};
 	this.sidHashMap["PoseEstimationController:228"] = {rtwname: "<S1>/enableDrone"};
+	this.rtwnameHashMap["<S1>/Bias"] = {sid: "PoseEstimationController:231"};
+	this.sidHashMap["PoseEstimationController:231"] = {rtwname: "<S1>/Bias"};
 	this.rtwnameHashMap["<S1>/Data Type Conversion"] = {sid: "PoseEstimationController:220"};
 	this.sidHashMap["PoseEstimationController:220"] = {rtwname: "<S1>/Data Type Conversion"};
 	this.rtwnameHashMap["<S1>/Extended Kalman Filter"] = {sid: "PoseEstimationController:5"};
 	this.sidHashMap["PoseEstimationController:5"] = {rtwname: "<S1>/Extended Kalman Filter"};
+	this.rtwnameHashMap["<S1>/Gain8"] = {sid: "PoseEstimationController:232"};
+	this.sidHashMap["PoseEstimationController:232"] = {rtwname: "<S1>/Gain8"};
 	this.rtwnameHashMap["<S1>/MeasurementDrone"] = {sid: "PoseEstimationController:6"};
 	this.sidHashMap["PoseEstimationController:6"] = {rtwname: "<S1>/MeasurementDrone"};
 	this.rtwnameHashMap["<S1>/MeasurementTWB"] = {sid: "PoseEstimationController:13"};
@@ -538,6 +548,8 @@ function RTW_rtwnameSIDMap() {
 	this.sidHashMap["PoseEstimationController:21"] = {rtwname: "<S1>/Rate Transition"};
 	this.rtwnameHashMap["<S1>/Rate Transition1"] = {sid: "PoseEstimationController:22"};
 	this.sidHashMap["PoseEstimationController:22"] = {rtwname: "<S1>/Rate Transition1"};
+	this.rtwnameHashMap["<S1>/Saturation"] = {sid: "PoseEstimationController:233"};
+	this.sidHashMap["PoseEstimationController:233"] = {rtwname: "<S1>/Saturation"};
 	this.rtwnameHashMap["<S1>/Simulink Function1"] = {sid: "PoseEstimationController:23"};
 	this.sidHashMap["PoseEstimationController:23"] = {rtwname: "<S1>/Simulink Function1"};
 	this.rtwnameHashMap["<S1>/Simulink Function2"] = {sid: "PoseEstimationController:29"};
