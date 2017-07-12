@@ -191,22 +191,16 @@ public:
             for (int i = 0; i < count; i++) {
                 if (buffer[i] == '\n') {    //buffer leer, dann dekodieren und Berechnungen damit starten
                     // Decode data and put into struct
-                    INFO_MSG("Execute");
                     rtU.enableDrone = true;
                     decode_85(decoded.data, (uint8_t*) buf_decode, 55);
-                    INFO_MSG("Decode");
                     // Check for TWB data
                     // TODO Add non blocking request for TWB data
                     trackingObjectList = twbTrackingProcess::getNextTrackingObjects(trackingQueue, -1);
-                    INFO_MSG("Track");
                     // überprüfen ob liste leer, dann nur mit FC Daten ausführen
                     rtU.enableTWB = false;
                     if (trackingObjectList.size() != 0) {
-                        INFO_MSG("Execute1");
                         if (trackingObjectList.at(0).id >= 0) {
-                            INFO_MSG("Execute2");
                             for (int idx = 0; idx < trackingObjectList.size(); idx++) {
-                                INFO_MSG("Execute3");
                                 if ( trackingObjectList.at(idx).id == markerId) {
                                     // TODO Do something with the coordinates
                                     // dataTwbAvailable = true;
@@ -220,7 +214,6 @@ public:
                             }
                         }
                     }
-                    INFO_MSG("Execute4");
                     // TODO Include KF
                     /* INFO_MSG(decoded.values.accSmooth[0] << ", " << decoded.values.accSmooth[1] << ", " << decoded.values.accSmooth[2] << ", " << decoded.values.gyroADC[0] << ", " << decoded.values.gyroADC[1] << ", " << decoded.values.gyroADC[2] << ", " << decoded.values.baroAlt << ", " << decoded.values.baroTemp << ", " << decoded.values.magADC[0] << ", " << decoded.values.magADC[1] << ", " << decoded.values.magADC[2] << "\n"); */
                     // Set decoded data from FC sensors
@@ -239,26 +232,25 @@ public:
                     // TODO Process the controller and send the commands to the FC
                     // 0: ROLL, 1: PITCH, 2: YAW, 3: THROTTLE
                     {
-                      uint8_t inbuf[4] = {0,0,0x05,0xDC}; // 1 byte: ROLL command, 2 byte: 0 = "empty byte" to have 4 bytes for encoding with base85, 3, 4 bytes: value (3: high byte, 4: low byte)
+                      uint8_t inbuf[4] = {0,0,*((uint8_t*)&output.u_z + 1),*((uint8_t*)&output.u_z + 0)}; // 1 byte: ROLL command, 2 byte: 0 = "empty byte" to have 4 bytes for encoding with base85, 3, 4 bytes: value (3: high byte, 4: low byte)
                       encode_85(buf, inbuf, 4);                
                       write(fd, &buf, 4);
                     }
                     {
-                      uint8_t inbuf[4] = {1,0,0x05,0xDC};
+                      uint8_t inbuf[4] = {1,0,*((uint8_t*)&output.u_psi + 1),*((uint8_t*)&output.u_psi + 0)};
                       encode_85(buf, inbuf, 4);                
                       write(fd, &buf, 4);
                     }
                     {
-                      uint8_t inbuf[4] = {2,0,0x05,0xDC};
+                      uint8_t inbuf[4] = {2,0,*((uint8_t*)&output.u_phi + 1),*((uint8_t*)&output.u_phi + 0)};
                       encode_85(buf, inbuf, 4);                
                       write(fd, &buf, 4);
                     }
                     {
-                      uint8_t inbuf[4] = {3,0,0x05,0xDC};
+                      uint8_t inbuf[4] = {3,0,*((uint8_t*)&output.u_theta + 1),*((uint8_t*)&output.u_theta + 0)};
                       encode_85(buf, inbuf, 4);                
                       write(fd, &buf, 4);
                     }
-                    
                     // Cleanup
                     count_decode = 0;
                     count_msgs++;

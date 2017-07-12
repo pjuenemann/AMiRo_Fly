@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
 		decode_85(outbuf, buf, 5);
 		printf("decoded: %X %X\n", outbuf[2], outbuf[3]);
 	}
-    int fd = open("/dev/ttyACM0", O_RDWR);
+    int fd = open("/dev/ttyACM0", O_RDWR | O_NONBLOCK);
     // send encoded data
 	write(fd, &buf, 4);
 }

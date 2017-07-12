@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'PoseEstimationController'.
 //
-// Model version                  : 1.15
+// Model version                  : 1.16
 // Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
-// C/C++ source code generated on : Mon Jul 10 09:59:18 2017
+// C/C++ source code generated on : Wed Jul 12 10:51:33 2017
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Custom Processor->Custom
@@ -159,7 +159,10 @@ typedef struct {
   real_T accelerometer_idx_2;
   real_T magnetometer_idx_0;
   real_T magnetometer_idx_1;
-  real_T q_idx_0;
+  real_T y_idx_0;
+  real_T y_idx_1;
+  real_T y_idx_2;
+  real_T AHRS_Quaternion_idx_3;
   real_T rtb_TWB_gain_idx_0;
   real_T rtb_TWB_gain_idx_1;
   real_T rtb_TWB_gain_idx_2;
@@ -179,7 +182,7 @@ typedef struct {
 // External inputs (root inport signals with auto storage)
 typedef struct {
   real_T TWB_data[3];                  // '<Root>/TWB_data '
-  uint8_T drone_raw_data[11];          // '<Root>/drone_raw_data'
+  int32_T drone_raw_data[11];          // '<Root>/drone_raw_data'
   real_T x_desired[4];                 // '<Root>/x_desired'
   boolean_T enableTWB;                 // '<Root>/enableTWB'
   boolean_T enableDrone;               // '<Root>/enableDrone'
@@ -188,7 +191,7 @@ typedef struct {
 // External outputs (root outports fed by signals with auto storage)
 typedef struct {
   real_T x[12];                        // '<Root>/x'
-  uint8_T u[4];                        // '<Root>/u'
+  real_T u[4];                         // '<Root>/u'
 } ExtY;
 
 // Real-time Model Data Structure
@@ -261,6 +264,7 @@ extern "C" {
 //  Block '<S2>/checkMeasurementFcn2Signals' : Unused code path elimination
 //  Block '<S2>/checkStateTransitionFcnSignals' : Unused code path elimination
 //  Block '<S9>/gyro_scale' : Unused code path elimination
+//  Block '<S1>/Data Type Conversion' : Eliminate redundant data type conversion
 //  Block '<S2>/DataTypeConversion_Enable1' : Eliminate redundant data type conversion
 //  Block '<S2>/DataTypeConversion_Enable2' : Eliminate redundant data type conversion
 //  Block '<S2>/DataTypeConversion_Q' : Eliminate redundant data type conversion
