@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'PoseEstimationController'.
 //
-// Model version                  : 1.16
+// Model version                  : 1.17
 // Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
-// C/C++ source code generated on : Wed Jul 12 10:51:33 2017
+// C/C++ source code generated on : Wed Jul 12 16:17:02 2017
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Custom Processor->Custom
@@ -63,31 +63,6 @@ extern const real_T rtCP_pooled_TXrxOtAA33B0[60];
 extern void measurementTWBFcn_h(const real_T rtu_x[12], real_T rty_y[3]);
 extern void measurementDroneFcn_o(const real_T rtu_x[12], real_T rty_y[5]);
 extern void stateTransitionFcn(const real_T rtu_x[12], real_T rty_y[12]);
-
-// Const parameters k1 to k12
-static const float k1 = 1.0;
-static const float k2 = 1.0;
-static const float k3 = 1.0;
-static const float k4 = 1.0;
-static const float k5 = 1.0;
-static const float k6 = 1.0;
-static const float k7 = 1.0;
-static const float k8 = 1.0;
-static const float k9 = 1.0;
-static const float k10 = 1.0;
-static const float k11 = 1.0;
-static const float k12 = 1.0;
-
-// Const parameters for kp1 to kp4 and kd1 to kd4
-static const float kp1 = 1.0;
-static const float kp2 = 1.0;
-static const float kp3 = 1.0;
-static const float kp4 = 1.0;
-
-static const float kd1 = 1.0;
-static const float kd2 = 1.0;
-static const float kd3 = 1.0;
-static const float kd4 = 1.0;
 
 // Forward declaration for local functions
 static void iecjgdjeaimokfcj_mrdivide(real_T A[60], const real_T B_0[25]);
@@ -1248,15 +1223,17 @@ void PoseEstimationController_step(void)
 
   // Saturate: '<S1>/Saturation'
   if (rtDW.rtb_TWB_gain_idx_0 > 3000.0) {
-    // Outport: '<Root>/u'
-    rtY.u[0] = 3000.0;
-  } else if (rtDW.rtb_TWB_gain_idx_0 < 0.0) {
-    // Outport: '<Root>/u'
-    rtY.u[0] = 0.0;
+    rtDW.rtb_TWB_gain_idx_0 = 3000.0;
   } else {
-    // Outport: '<Root>/u'
-    rtY.u[0] = rtDW.rtb_TWB_gain_idx_0;
+    if (rtDW.rtb_TWB_gain_idx_0 < 0.0) {
+      rtDW.rtb_TWB_gain_idx_0 = 0.0;
+    }
   }
+
+  // Outport: '<Root>/u' incorporates:
+  //   DataTypeConversion: '<S1>/Data Type Conversion'
+
+  rtY.u[0] = (int16_T)std::floor(rtDW.rtb_TWB_gain_idx_0);
 
   // Bias: '<S1>/Bias' incorporates:
   //   Gain: '<S1>/Gain8'
@@ -1265,15 +1242,17 @@ void PoseEstimationController_step(void)
 
   // Saturate: '<S1>/Saturation'
   if (rtDW.rtb_TWB_gain_idx_0 > 3000.0) {
-    // Outport: '<Root>/u'
-    rtY.u[1] = 3000.0;
-  } else if (rtDW.rtb_TWB_gain_idx_0 < 0.0) {
-    // Outport: '<Root>/u'
-    rtY.u[1] = 0.0;
+    rtDW.rtb_TWB_gain_idx_0 = 3000.0;
   } else {
-    // Outport: '<Root>/u'
-    rtY.u[1] = rtDW.rtb_TWB_gain_idx_0;
+    if (rtDW.rtb_TWB_gain_idx_0 < 0.0) {
+      rtDW.rtb_TWB_gain_idx_0 = 0.0;
+    }
   }
+
+  // Outport: '<Root>/u' incorporates:
+  //   DataTypeConversion: '<S1>/Data Type Conversion'
+
+  rtY.u[1] = (int16_T)std::floor(rtDW.rtb_TWB_gain_idx_0);
 
   // Bias: '<S1>/Bias' incorporates:
   //   Gain: '<S1>/Gain8'
@@ -1282,15 +1261,17 @@ void PoseEstimationController_step(void)
 
   // Saturate: '<S1>/Saturation'
   if (rtDW.rtb_TWB_gain_idx_0 > 3000.0) {
-    // Outport: '<Root>/u'
-    rtY.u[2] = 3000.0;
-  } else if (rtDW.rtb_TWB_gain_idx_0 < 0.0) {
-    // Outport: '<Root>/u'
-    rtY.u[2] = 0.0;
+    rtDW.rtb_TWB_gain_idx_0 = 3000.0;
   } else {
-    // Outport: '<Root>/u'
-    rtY.u[2] = rtDW.rtb_TWB_gain_idx_0;
+    if (rtDW.rtb_TWB_gain_idx_0 < 0.0) {
+      rtDW.rtb_TWB_gain_idx_0 = 0.0;
+    }
   }
+
+  // Outport: '<Root>/u' incorporates:
+  //   DataTypeConversion: '<S1>/Data Type Conversion'
+
+  rtY.u[2] = (int16_T)std::floor(rtDW.rtb_TWB_gain_idx_0);
 
   // Bias: '<S1>/Bias' incorporates:
   //   Gain: '<S1>/Gain8'
@@ -1299,15 +1280,17 @@ void PoseEstimationController_step(void)
 
   // Saturate: '<S1>/Saturation'
   if (rtDW.rtb_TWB_gain_idx_0 > 3000.0) {
-    // Outport: '<Root>/u'
-    rtY.u[3] = 3000.0;
-  } else if (rtDW.rtb_TWB_gain_idx_0 < 0.0) {
-    // Outport: '<Root>/u'
-    rtY.u[3] = 0.0;
+    rtDW.rtb_TWB_gain_idx_0 = 3000.0;
   } else {
-    // Outport: '<Root>/u'
-    rtY.u[3] = rtDW.rtb_TWB_gain_idx_0;
+    if (rtDW.rtb_TWB_gain_idx_0 < 0.0) {
+      rtDW.rtb_TWB_gain_idx_0 = 0.0;
+    }
   }
+
+  // Outport: '<Root>/u' incorporates:
+  //   DataTypeConversion: '<S1>/Data Type Conversion'
+
+  rtY.u[3] = (int16_T)std::floor(rtDW.rtb_TWB_gain_idx_0);
 
   // Outputs for Atomic SubSystem: '<S1>/Extended Kalman Filter'
   // Outputs for Atomic SubSystem: '<S2>/Predict'

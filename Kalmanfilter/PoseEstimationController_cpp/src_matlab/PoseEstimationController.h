@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'PoseEstimationController'.
 //
-// Model version                  : 1.16
+// Model version                  : 1.17
 // Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
-// C/C++ source code generated on : Wed Jul 12 10:51:33 2017
+// C/C++ source code generated on : Wed Jul 12 16:17:02 2017
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Custom Processor->Custom
@@ -191,7 +191,7 @@ typedef struct {
 // External outputs (root outports fed by signals with auto storage)
 typedef struct {
   real_T x[12];                        // '<Root>/x'
-  real_T u[4];                         // '<Root>/u'
+  int16_T u[4];                        // '<Root>/u'
 } ExtY;
 
 // Real-time Model Data Structure
@@ -264,7 +264,6 @@ extern "C" {
 //  Block '<S2>/checkMeasurementFcn2Signals' : Unused code path elimination
 //  Block '<S2>/checkStateTransitionFcnSignals' : Unused code path elimination
 //  Block '<S9>/gyro_scale' : Unused code path elimination
-//  Block '<S1>/Data Type Conversion' : Eliminate redundant data type conversion
 //  Block '<S2>/DataTypeConversion_Enable1' : Eliminate redundant data type conversion
 //  Block '<S2>/DataTypeConversion_Enable2' : Eliminate redundant data type conversion
 //  Block '<S2>/DataTypeConversion_Q' : Eliminate redundant data type conversion
