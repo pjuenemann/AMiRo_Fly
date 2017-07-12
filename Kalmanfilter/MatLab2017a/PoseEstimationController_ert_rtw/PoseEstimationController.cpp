@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'PoseEstimationController'.
 //
-// Model version                  : 1.15
+// Model version                  : 1.16
 // Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
-// C/C++ source code generated on : Tue Jul 11 17:10:58 2017
+// C/C++ source code generated on : Wed Jul 12 10:51:33 2017
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Custom Processor->Custom
@@ -379,7 +379,7 @@ void PoseEstimationController_step(void)
   rtDW.b_idx_1 = 1.0;
   rtDW.b_idx_2 = 0.0;
   rtDW.c_t = 0.0;
-  rtDW.q_idx_0 = 0.0;
+  rtDW.AHRS_Quaternion_idx_3 = 0.0;
 
   // MADGWICKAHRS Implementation of Madgwick's IMU and AHRS algorithms
   //
@@ -401,6 +401,10 @@ void PoseEstimationController_step(void)
   //  AHRS = MahonyAHRS('SamplePeriod', 1/256, 'Kp', 0.5);
   // '<S19>:1:10' quaternion = zeros(1, 4);
   // '<S19>:1:11' AHRS.Update(gyroscope(1,:) * (pi/180), accelerometer(1,:), magnetometer(1,:)); 
+  rtDW.y_idx_0 = rtDW.DataTypeConversion[0] * 0.017453292519943295;
+  rtDW.y_idx_1 = rtDW.DataTypeConversion[1] * 0.017453292519943295;
+  rtDW.y_idx_2 = rtDW.DataTypeConversion[2] * 0.017453292519943295;
+
   // 'MadgwickAHRS:29' q = obj.Quaternion;
   //  short name local variable for readability
   //  Normalise accelerometer measurement
@@ -436,13 +440,13 @@ void PoseEstimationController_step(void)
       // 	Date          Author          Notes
       // 	27/09/2011    SOH Madgwick    Initial release
       // 'quaternConj:14' qConj = [q(:,1) -q(:,2) -q(:,3) -q(:,4)];
-      rtDW.q_idx_0 = rtDW.DataTypeConversion[6] / rtDW.cos_g;
-      rtDW.b_idx_1 = rtDW.q_idx_0;
-      rtDW.magnetometer_idx_0 = rtDW.q_idx_0;
-      rtDW.q_idx_0 = rtDW.DataTypeConversion[7] / rtDW.cos_g;
-      rtDW.b_idx_2 = rtDW.q_idx_0;
-      rtDW.magnetometer_idx_1 = rtDW.q_idx_0;
-      rtDW.q_idx_0 = rtDW.DataTypeConversion[8] / rtDW.cos_g;
+      rtDW.AHRS_Quaternion_idx_3 = rtDW.DataTypeConversion[6] / rtDW.cos_g;
+      rtDW.b_idx_1 = rtDW.AHRS_Quaternion_idx_3;
+      rtDW.magnetometer_idx_0 = rtDW.AHRS_Quaternion_idx_3;
+      rtDW.AHRS_Quaternion_idx_3 = rtDW.DataTypeConversion[7] / rtDW.cos_g;
+      rtDW.b_idx_2 = rtDW.AHRS_Quaternion_idx_3;
+      rtDW.magnetometer_idx_1 = rtDW.AHRS_Quaternion_idx_3;
+      rtDW.AHRS_Quaternion_idx_3 = rtDW.DataTypeConversion[8] / rtDW.cos_g;
 
       // QUATERNPROD Calculates the quaternion product
       //
@@ -458,17 +462,19 @@ void PoseEstimationController_step(void)
       // 'quaternProd:13' ab = zeros(size(a));
       // 'quaternProd:14' ab(:,1) = a(:,1).*b(:,1)-a(:,2).*b(:,2)-a(:,3).*b(:,3)-a(:,4).*b(:,4); 
       rtDW.ab_idx_0 = ((0.0 - rtDW.b_idx_1 * -0.0) - rtDW.b_idx_2 * -0.0) -
-        rtDW.q_idx_0 * -0.0;
+        rtDW.AHRS_Quaternion_idx_3 * -0.0;
 
       // 'quaternProd:15' ab(:,2) = a(:,1).*b(:,2)+a(:,2).*b(:,1)+a(:,3).*b(:,4)-a(:,4).*b(:,3); 
-      rtDW.ab_idx_1 = (rtDW.b_idx_2 * -0.0 + rtDW.b_idx_1) - rtDW.q_idx_0 * -0.0;
+      rtDW.ab_idx_1 = (rtDW.b_idx_2 * -0.0 + rtDW.b_idx_1) -
+        rtDW.AHRS_Quaternion_idx_3 * -0.0;
 
       // 'quaternProd:16' ab(:,3) = a(:,1).*b(:,3)-a(:,2).*b(:,4)+a(:,3).*b(:,1)+a(:,4).*b(:,2); 
       rtDW.ab_idx_2 = ((-0.0 - rtDW.b_idx_1 * -0.0) + rtDW.b_idx_2) +
-        rtDW.q_idx_0 * -0.0;
+        rtDW.AHRS_Quaternion_idx_3 * -0.0;
 
       // 'quaternProd:17' ab(:,4) = a(:,1).*b(:,4)+a(:,2).*b(:,3)-a(:,3).*b(:,2)+a(:,4).*b(:,1); 
-      rtDW.ab_idx_3 = (rtDW.b_idx_1 * -0.0 - rtDW.b_idx_2 * -0.0) + rtDW.q_idx_0;
+      rtDW.ab_idx_3 = (rtDW.b_idx_1 * -0.0 - rtDW.b_idx_2 * -0.0) +
+        rtDW.AHRS_Quaternion_idx_3;
 
       // QUATERNPROD Calculates the quaternion product
       //
@@ -560,7 +566,7 @@ void PoseEstimationController_step(void)
       rtDW.dv1[4] = (2.0 * rtDW.cos_g * 0.0 + 2.0 * rtDW.h_idx_3 * 0.0) -
         rtDW.magnetometer_idx_1;
       rtDW.dv1[5] = (2.0 * rtDW.cos_g * 0.0 + 2.0 * rtDW.h_idx_3 * 0.5) -
-        rtDW.q_idx_0;
+        rtDW.AHRS_Quaternion_idx_3;
 
       // 'MadgwickAHRS:57' step = step / norm(step);
       rtDW.cos_g = 0.0;
@@ -606,36 +612,24 @@ void PoseEstimationController_step(void)
       // 'quaternProd:17' ab(:,4) = a(:,1).*b(:,4)+a(:,2).*b(:,3)-a(:,3).*b(:,2)+a(:,4).*b(:,1); 
       //  Integrate to yield quaternion
       // 'MadgwickAHRS:63' q = q + qDot * obj.SamplePeriod;
-      rtDW.q_idx_0 = (0.0 - rtDW.step[0] / rtDW.cos_g * 0.1) * 0.00390625 + 1.0;
-      rtDW.accelerometer_idx_2 = (rtDW.DataTypeConversion[0] *
-        0.017453292519943295 * 0.5 - rtDW.step[1] / rtDW.cos_g * 0.1) *
-        0.00390625;
-      rtDW.accelerometer_idx_1 = (rtDW.DataTypeConversion[1] *
-        0.017453292519943295 * 0.5 - rtDW.step[2] / rtDW.cos_g * 0.1) *
-        0.00390625;
-      rtDW.accelerometer_idx_0 = (rtDW.DataTypeConversion[2] *
-        0.017453292519943295 * 0.5 - rtDW.step[3] / rtDW.cos_g * 0.1) *
-        0.00390625;
+      rtDW.accelerometer_idx_2 = (0.0 - rtDW.step[0] / rtDW.cos_g * 0.1) *
+        0.00390625 + 1.0;
+      rtDW.accelerometer_idx_1 = (((0.0 * rtDW.y_idx_2 + rtDW.y_idx_0) - 0.0 *
+        rtDW.y_idx_1) * 0.5 - rtDW.step[1] / rtDW.cos_g * 0.1) * 0.00390625;
+      rtDW.accelerometer_idx_0 = (((rtDW.y_idx_1 - 0.0 * rtDW.y_idx_2) + 0.0 *
+        rtDW.y_idx_0) * 0.5 - rtDW.step[2] / rtDW.cos_g * 0.1) * 0.00390625;
+      rtDW.y_idx_0 = (((0.0 * rtDW.y_idx_1 + rtDW.y_idx_2) - 0.0 * rtDW.y_idx_0)
+                      * 0.5 - rtDW.step[3] / rtDW.cos_g * 0.1) * 0.00390625;
 
       // 'MadgwickAHRS:64' obj.Quaternion = q / norm(q);
       rtDW.b_idx_1 = 2.2250738585072014E-308;
-      rtDW.b_idx_2 = std::abs(rtDW.q_idx_0);
+      rtDW.b_idx_2 = std::abs(rtDW.accelerometer_idx_2);
       if (rtDW.b_idx_2 > 2.2250738585072014E-308) {
         rtDW.cos_g = 1.0;
         rtDW.b_idx_1 = rtDW.b_idx_2;
       } else {
         rtDW.c_t = rtDW.b_idx_2 / 2.2250738585072014E-308;
         rtDW.cos_g = rtDW.c_t * rtDW.c_t;
-      }
-
-      rtDW.b_idx_2 = std::abs(rtDW.accelerometer_idx_2);
-      if (rtDW.b_idx_2 > rtDW.b_idx_1) {
-        rtDW.c_t = rtDW.b_idx_1 / rtDW.b_idx_2;
-        rtDW.cos_g = rtDW.cos_g * rtDW.c_t * rtDW.c_t + 1.0;
-        rtDW.b_idx_1 = rtDW.b_idx_2;
-      } else {
-        rtDW.c_t = rtDW.b_idx_2 / rtDW.b_idx_1;
-        rtDW.cos_g += rtDW.c_t * rtDW.c_t;
       }
 
       rtDW.b_idx_2 = std::abs(rtDW.accelerometer_idx_1);
@@ -658,11 +652,21 @@ void PoseEstimationController_step(void)
         rtDW.cos_g += rtDW.c_t * rtDW.c_t;
       }
 
+      rtDW.b_idx_2 = std::abs(rtDW.y_idx_0);
+      if (rtDW.b_idx_2 > rtDW.b_idx_1) {
+        rtDW.c_t = rtDW.b_idx_1 / rtDW.b_idx_2;
+        rtDW.cos_g = rtDW.cos_g * rtDW.c_t * rtDW.c_t + 1.0;
+        rtDW.b_idx_1 = rtDW.b_idx_2;
+      } else {
+        rtDW.c_t = rtDW.b_idx_2 / rtDW.b_idx_1;
+        rtDW.cos_g += rtDW.c_t * rtDW.c_t;
+      }
+
       rtDW.cos_g = rtDW.b_idx_1 * std::sqrt(rtDW.cos_g);
-      rtDW.b_idx_1 = rtDW.q_idx_0 / rtDW.cos_g;
-      rtDW.b_idx_2 = rtDW.accelerometer_idx_2 / rtDW.cos_g;
-      rtDW.c_t = rtDW.accelerometer_idx_1 / rtDW.cos_g;
-      rtDW.q_idx_0 = rtDW.accelerometer_idx_0 / rtDW.cos_g;
+      rtDW.b_idx_1 = rtDW.accelerometer_idx_2 / rtDW.cos_g;
+      rtDW.b_idx_2 = rtDW.accelerometer_idx_1 / rtDW.cos_g;
+      rtDW.c_t = rtDW.accelerometer_idx_0 / rtDW.cos_g;
+      rtDW.AHRS_Quaternion_idx_3 = rtDW.y_idx_0 / rtDW.cos_g;
 
       //  normalise quaternion
     }
@@ -701,17 +705,20 @@ void PoseEstimationController_step(void)
     -rtDW.b_idx_2 * 2.0;
 
   // 'quatern2euler:16' R(2,1,:) = 2.*(q(:,2).*q(:,3)-q(:,1).*q(:,4));
-  rtDW.R[1] = (-rtDW.b_idx_2 * -rtDW.c_t - rtDW.b_idx_1 * -rtDW.q_idx_0) * 2.0;
+  rtDW.R[1] = (-rtDW.b_idx_2 * -rtDW.c_t - rtDW.b_idx_1 *
+               -rtDW.AHRS_Quaternion_idx_3) * 2.0;
 
   // 'quatern2euler:17' R(3,1,:) = 2.*(q(:,2).*q(:,4)+q(:,1).*q(:,3));
-  rtDW.R[2] = (-rtDW.b_idx_2 * -rtDW.q_idx_0 + rtDW.b_idx_1 * -rtDW.c_t) * 2.0;
+  rtDW.R[2] = (-rtDW.b_idx_2 * -rtDW.AHRS_Quaternion_idx_3 + rtDW.b_idx_1 *
+               -rtDW.c_t) * 2.0;
 
   // 'quatern2euler:18' R(3,2,:) = 2.*(q(:,3).*q(:,4)-q(:,1).*q(:,2));
-  rtDW.R[5] = (-rtDW.c_t * -rtDW.q_idx_0 - rtDW.b_idx_1 * -rtDW.b_idx_2) * 2.0;
+  rtDW.R[5] = (-rtDW.c_t * -rtDW.AHRS_Quaternion_idx_3 - rtDW.b_idx_1 *
+               -rtDW.b_idx_2) * 2.0;
 
   // 'quatern2euler:19' R(3,3,:) = 2.*q(:,1).^2-1+2.*q(:,4).^2;
-  rtDW.R[8] = (rtDW.b_idx_1 * rtDW.b_idx_1 * 2.0 - 1.0) + -rtDW.q_idx_0 *
-    -rtDW.q_idx_0 * 2.0;
+  rtDW.R[8] = (rtDW.b_idx_1 * rtDW.b_idx_1 * 2.0 - 1.0) +
+    -rtDW.AHRS_Quaternion_idx_3 * -rtDW.AHRS_Quaternion_idx_3 * 2.0;
 
   // 'quatern2euler:21' phi = atan2(R(3,2,:), R(3,3,:) );
   // 'quatern2euler:22' theta = -atan(R(3,1,:) ./ sqrt(1-R(3,1,:).^2) );
@@ -1216,20 +1223,14 @@ void PoseEstimationController_step(void)
 
   // Saturate: '<S1>/Saturation'
   if (rtDW.rtb_TWB_gain_idx_0 > 3000.0) {
-    // Outport: '<Root>/u' incorporates:
-    //   DataTypeConversion: '<S1>/Data Type Conversion'
-
-    rtY.u[0] = 3000U;
+    // Outport: '<Root>/u'
+    rtY.u[0] = 3000.0;
   } else if (rtDW.rtb_TWB_gain_idx_0 < 0.0) {
-    // Outport: '<Root>/u' incorporates:
-    //   DataTypeConversion: '<S1>/Data Type Conversion'
-
-    rtY.u[0] = 0U;
+    // Outport: '<Root>/u'
+    rtY.u[0] = 0.0;
   } else {
-    // Outport: '<Root>/u' incorporates:
-    //   DataTypeConversion: '<S1>/Data Type Conversion'
-
-    rtY.u[0] = (uint16_T)rtDW.rtb_TWB_gain_idx_0;
+    // Outport: '<Root>/u'
+    rtY.u[0] = rtDW.rtb_TWB_gain_idx_0;
   }
 
   // Bias: '<S1>/Bias' incorporates:
@@ -1239,20 +1240,14 @@ void PoseEstimationController_step(void)
 
   // Saturate: '<S1>/Saturation'
   if (rtDW.rtb_TWB_gain_idx_0 > 3000.0) {
-    // Outport: '<Root>/u' incorporates:
-    //   DataTypeConversion: '<S1>/Data Type Conversion'
-
-    rtY.u[1] = 3000U;
+    // Outport: '<Root>/u'
+    rtY.u[1] = 3000.0;
   } else if (rtDW.rtb_TWB_gain_idx_0 < 0.0) {
-    // Outport: '<Root>/u' incorporates:
-    //   DataTypeConversion: '<S1>/Data Type Conversion'
-
-    rtY.u[1] = 0U;
+    // Outport: '<Root>/u'
+    rtY.u[1] = 0.0;
   } else {
-    // Outport: '<Root>/u' incorporates:
-    //   DataTypeConversion: '<S1>/Data Type Conversion'
-
-    rtY.u[1] = (uint16_T)rtDW.rtb_TWB_gain_idx_0;
+    // Outport: '<Root>/u'
+    rtY.u[1] = rtDW.rtb_TWB_gain_idx_0;
   }
 
   // Bias: '<S1>/Bias' incorporates:
@@ -1262,20 +1257,14 @@ void PoseEstimationController_step(void)
 
   // Saturate: '<S1>/Saturation'
   if (rtDW.rtb_TWB_gain_idx_0 > 3000.0) {
-    // Outport: '<Root>/u' incorporates:
-    //   DataTypeConversion: '<S1>/Data Type Conversion'
-
-    rtY.u[2] = 3000U;
+    // Outport: '<Root>/u'
+    rtY.u[2] = 3000.0;
   } else if (rtDW.rtb_TWB_gain_idx_0 < 0.0) {
-    // Outport: '<Root>/u' incorporates:
-    //   DataTypeConversion: '<S1>/Data Type Conversion'
-
-    rtY.u[2] = 0U;
+    // Outport: '<Root>/u'
+    rtY.u[2] = 0.0;
   } else {
-    // Outport: '<Root>/u' incorporates:
-    //   DataTypeConversion: '<S1>/Data Type Conversion'
-
-    rtY.u[2] = (uint16_T)rtDW.rtb_TWB_gain_idx_0;
+    // Outport: '<Root>/u'
+    rtY.u[2] = rtDW.rtb_TWB_gain_idx_0;
   }
 
   // Bias: '<S1>/Bias' incorporates:
@@ -1285,20 +1274,14 @@ void PoseEstimationController_step(void)
 
   // Saturate: '<S1>/Saturation'
   if (rtDW.rtb_TWB_gain_idx_0 > 3000.0) {
-    // Outport: '<Root>/u' incorporates:
-    //   DataTypeConversion: '<S1>/Data Type Conversion'
-
-    rtY.u[3] = 3000U;
+    // Outport: '<Root>/u'
+    rtY.u[3] = 3000.0;
   } else if (rtDW.rtb_TWB_gain_idx_0 < 0.0) {
-    // Outport: '<Root>/u' incorporates:
-    //   DataTypeConversion: '<S1>/Data Type Conversion'
-
-    rtY.u[3] = 0U;
+    // Outport: '<Root>/u'
+    rtY.u[3] = 0.0;
   } else {
-    // Outport: '<Root>/u' incorporates:
-    //   DataTypeConversion: '<S1>/Data Type Conversion'
-
-    rtY.u[3] = (uint16_T)rtDW.rtb_TWB_gain_idx_0;
+    // Outport: '<Root>/u'
+    rtY.u[3] = rtDW.rtb_TWB_gain_idx_0;
   }
 
   // Outputs for Atomic SubSystem: '<S1>/Extended Kalman Filter'

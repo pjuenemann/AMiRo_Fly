@@ -1,11 +1,10 @@
-"PoseEstimationController_sfun.obj"
-"PoseEstimationController_sfun_registry.obj"
-"lccstub.obj"
-"PoseEstimationController_sfun.def"
+PoseEstimationController_sfun.obj
+PoseEstimationController_sfun_registry.obj
+
 "C:\Users\Philipp\Desktop\Masterprojekt\Kalmanfilter\MatLab2017a\slprj\_sfprj\PoseEstimationController\sharedTrackingLibrary\sfun\src\sharedTrackingLibrary_sfun.lib"
--LC:\PROGRA~1\MATLAB\R2017a\extern\lib\win64\microsoft
+-LIBPATH:C:\PROGRA~1\MATLAB\R2017a\extern\lib\win64\microsoft
 C:\PROGRA~1\MATLAB\R2017a\extern\lib\win64\microsoft\libmwblas.lib
-C:\PROGRA~1\MATLAB\R2017a\extern\lib\win64\microsoft\libmwblas.lib
+
 "C:\Program Files\MATLAB\R2017a\extern\lib\win64\microsoft\sf_runtime.lib"
 "C:\Program Files\MATLAB\R2017a\extern\lib\win64\microsoft\libmx.lib"
 "C:\Program Files\MATLAB\R2017a\extern\lib\win64\microsoft\libmex.lib"
@@ -20,4 +19,3 @@ C:\PROGRA~1\MATLAB\R2017a\extern\lib\win64\microsoft\libmwblas.lib
 "C:\Program Files\MATLAB\R2017a\extern\lib\win64\microsoft\libmwsl_simtarget_core.lib"
 "C:\Program Files\MATLAB\R2017a\extern\lib\win64\microsoft\libmwsl_simtarget_instrumentation.lib"
 "C:\Program Files\MATLAB\R2017a\lib\win64\libmwipp.lib"
-
