@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'PoseEstimationController'.
 //
-// Model version                  : 1.17
+// Model version                  : 1.18
 // Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
-// C/C++ source code generated on : Wed Jul 12 16:17:02 2017
+// C/C++ source code generated on : Thu Jul 13 12:29:29 2017
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Custom Processor->Custom
@@ -130,7 +130,6 @@ typedef struct {
   real_T z[12];
   real_T imz[12];
   real_T UnitDelay[12];                // '<S1>/Unit Delay'
-  real_T DataTypeConversion[11];       // '<Root>/Data Type Conversion'
   real_T R[9];
   real_T dv1[6];
   real_T b_z[5];
@@ -171,7 +170,7 @@ typedef struct {
   int32_T r2;
   int32_T r3;
   int32_T rtemp;
-  int32_T i;
+  int32_T r1;
   int32_T i0;
   int32_T i1;
   int32_T jp;
@@ -182,7 +181,7 @@ typedef struct {
 // External inputs (root inport signals with auto storage)
 typedef struct {
   real_T TWB_data[3];                  // '<Root>/TWB_data '
-  int32_T drone_raw_data[11];          // '<Root>/drone_raw_data'
+  real_T drone_raw_data[11];           // '<Root>/drone_raw_data'
   real_T x_desired[4];                 // '<Root>/x_desired'
   boolean_T enableTWB;                 // '<Root>/enableTWB'
   boolean_T enableDrone;               // '<Root>/enableDrone'
@@ -191,7 +190,7 @@ typedef struct {
 // External outputs (root outports fed by signals with auto storage)
 typedef struct {
   real_T x[12];                        // '<Root>/x'
-  int16_T u[4];                        // '<Root>/u'
+  real_T u[4];                         // '<Root>/u'
 } ExtY;
 
 // Real-time Model Data Structure
