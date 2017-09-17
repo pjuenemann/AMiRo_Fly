@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'PoseEstimationController'.
 //
-// Model version                  : 1.18
+// Model version                  : 1.20
 // Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
-// C/C++ source code generated on : Thu Jul 13 12:29:29 2017
+// C/C++ source code generated on : Sun Sep 17 13:23:59 2017
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Custom Processor->Custom
@@ -347,11 +347,40 @@ void PoseEstimationController_step(void)
   // FunctionCaller: '<S4>/Function Caller'
   measurementTWBFcn_h(rtDW.UnitDelay, rtDW.UnitDelay_f);
 
+  // Gain: '<S9>/acc_scale' incorporates:
+  //   Inport: '<Root>/drone_raw_data'
+
+  rtDW.rtb_acc_scale_m = 0.0047900390625 * rtU.drone_raw_data[3];
+
+  // SignalConversion: '<S19>/TmpSignal ConversionAt SFunction Inport1' incorporates:
+  //   Gain: '<S9>/gyro_scale'
+  //   Inport: '<Root>/drone_raw_data'
+  //   MATLAB Function: '<S9>/MATLAB Function'
+
+  rtDW.TmpSignalConversionAtSFunct[0] = 0.060975609756097567 *
+    rtU.drone_raw_data[0];
+  rtDW.TmpSignalConversionAtSFunct[3] = rtDW.rtb_acc_scale_m;
+
   // Sum: '<S4>/Add'
   rtDW.rtb_TWB_gain_idx_0 -= rtDW.UnitDelay_f[0];
 
   // UnitDelay: '<S9>/Unit Delay'
   rtDW.UnitDelay_f[0] = rtDW.UnitDelay_DSTATE_b[0];
+
+  // Gain: '<S9>/acc_scale' incorporates:
+  //   Inport: '<Root>/drone_raw_data'
+
+  rtDW.rtb_acc_scale_idx_0 = rtDW.rtb_acc_scale_m;
+  rtDW.rtb_acc_scale_m = 0.0047900390625 * rtU.drone_raw_data[4];
+
+  // SignalConversion: '<S19>/TmpSignal ConversionAt SFunction Inport1' incorporates:
+  //   Gain: '<S9>/gyro_scale'
+  //   Inport: '<Root>/drone_raw_data'
+  //   MATLAB Function: '<S9>/MATLAB Function'
+
+  rtDW.TmpSignalConversionAtSFunct[1] = 0.060975609756097567 *
+    rtU.drone_raw_data[1];
+  rtDW.TmpSignalConversionAtSFunct[4] = rtDW.rtb_acc_scale_m;
 
   // Sum: '<S4>/Add'
   rtDW.rtb_TWB_gain_idx_1 -= rtDW.UnitDelay_f[1];
@@ -359,9 +388,27 @@ void PoseEstimationController_step(void)
   // UnitDelay: '<S9>/Unit Delay'
   rtDW.UnitDelay_f[1] = rtDW.UnitDelay_DSTATE_b[1];
 
-  // MATLAB Function: '<S9>/MATLAB Function' incorporates:
+  // Gain: '<S9>/acc_scale' incorporates:
   //   Inport: '<Root>/drone_raw_data'
 
+  rtDW.rtb_acc_scale_idx_1 = rtDW.rtb_acc_scale_m;
+  rtDW.rtb_acc_scale_m = 0.0047900390625 * rtU.drone_raw_data[5];
+
+  // SignalConversion: '<S19>/TmpSignal ConversionAt SFunction Inport1' incorporates:
+  //   Gain: '<S9>/gyro_scale'
+  //   Gain: '<S9>/mag_scale'
+  //   Inport: '<Root>/drone_raw_data'
+  //   MATLAB Function: '<S9>/MATLAB Function'
+
+  rtDW.TmpSignalConversionAtSFunct[2] = 0.060975609756097567 *
+    rtU.drone_raw_data[2];
+  rtDW.TmpSignalConversionAtSFunct[5] = rtDW.rtb_acc_scale_m;
+  for (rtDW.i = 0; rtDW.i < 9; rtDW.i++) {
+    rtDW.TmpSignalConversionAtSFunct[rtDW.i + 6] = 6.0E-7 *
+      rtU.drone_raw_data[rtDW.i];
+  }
+
+  // MATLAB Function: '<S9>/MATLAB Function'
   //     %% Process sensor data through algorithm
   // MATLAB Function 'ExtendedKalmanFilter /raw_to_real_data/MATLAB Function': '<S19>:1' 
   // '<S19>:1:3' data = data';
@@ -394,29 +441,29 @@ void PoseEstimationController_step(void)
   //  AHRS = MahonyAHRS('SamplePeriod', 1/256, 'Kp', 0.5);
   // '<S19>:1:10' quaternion = zeros(1, 4);
   // '<S19>:1:11' AHRS.Update(gyroscope(1,:) * (pi/180), accelerometer(1,:), magnetometer(1,:)); 
-  rtDW.y_idx_0 = rtU.drone_raw_data[0] * 0.017453292519943295;
-  rtDW.y_idx_1 = rtU.drone_raw_data[1] * 0.017453292519943295;
-  rtDW.y_idx_2 = rtU.drone_raw_data[2] * 0.017453292519943295;
+  rtDW.y_idx_0 = rtDW.TmpSignalConversionAtSFunct[0] * 0.017453292519943295;
+  rtDW.y_idx_1 = rtDW.TmpSignalConversionAtSFunct[1] * 0.017453292519943295;
+  rtDW.y_idx_2 = rtDW.TmpSignalConversionAtSFunct[2] * 0.017453292519943295;
 
   // 'MadgwickAHRS:29' q = obj.Quaternion;
   //  short name local variable for readability
   //  Normalise accelerometer measurement
   // 'MadgwickAHRS:32' if(norm(Accelerometer) == 0)
-  if (!(dbiemohljmgdohdb_norm(&rtU.drone_raw_data[3]) == 0.0)) {
+  if (!(dbiemohljmgdohdb_norm(&rtDW.TmpSignalConversionAtSFunct[3]) == 0.0)) {
     //  handle NaN
     // 'MadgwickAHRS:33' Accelerometer = Accelerometer / norm(Accelerometer);
-    rtDW.cos_g = dbiemohljmgdohdb_norm(&rtU.drone_raw_data[3]);
-    rtDW.accelerometer_idx_0 = rtU.drone_raw_data[3] / rtDW.cos_g;
-    rtDW.accelerometer_idx_1 = rtU.drone_raw_data[4] / rtDW.cos_g;
-    rtDW.accelerometer_idx_2 = rtU.drone_raw_data[5] / rtDW.cos_g;
+    rtDW.cos_g = dbiemohljmgdohdb_norm(&rtDW.TmpSignalConversionAtSFunct[3]);
+    rtDW.accelerometer_idx_0 = rtDW.TmpSignalConversionAtSFunct[3] / rtDW.cos_g;
+    rtDW.accelerometer_idx_1 = rtDW.TmpSignalConversionAtSFunct[4] / rtDW.cos_g;
+    rtDW.accelerometer_idx_2 = rtDW.TmpSignalConversionAtSFunct[5] / rtDW.cos_g;
 
     //  normalise magnitude
     //  Normalise magnetometer measurement
     // 'MadgwickAHRS:36' if(norm(Magnetometer) == 0)
-    if (!(dbiemohljmgdohdb_norm(&rtU.drone_raw_data[6]) == 0.0)) {
+    if (!(dbiemohljmgdohdb_norm(&rtDW.TmpSignalConversionAtSFunct[6]) == 0.0)) {
       //  handle NaN
       // 'MadgwickAHRS:37' Magnetometer = Magnetometer / norm(Magnetometer);
-      rtDW.cos_g = dbiemohljmgdohdb_norm(&rtU.drone_raw_data[6]);
+      rtDW.cos_g = dbiemohljmgdohdb_norm(&rtDW.TmpSignalConversionAtSFunct[6]);
 
       //  normalise magnitude
       //  Reference direction of Earth's magnetic feild
@@ -433,13 +480,16 @@ void PoseEstimationController_step(void)
       // 	Date          Author          Notes
       // 	27/09/2011    SOH Madgwick    Initial release
       // 'quaternConj:14' qConj = [q(:,1) -q(:,2) -q(:,3) -q(:,4)];
-      rtDW.AHRS_Quaternion_idx_3 = rtU.drone_raw_data[6] / rtDW.cos_g;
+      rtDW.AHRS_Quaternion_idx_3 = rtDW.TmpSignalConversionAtSFunct[6] /
+        rtDW.cos_g;
       rtDW.b_idx_1 = rtDW.AHRS_Quaternion_idx_3;
       rtDW.magnetometer_idx_0 = rtDW.AHRS_Quaternion_idx_3;
-      rtDW.AHRS_Quaternion_idx_3 = rtU.drone_raw_data[7] / rtDW.cos_g;
+      rtDW.AHRS_Quaternion_idx_3 = rtDW.TmpSignalConversionAtSFunct[7] /
+        rtDW.cos_g;
       rtDW.b_idx_2 = rtDW.AHRS_Quaternion_idx_3;
       rtDW.magnetometer_idx_1 = rtDW.AHRS_Quaternion_idx_3;
-      rtDW.AHRS_Quaternion_idx_3 = rtU.drone_raw_data[8] / rtDW.cos_g;
+      rtDW.AHRS_Quaternion_idx_3 = rtDW.TmpSignalConversionAtSFunct[8] /
+        rtDW.cos_g;
 
       // QUATERNPROD Calculates the quaternion product
       //
@@ -564,14 +614,14 @@ void PoseEstimationController_step(void)
       // 'MadgwickAHRS:57' step = step / norm(step);
       rtDW.cos_g = 0.0;
       rtDW.b_idx_1 = 2.2250738585072014E-308;
-      for (rtDW.r1 = 0; rtDW.r1 < 4; rtDW.r1++) {
-        rtDW.step[rtDW.r1] = 0.0;
+      for (rtDW.i = 0; rtDW.i < 4; rtDW.i++) {
+        rtDW.step[rtDW.i] = 0.0;
         for (rtDW.i0 = 0; rtDW.i0 < 6; rtDW.i0++) {
-          rtDW.step[rtDW.r1] += rtDW.dv0[(rtDW.i0 << 2) + rtDW.r1] *
+          rtDW.step[rtDW.i] += rtDW.dv0[(rtDW.i0 << 2) + rtDW.i] *
             rtDW.dv1[rtDW.i0];
         }
 
-        rtDW.b_idx_2 = std::abs(rtDW.step[rtDW.r1]);
+        rtDW.b_idx_2 = std::abs(rtDW.step[rtDW.i]);
         if (rtDW.b_idx_2 > rtDW.b_idx_1) {
           rtDW.c_t = rtDW.b_idx_1 / rtDW.b_idx_2;
           rtDW.cos_g = rtDW.cos_g * rtDW.c_t * rtDW.c_t + 1.0;
@@ -668,7 +718,7 @@ void PoseEstimationController_step(void)
 
   //  gyroscope units must be radians
   // '<S19>:1:12' quaternion = AHRS.Quaternion;
-  // '<S19>:1:14' euler = quatern2euler(quaternConj(quaternion)) * (180/pi);
+  // '<S19>:1:14' euler = quatern2euler(quaternConj(quaternion));
   // QUATERN2ROTMAT Converts a quaternion to its conjugate
   //
   //    qConj = quaternConj(q)
@@ -718,15 +768,13 @@ void PoseEstimationController_step(void)
   // 'quatern2euler:22' theta = -atan(R(3,1,:) ./ sqrt(1-R(3,1,:).^2) );
   // 'quatern2euler:23' psi = atan2(R(2,1,:), R(1,1,:) );
   // 'quatern2euler:25' euler = [phi(1,:)' theta(1,:)' psi(1,:)'];
-  rtDW.accelerometer_idx_0 = rt_atan2d_snf(rtDW.R[5], rtDW.R[8]) *
-    57.295779513082323;
+  rtDW.accelerometer_idx_0 = rt_atan2d_snf(rtDW.R[5], rtDW.R[8]);
   rtDW.accelerometer_idx_1 = -std::atan(rtDW.R[2] / std::sqrt(1.0 - rtDW.R[2] *
-    rtDW.R[2])) * 57.295779513082323;
-  rtDW.accelerometer_idx_2 = rt_atan2d_snf(rtDW.R[1], rtDW.R[0]) *
-    57.295779513082323;
+    rtDW.R[2]));
+  rtDW.accelerometer_idx_2 = rt_atan2d_snf(rtDW.R[1], rtDW.R[0]);
 
   // FunctionCaller: '<S3>/Function Caller'
-  //  use conjugate for sensor frame relative to Earth and convert to degrees.
+  //  use conjugate for sensor frame relative to Earth. Unit is rad.
   // '<S19>:1:15' Z = euler(1,1);
   // '<S19>:1:16' Y = euler(1,2);
   // '<S19>:1:17' X = euler(1,3);
@@ -882,28 +930,26 @@ void PoseEstimationController_step(void)
     // '<S14>:1:14' [xNew,PNew] = matlabshared.tracking.internal.EKFCorrectorAdditive.correct(... 
     // '<S14>:1:15'             yMeas,R,x,P,@(xx)MeasurementFcn(xx),[]);
     measurementTWBFcn_h(rtDW.x, rtDW.b_z_f);
-    for (rtDW.r1 = 0; rtDW.r1 < 12; rtDW.r1++) {
+    for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
       memcpy(&rtDW.imvec[0], &rtDW.x[0], 12U * sizeof(real_T));
-      rtDW.cos_g = 1.4901161193847656E-8 * std::abs(rtDW.x[rtDW.r1]);
+      rtDW.cos_g = 1.4901161193847656E-8 * std::abs(rtDW.x[rtDW.i]);
       if ((1.4901161193847656E-8 > rtDW.cos_g) || rtIsNaN(rtDW.cos_g)) {
         rtDW.cos_g = 1.4901161193847656E-8;
       }
 
-      rtDW.imvec[rtDW.r1] = rtDW.x[rtDW.r1] + rtDW.cos_g;
+      rtDW.imvec[rtDW.i] = rtDW.x[rtDW.i] + rtDW.cos_g;
       measurementTWBFcn_h(rtDW.imvec, rtDW.imz_g);
-      rtDW.dHdx_k[3 * rtDW.r1] = (rtDW.imz_g[0] - rtDW.b_z_f[0]) / rtDW.cos_g;
-      rtDW.dHdx_k[1 + 3 * rtDW.r1] = (rtDW.imz_g[1] - rtDW.b_z_f[1]) /
-        rtDW.cos_g;
-      rtDW.dHdx_k[2 + 3 * rtDW.r1] = (rtDW.imz_g[2] - rtDW.b_z_f[2]) /
-        rtDW.cos_g;
+      rtDW.dHdx_k[3 * rtDW.i] = (rtDW.imz_g[0] - rtDW.b_z_f[0]) / rtDW.cos_g;
+      rtDW.dHdx_k[1 + 3 * rtDW.i] = (rtDW.imz_g[1] - rtDW.b_z_f[1]) / rtDW.cos_g;
+      rtDW.dHdx_k[2 + 3 * rtDW.i] = (rtDW.imz_g[2] - rtDW.b_z_f[2]) / rtDW.cos_g;
     }
 
     for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
       for (rtDW.i1 = 0; rtDW.i1 < 3; rtDW.i1++) {
         rtDW.Pxy[rtDW.i0 + 12 * rtDW.i1] = 0.0;
-        for (rtDW.r1 = 0; rtDW.r1 < 12; rtDW.r1++) {
-          rtDW.Pxy[rtDW.i0 + 12 * rtDW.i1] += rtDW.P_j[12 * rtDW.r1 + rtDW.i0] *
-            rtDW.dHdx_k[3 * rtDW.r1 + rtDW.i1];
+        for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
+          rtDW.Pxy[rtDW.i0 + 12 * rtDW.i1] += rtDW.P_j[12 * rtDW.i + rtDW.i0] *
+            rtDW.dHdx_k[3 * rtDW.i + rtDW.i1];
         }
       }
     }
@@ -911,17 +957,17 @@ void PoseEstimationController_step(void)
     for (rtDW.i0 = 0; rtDW.i0 < 3; rtDW.i0++) {
       for (rtDW.i1 = 0; rtDW.i1 < 12; rtDW.i1++) {
         rtDW.gain_c[rtDW.i0 + 3 * rtDW.i1] = 0.0;
-        for (rtDW.r1 = 0; rtDW.r1 < 12; rtDW.r1++) {
-          rtDW.gain_c[rtDW.i0 + 3 * rtDW.i1] += rtDW.dHdx_k[3 * rtDW.r1 +
-            rtDW.i0] * rtDW.P_j[12 * rtDW.i1 + rtDW.r1];
+        for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
+          rtDW.gain_c[rtDW.i0 + 3 * rtDW.i1] += rtDW.dHdx_k[3 * rtDW.i + rtDW.i0]
+            * rtDW.P_j[12 * rtDW.i1 + rtDW.i];
         }
       }
 
       for (rtDW.i1 = 0; rtDW.i1 < 3; rtDW.i1++) {
         rtDW.cos_g = 0.0;
-        for (rtDW.r1 = 0; rtDW.r1 < 12; rtDW.r1++) {
-          rtDW.cos_g += rtDW.gain_c[3 * rtDW.r1 + rtDW.i0] * rtDW.dHdx_k[3 *
-            rtDW.r1 + rtDW.i1];
+        for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
+          rtDW.cos_g += rtDW.gain_c[3 * rtDW.i + rtDW.i0] * rtDW.dHdx_k[3 *
+            rtDW.i + rtDW.i1];
         }
 
         rtDW.R[rtDW.i0 + 3 * rtDW.i1] = rtCP_R1_Value[3 * rtDW.i1 + rtDW.i0] +
@@ -930,29 +976,29 @@ void PoseEstimationController_step(void)
     }
 
     measurementTWBFcn_h(rtDW.x, rtDW.b_z_f);
-    rtDW.r1 = 0;
+    rtDW.i = 0;
     rtDW.r2 = 1;
     rtDW.r3 = 2;
     rtDW.cos_g = std::abs(rtDW.R[0]);
     rtDW.b_idx_1 = std::abs(rtDW.R[1]);
     if (rtDW.b_idx_1 > rtDW.cos_g) {
       rtDW.cos_g = rtDW.b_idx_1;
-      rtDW.r1 = 1;
+      rtDW.i = 1;
       rtDW.r2 = 0;
     }
 
     if (std::abs(rtDW.R[2]) > rtDW.cos_g) {
-      rtDW.r1 = 2;
+      rtDW.i = 2;
       rtDW.r2 = 1;
       rtDW.r3 = 0;
     }
 
-    rtDW.R[rtDW.r2] /= rtDW.R[rtDW.r1];
-    rtDW.R[rtDW.r3] /= rtDW.R[rtDW.r1];
-    rtDW.R[3 + rtDW.r2] -= rtDW.R[3 + rtDW.r1] * rtDW.R[rtDW.r2];
-    rtDW.R[3 + rtDW.r3] -= rtDW.R[3 + rtDW.r1] * rtDW.R[rtDW.r3];
-    rtDW.R[6 + rtDW.r2] -= rtDW.R[6 + rtDW.r1] * rtDW.R[rtDW.r2];
-    rtDW.R[6 + rtDW.r3] -= rtDW.R[6 + rtDW.r1] * rtDW.R[rtDW.r3];
+    rtDW.R[rtDW.r2] /= rtDW.R[rtDW.i];
+    rtDW.R[rtDW.r3] /= rtDW.R[rtDW.i];
+    rtDW.R[3 + rtDW.r2] -= rtDW.R[3 + rtDW.i] * rtDW.R[rtDW.r2];
+    rtDW.R[3 + rtDW.r3] -= rtDW.R[3 + rtDW.i] * rtDW.R[rtDW.r3];
+    rtDW.R[6 + rtDW.r2] -= rtDW.R[6 + rtDW.i] * rtDW.R[rtDW.r2];
+    rtDW.R[6 + rtDW.r3] -= rtDW.R[6 + rtDW.i] * rtDW.R[rtDW.r3];
     if (std::abs(rtDW.R[3 + rtDW.r3]) > std::abs(rtDW.R[3 + rtDW.r2])) {
       rtDW.rtemp = rtDW.r2;
       rtDW.r2 = rtDW.r3;
@@ -962,21 +1008,21 @@ void PoseEstimationController_step(void)
     rtDW.R[3 + rtDW.r3] /= rtDW.R[3 + rtDW.r2];
     rtDW.R[6 + rtDW.r3] -= rtDW.R[3 + rtDW.r3] * rtDW.R[6 + rtDW.r2];
     for (rtDW.rtemp = 0; rtDW.rtemp < 12; rtDW.rtemp++) {
-      rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r1] = rtDW.Pxy[rtDW.rtemp] /
-        rtDW.R[rtDW.r1];
+      rtDW.gain_c[rtDW.rtemp + 12 * rtDW.i] = rtDW.Pxy[rtDW.rtemp] /
+        rtDW.R[rtDW.i];
       rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r2] = rtDW.Pxy[12 + rtDW.rtemp] -
-        rtDW.gain_c[12 * rtDW.r1 + rtDW.rtemp] * rtDW.R[3 + rtDW.r1];
+        rtDW.gain_c[12 * rtDW.i + rtDW.rtemp] * rtDW.R[3 + rtDW.i];
       rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r3] = rtDW.Pxy[24 + rtDW.rtemp] -
-        rtDW.gain_c[12 * rtDW.r1 + rtDW.rtemp] * rtDW.R[6 + rtDW.r1];
+        rtDW.gain_c[12 * rtDW.i + rtDW.rtemp] * rtDW.R[6 + rtDW.i];
       rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r2] /= rtDW.R[3 + rtDW.r2];
       rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r3] -= rtDW.gain_c[12 * rtDW.r2 +
         rtDW.rtemp] * rtDW.R[6 + rtDW.r2];
       rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r3] /= rtDW.R[6 + rtDW.r3];
       rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r2] -= rtDW.gain_c[12 * rtDW.r3 +
         rtDW.rtemp] * rtDW.R[3 + rtDW.r3];
-      rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r1] -= rtDW.gain_c[12 * rtDW.r3 +
+      rtDW.gain_c[rtDW.rtemp + 12 * rtDW.i] -= rtDW.gain_c[12 * rtDW.r3 +
         rtDW.rtemp] * rtDW.R[rtDW.r3];
-      rtDW.gain_c[rtDW.rtemp + 12 * rtDW.r1] -= rtDW.gain_c[12 * rtDW.r2 +
+      rtDW.gain_c[rtDW.rtemp + 12 * rtDW.i] -= rtDW.gain_c[12 * rtDW.r2 +
         rtDW.rtemp] * rtDW.R[rtDW.r2];
       for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
         rtDW.Jacobian[rtDW.rtemp + 12 * rtDW.i0] = 0.0;
@@ -1046,17 +1092,17 @@ void PoseEstimationController_step(void)
     // '<S15>:1:14' [xNew,PNew] = matlabshared.tracking.internal.EKFCorrectorAdditive.correct(... 
     // '<S15>:1:15'             yMeas,R,x,P,@(xx)MeasurementFcn(xx),[]);
     measurementDroneFcn_o(rtDW.x, rtDW.b_z);
-    for (rtDW.r1 = 0; rtDW.r1 < 12; rtDW.r1++) {
+    for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
       memcpy(&rtDW.imvec[0], &rtDW.x[0], 12U * sizeof(real_T));
-      rtDW.cos_g = 1.4901161193847656E-8 * std::abs(rtDW.x[rtDW.r1]);
+      rtDW.cos_g = 1.4901161193847656E-8 * std::abs(rtDW.x[rtDW.i]);
       if ((1.4901161193847656E-8 > rtDW.cos_g) || rtIsNaN(rtDW.cos_g)) {
         rtDW.cos_g = 1.4901161193847656E-8;
       }
 
-      rtDW.imvec[rtDW.r1] = rtDW.x[rtDW.r1] + rtDW.cos_g;
+      rtDW.imvec[rtDW.i] = rtDW.x[rtDW.i] + rtDW.cos_g;
       measurementDroneFcn_o(rtDW.imvec, rtDW.imz_p);
       for (rtDW.i0 = 0; rtDW.i0 < 5; rtDW.i0++) {
-        rtDW.dHdx[rtDW.i0 + 5 * rtDW.r1] = (rtDW.imz_p[rtDW.i0] -
+        rtDW.dHdx[rtDW.i0 + 5 * rtDW.i] = (rtDW.imz_p[rtDW.i0] -
           rtDW.b_z[rtDW.i0]) / rtDW.cos_g;
       }
     }
@@ -1065,9 +1111,9 @@ void PoseEstimationController_step(void)
     for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
       for (rtDW.i1 = 0; rtDW.i1 < 5; rtDW.i1++) {
         rtDW.gain[rtDW.i0 + 12 * rtDW.i1] = 0.0;
-        for (rtDW.r1 = 0; rtDW.r1 < 12; rtDW.r1++) {
-          rtDW.gain[rtDW.i0 + 12 * rtDW.i1] += rtDW.P_j[12 * rtDW.r1 + rtDW.i0] *
-            rtDW.dHdx[5 * rtDW.r1 + rtDW.i1];
+        for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
+          rtDW.gain[rtDW.i0 + 12 * rtDW.i1] += rtDW.P_j[12 * rtDW.i + rtDW.i0] *
+            rtDW.dHdx[5 * rtDW.i + rtDW.i1];
         }
       }
     }
@@ -1075,17 +1121,17 @@ void PoseEstimationController_step(void)
     for (rtDW.i0 = 0; rtDW.i0 < 5; rtDW.i0++) {
       for (rtDW.i1 = 0; rtDW.i1 < 12; rtDW.i1++) {
         rtDW.dHdx_c[rtDW.i0 + 5 * rtDW.i1] = 0.0;
-        for (rtDW.r1 = 0; rtDW.r1 < 12; rtDW.r1++) {
-          rtDW.dHdx_c[rtDW.i0 + 5 * rtDW.i1] += rtDW.dHdx[5 * rtDW.r1 + rtDW.i0]
-            * rtDW.P_j[12 * rtDW.i1 + rtDW.r1];
+        for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
+          rtDW.dHdx_c[rtDW.i0 + 5 * rtDW.i1] += rtDW.dHdx[5 * rtDW.i + rtDW.i0] *
+            rtDW.P_j[12 * rtDW.i1 + rtDW.i];
         }
       }
 
       for (rtDW.i1 = 0; rtDW.i1 < 5; rtDW.i1++) {
         rtDW.cos_g = 0.0;
-        for (rtDW.r1 = 0; rtDW.r1 < 12; rtDW.r1++) {
-          rtDW.cos_g += rtDW.dHdx_c[5 * rtDW.r1 + rtDW.i0] * rtDW.dHdx[5 *
-            rtDW.r1 + rtDW.i1];
+        for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
+          rtDW.cos_g += rtDW.dHdx_c[5 * rtDW.i + rtDW.i0] * rtDW.dHdx[5 * rtDW.i
+            + rtDW.i1];
         }
 
         rtDW.dHdx_b[rtDW.i0 + 5 * rtDW.i1] = rtCP_R2_Value[5 * rtDW.i1 + rtDW.i0]
@@ -1097,17 +1143,17 @@ void PoseEstimationController_step(void)
     for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
       for (rtDW.i1 = 0; rtDW.i1 < 12; rtDW.i1++) {
         rtDW.Jacobian[rtDW.i0 + 12 * rtDW.i1] = 0.0;
-        for (rtDW.r1 = 0; rtDW.r1 < 5; rtDW.r1++) {
-          rtDW.Jacobian[rtDW.i0 + 12 * rtDW.i1] += rtDW.gain[12 * rtDW.r1 +
-            rtDW.i0] * rtDW.dHdx[5 * rtDW.i1 + rtDW.r1];
+        for (rtDW.i = 0; rtDW.i < 5; rtDW.i++) {
+          rtDW.Jacobian[rtDW.i0 + 12 * rtDW.i1] += rtDW.gain[12 * rtDW.i +
+            rtDW.i0] * rtDW.dHdx[5 * rtDW.i1 + rtDW.i];
         }
       }
 
       for (rtDW.i1 = 0; rtDW.i1 < 12; rtDW.i1++) {
         rtDW.cos_g = 0.0;
-        for (rtDW.r1 = 0; rtDW.r1 < 12; rtDW.r1++) {
-          rtDW.cos_g += rtDW.Jacobian[12 * rtDW.r1 + rtDW.i0] * rtDW.P_j[12 *
-            rtDW.i1 + rtDW.r1];
+        for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
+          rtDW.cos_g += rtDW.Jacobian[12 * rtDW.i + rtDW.i0] * rtDW.P_j[12 *
+            rtDW.i1 + rtDW.i];
         }
 
         rtDW.Jacobian_m[rtDW.i0 + 12 * rtDW.i1] = rtDW.P_j[12 * rtDW.i1 +
@@ -1124,14 +1170,13 @@ void PoseEstimationController_step(void)
     }
 
     // Sum: '<S3>/Add' incorporates:
-    //   Gain: '<S9>/mag_scale'
     //   MATLAB Function: '<S9>/MATLAB Function'
 
     rtDW.imz_p[0] = rtDW.UnitDelay_f[0];
     rtDW.imz_p[1] = rtDW.UnitDelay_f[1];
-    rtDW.imz_p[2] = 0.6 * rtDW.accelerometer_idx_0;
-    rtDW.imz_p[3] = 0.6 * rtDW.accelerometer_idx_1;
-    rtDW.imz_p[4] = 0.6 * rtDW.accelerometer_idx_2;
+    rtDW.imz_p[2] = rtDW.accelerometer_idx_0;
+    rtDW.imz_p[3] = rtDW.accelerometer_idx_1;
+    rtDW.imz_p[4] = rtDW.accelerometer_idx_2;
 
     // MATLAB Function: '<S11>/Correct' incorporates:
     //   Sum: '<S3>/Add'
@@ -1183,18 +1228,18 @@ void PoseEstimationController_step(void)
   // '<S16>:1:14' [xNew,PNew] = matlabshared.tracking.internal.EKFPredictorAdditive.predict(... 
   // '<S16>:1:15'             Q,x,P,@(xx)StateTransitionFcn(xx), []);
   stateTransitionFcn(rtDW.x, rtDW.z);
-  for (rtDW.r1 = 0; rtDW.r1 < 12; rtDW.r1++) {
+  for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
     memcpy(&rtDW.imvec[0], &rtDW.x[0], 12U * sizeof(real_T));
-    rtDW.cos_g = 1.4901161193847656E-8 * std::abs(rtDW.x[rtDW.r1]);
+    rtDW.cos_g = 1.4901161193847656E-8 * std::abs(rtDW.x[rtDW.i]);
     if ((1.4901161193847656E-8 > rtDW.cos_g) || rtIsNaN(rtDW.cos_g)) {
       rtDW.cos_g = 1.4901161193847656E-8;
     }
 
-    rtDW.imvec[rtDW.r1] = rtDW.x[rtDW.r1] + rtDW.cos_g;
+    rtDW.imvec[rtDW.i] = rtDW.x[rtDW.i] + rtDW.cos_g;
     stateTransitionFcn(rtDW.imvec, rtDW.imz);
     for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
-      rtDW.Jacobian[rtDW.i0 + 12 * rtDW.r1] = (rtDW.imz[rtDW.i0] -
-        rtDW.z[rtDW.i0]) / rtDW.cos_g;
+      rtDW.Jacobian[rtDW.i0 + 12 * rtDW.i] = (rtDW.imz[rtDW.i0] - rtDW.z[rtDW.i0])
+        / rtDW.cos_g;
     }
   }
 
@@ -1202,9 +1247,9 @@ void PoseEstimationController_step(void)
   for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
     for (rtDW.i1 = 0; rtDW.i1 < 12; rtDW.i1++) {
       rtDW.Jacobian_m[rtDW.i1 + 12 * rtDW.i0] = 0.0;
-      for (rtDW.r1 = 0; rtDW.r1 < 12; rtDW.r1++) {
-        rtDW.Jacobian_m[rtDW.i1 + 12 * rtDW.i0] += rtDW.Jacobian[12 * rtDW.r1 +
-          rtDW.i1] * rtDW.P_j[12 * rtDW.i0 + rtDW.r1];
+      for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
+        rtDW.Jacobian_m[rtDW.i1 + 12 * rtDW.i0] += rtDW.Jacobian[12 * rtDW.i +
+          rtDW.i1] * rtDW.P_j[12 * rtDW.i0 + rtDW.i];
       }
     }
   }
@@ -1282,7 +1327,7 @@ void PoseEstimationController_step(void)
 
   // Outputs for Atomic SubSystem: '<S1>/Extended Kalman Filter'
   // Outputs for Atomic SubSystem: '<S2>/Predict'
-  for (rtDW.r1 = 0; rtDW.r1 < 12; rtDW.r1++) {
+  for (rtDW.i = 0; rtDW.i < 12; rtDW.i++) {
     // DataStoreWrite: '<S13>/Data Store WriteP' incorporates:
     //   Constant: '<S2>/Q'
     //   MATLAB Function: '<S13>/Predict'
@@ -1290,11 +1335,11 @@ void PoseEstimationController_step(void)
     for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
       rtDW.cos_g = 0.0;
       for (rtDW.i1 = 0; rtDW.i1 < 12; rtDW.i1++) {
-        rtDW.cos_g += rtDW.Jacobian_m[12 * rtDW.i1 + rtDW.r1] * rtDW.Jacobian[12
-          * rtDW.i1 + rtDW.i0];
+        rtDW.cos_g += rtDW.Jacobian_m[12 * rtDW.i1 + rtDW.i] * rtDW.Jacobian[12 *
+          rtDW.i1 + rtDW.i0];
       }
 
-      rtDW.P_j[rtDW.r1 + 12 * rtDW.i0] = rtCP_Q_Value[12 * rtDW.i0 + rtDW.r1] +
+      rtDW.P_j[rtDW.i + 12 * rtDW.i0] = rtCP_Q_Value[12 * rtDW.i0 + rtDW.i] +
         rtDW.cos_g;
     }
 
@@ -1303,25 +1348,22 @@ void PoseEstimationController_step(void)
     // DataStoreWrite: '<S13>/Data Store WriteX' incorporates:
     //   MATLAB Function: '<S13>/Predict'
 
-    rtDW.x[rtDW.r1] = rtDW.imvec[rtDW.r1];
+    rtDW.x[rtDW.i] = rtDW.imvec[rtDW.i];
 
     // Outport: '<Root>/x'
-    rtY.x[rtDW.r1] = rtDW.UnitDelay[rtDW.r1];
+    rtY.x[rtDW.i] = rtDW.UnitDelay[rtDW.i];
 
     // Update for UnitDelay: '<S1>/Unit Delay'
-    rtDW.UnitDelay_DSTATE[rtDW.r1] = rtDW.UnitDelay[rtDW.r1];
+    rtDW.UnitDelay_DSTATE[rtDW.i] = rtDW.UnitDelay[rtDW.i];
   }
 
   // End of Outputs for SubSystem: '<S2>/Predict'
   // End of Outputs for SubSystem: '<S1>/Extended Kalman Filter'
 
-  // Update for UnitDelay: '<S9>/Unit Delay' incorporates:
-  //   Gain: '<S9>/acc_scale'
-  //   Inport: '<Root>/drone_raw_data'
-
-  rtDW.UnitDelay_DSTATE_b[0] = 0.0047900390625 * rtU.drone_raw_data[3];
-  rtDW.UnitDelay_DSTATE_b[1] = 0.0047900390625 * rtU.drone_raw_data[4];
-  rtDW.UnitDelay_DSTATE_b[2] = 0.0047900390625 * rtU.drone_raw_data[5];
+  // Update for UnitDelay: '<S9>/Unit Delay'
+  rtDW.UnitDelay_DSTATE_b[0] = rtDW.rtb_acc_scale_idx_0;
+  rtDW.UnitDelay_DSTATE_b[1] = rtDW.rtb_acc_scale_idx_1;
+  rtDW.UnitDelay_DSTATE_b[2] = rtDW.rtb_acc_scale_m;
 }
 
 // Model initialize function
