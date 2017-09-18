@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'PoseEstimationController'.
 //
-// Model version                  : 1.18
+// Model version                  : 1.20
 // Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
-// C/C++ source code generated on : Thu Jul 13 12:29:29 2017
+// C/C++ source code generated on : Sun Sep 17 13:23:59 2017
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Custom Processor->Custom
@@ -126,6 +126,7 @@ typedef struct {
   real_T dHdx_b[25];
   real_T dv0[24];
   real_T b_A[25];
+  real_T TmpSignalConversionAtSFunct[15];// '<S9>/MATLAB Function'
   real_T imvec[12];
   real_T z[12];
   real_T imz[12];
@@ -146,6 +147,7 @@ typedef struct {
   real_T Add3;                         // '<S8>/Add3'
   real_T c_t;
   real_T cos_g;                        // '<S8>/cos'
+  real_T rtb_acc_scale_m;
   real_T ab_idx_0;
   real_T b_idx_1;
   real_T b_idx_2;
@@ -165,12 +167,14 @@ typedef struct {
   real_T rtb_TWB_gain_idx_0;
   real_T rtb_TWB_gain_idx_1;
   real_T rtb_TWB_gain_idx_2;
+  real_T rtb_acc_scale_idx_0;
+  real_T rtb_acc_scale_idx_1;
   real_T temp;
   real_T s;
   int32_T r2;
   int32_T r3;
   int32_T rtemp;
-  int32_T r1;
+  int32_T i;
   int32_T i0;
   int32_T i1;
   int32_T jp;
@@ -262,7 +266,7 @@ extern "C" {
 //  Block '<S2>/checkMeasurementFcn1Signals' : Unused code path elimination
 //  Block '<S2>/checkMeasurementFcn2Signals' : Unused code path elimination
 //  Block '<S2>/checkStateTransitionFcnSignals' : Unused code path elimination
-//  Block '<S9>/gyro_scale' : Unused code path elimination
+//  Block '<S9>/To Workspace' : Unused code path elimination
 //  Block '<S2>/DataTypeConversion_Enable1' : Eliminate redundant data type conversion
 //  Block '<S2>/DataTypeConversion_Enable2' : Eliminate redundant data type conversion
 //  Block '<S2>/DataTypeConversion_Q' : Eliminate redundant data type conversion
