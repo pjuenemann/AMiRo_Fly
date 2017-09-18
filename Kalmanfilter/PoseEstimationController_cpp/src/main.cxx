@@ -107,7 +107,9 @@ void rt_OneStep(void);
 void rt_OneStep(void)
 {
   static boolean_T OverrunFlag = false;
-
+  if (rtU.enableDrone) {
+      INFO_MSG("Filter");
+  }
   /* Disable interrupts here */
 
   /* Check for overrun */
@@ -180,7 +182,46 @@ public:
     }
 
     virtual void execute() {
+/*        struct timeval t0;
+        struct timeval t1;
+        float elapsed;
+        time_t mtime;
+        char buff[80];
+        struct tm * timeinfo;
 
+        gettimeofday(&t0, 0);
+        
+        for(;;) {
+	const int count = read(fd, buffer, MAXBYTES); //TODO: check when read finished
+		//gettimeofday(&t1, 0);
+   		//elapsed = timedifference_msec(t0, t1);
+		//if (elapsed > 1000) {
+		//	printf("Messages/Second: %i\n", count_msgs);
+		//	gettimeofday(&t0, 0);
+		//	count_msgs = 0;
+		//}
+
+		for (int i = 0; i < count; i++) {
+			if (buffer[i] == '\n') {
+				// decode data and put into struct
+				decode_85(decoded.data, (uint8_t*) buf_decode, 55);
+				//time(&mtime);				
+				//timeinfo = localtime (&mtime);
+				//strftime(buff, sizeof(buff), "%Y-%m-%dT%H:%M:%S.", timeinfo);
+				// print with timestamp formatted in same way as in data from TWB
+				//fprintf(fp, "%s%06ld+02:00,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i\n", buff, t1.tv_usec, decoded.values.accSmooth[0], decoded.values.accSmooth[1], decoded.values.accSmooth[2], decoded.values.gyroADC[0], decoded.values.gyroADC[1], decoded.values.gyroADC[2], decoded.values.baroAlt, decoded.values.baroTemp, decoded.values.magADC[0], decoded.values.magADC[1], decoded.values.magADC[2]);
+                                INFO_MSG((int)decoded.values.accSmooth[0] << ", " << (int)decoded.values.accSmooth[1] << ", " << (int)decoded.values.accSmooth[2] << ", " << decoded.values.gyroADC[0] << ", " << decoded.values.gyroADC[1] << ", " << decoded.values.gyroADC[2] << ", " << decoded.values.baroAlt << ", " << decoded.values.baroTemp << ", " << decoded.values.magADC[0] << ", " << decoded.values.magADC[1] << ", " << decoded.values.magADC[2] << "\n");
+				count_decode = 0;
+				count_msgs++;
+			} else {
+				buf_decode[count_decode] = buffer[i];
+				count_decode++;
+			}
+		}
+	}*/
+        
+        
+        
           for(;;) {
             // dataTwbAvailable = false;
             const int count = read(fd, buffer, MAXBYTES); //TODO: check when read finished
@@ -215,42 +256,51 @@ public:
                         }
                     }
                     // TODO Include KF
-                    /* INFO_MSG(decoded.values.accSmooth[0] << ", " << decoded.values.accSmooth[1] << ", " << decoded.values.accSmooth[2] << ", " << decoded.values.gyroADC[0] << ", " << decoded.values.gyroADC[1] << ", " << decoded.values.gyroADC[2] << ", " << decoded.values.baroAlt << ", " << decoded.values.baroTemp << ", " << decoded.values.magADC[0] << ", " << decoded.values.magADC[1] << ", " << decoded.values.magADC[2] << "\n"); */
+                    INFO_MSG("DRONE");
+                    INFO_MSG((int)decoded.values.accSmooth[0] << ", " << (int)decoded.values.accSmooth[1] << ", " << (int)decoded.values.accSmooth[2] << ", " << decoded.values.gyroADC[0] << ", " << decoded.values.gyroADC[1] << ", " << decoded.values.gyroADC[2] << ", " << decoded.values.baroAlt << ", " << decoded.values.baroTemp << ", " << decoded.values.magADC[0] << ", " << decoded.values.magADC[1] << ", " << decoded.values.magADC[2] << "\n");
                     // Set decoded data from FC sensors
-                    rtU.drone_raw_data[0] = decoded.values.gyroADC[0];
-                    rtU.drone_raw_data[1] = decoded.values.gyroADC[1];
-                    rtU.drone_raw_data[2] = decoded.values.gyroADC[2];
-                    rtU.drone_raw_data[3] = decoded.values.accSmooth[0];
-                    rtU.drone_raw_data[4] = decoded.values.accSmooth[1];
-                    rtU.drone_raw_data[5] = decoded.values.accSmooth[2];
-                    rtU.drone_raw_data[6] = decoded.values.magADC[0];
-                    rtU.drone_raw_data[7] = decoded.values.magADC[1];
-                    rtU.drone_raw_data[8] = decoded.values.magADC[2];
-                    rtU.drone_raw_data[9] = decoded.values.baroAlt;
-                    rtU.drone_raw_data[10] = decoded.values.baroTemp;
-                    rt_OneStep();
+                    rtU.drone_raw_data[0] = (int)decoded.values.gyroADC[0];
+                    rtU.drone_raw_data[1] = (int)decoded.values.gyroADC[1];
+                    rtU.drone_raw_data[2] = (int)decoded.values.gyroADC[2];
+                    rtU.drone_raw_data[3] = (int)decoded.values.accSmooth[0];
+                    rtU.drone_raw_data[4] = (int)decoded.values.accSmooth[1];
+                    rtU.drone_raw_data[5] = (int)decoded.values.accSmooth[2];
+                    rtU.drone_raw_data[6] = (int)decoded.values.magADC[0];
+                    rtU.drone_raw_data[7] = (int)decoded.values.magADC[1];
+                    rtU.drone_raw_data[8] = (int)decoded.values.magADC[2];
+                    rtU.drone_raw_data[9] = (int)decoded.values.baroAlt;
+                    rtU.drone_raw_data[10] = (int)decoded.values.baroTemp;
+                    for (int i = 0; i < 10; i++) {
+                        if (abs(rtU.drone_raw_data[i]) > 30000) {
+                            rtU.enableDrone = false;
+                            INFO_MSG("TREFFER");
+                            break;
+                        }
+                    }
+                    //rt_OneStep();
                     // TODO Process the controller and send the commands to the FC
                     // 0: ROLL, 1: PITCH, 2: YAW, 3: THROTTLE
-                    {
+                    /*{
                       uint8_t inbuf[4] = {0,0,*((uint8_t*)&output.u_z + 1),*((uint8_t*)&output.u_z + 0)}; // 1 byte: ROLL command, 2 byte: 0 = "empty byte" to have 4 bytes for encoding with base85, 3, 4 bytes: value (3: high byte, 4: low byte)
                       encode_85(buf, inbuf, 4);                
                       write(fd, &buf, 4);
                     }
                     {
-                      uint8_t inbuf[4] = {1,0,*((uint8_t*)&output.u_psi + 1),*((uint8_t*)&output.u_psi + 0)};
+                      uint8_t inbuf[4] = {1,0,0xD4,0xC2};//{1,0,*((uint8_t*)&output.u_psi + 1),*((uint8_t*)&output.u_psi + 0)};
                       encode_85(buf, inbuf, 4);                
                       write(fd, &buf, 4);
                     }
                     {
-                      uint8_t inbuf[4] = {2,0,*((uint8_t*)&output.u_phi + 1),*((uint8_t*)&output.u_phi + 0)};
+                      uint8_t inbuf[4] = {2,0,0xD4,0xC2};//{2,0,*((uint8_t*)&output.u_phi + 1),*((uint8_t*)&output.u_phi + 0)};
                       encode_85(buf, inbuf, 4);                
                       write(fd, &buf, 4);
                     }
                     {
-                      uint8_t inbuf[4] = {3,0,*((uint8_t*)&output.u_theta + 1),*((uint8_t*)&output.u_theta + 0)};
+                      //uint8_t inbuf[4] = {3,0,*((uint8_t*)&output.u_theta + 1),*((uint8_t*)&output.u_theta + 0)};
+                      uint8_t inbuf[4] = {3,0,0xD4,0xC2};
                       encode_85(buf, inbuf, 4);                
                       write(fd, &buf, 4);
-                    }
+                    }*/
                     // Cleanup
                     count_decode = 0;
                     count_msgs++;
@@ -332,7 +382,7 @@ int main(int argc, char **argv) {
 
 
   // TTY stuff initialization
-  int fd = open(serialInterface.c_str(), O_RDWR);
+  int fd = open(serialInterface.c_str(), O_RDWR | O_NONBLOCK);
   if (fd < 0) {
     ERROR_MSG("Error opening " << serialInterface << ": " << strerror(errno) << "\n");
     return -1;
