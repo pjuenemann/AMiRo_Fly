@@ -10,6 +10,8 @@
 #define WARNING_MSG_
 #define ERROR_MSG_
 #include <MSG.h>
+#include <termios.h>
+#include <unistd.h>
 
 #include <iostream>
 #include <boost/thread.hpp>
@@ -182,45 +184,6 @@ public:
     }
 
     virtual void execute() {
-/*        struct timeval t0;
-        struct timeval t1;
-        float elapsed;
-        time_t mtime;
-        char buff[80];
-        struct tm * timeinfo;
-
-        gettimeofday(&t0, 0);
-        
-        for(;;) {
-	const int count = read(fd, buffer, MAXBYTES); //TODO: check when read finished
-		//gettimeofday(&t1, 0);
-   		//elapsed = timedifference_msec(t0, t1);
-		//if (elapsed > 1000) {
-		//	printf("Messages/Second: %i\n", count_msgs);
-		//	gettimeofday(&t0, 0);
-		//	count_msgs = 0;
-		//}
-
-		for (int i = 0; i < count; i++) {
-			if (buffer[i] == '\n') {
-				// decode data and put into struct
-				decode_85(decoded.data, (uint8_t*) buf_decode, 55);
-				//time(&mtime);				
-				//timeinfo = localtime (&mtime);
-				//strftime(buff, sizeof(buff), "%Y-%m-%dT%H:%M:%S.", timeinfo);
-				// print with timestamp formatted in same way as in data from TWB
-				//fprintf(fp, "%s%06ld+02:00,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i\n", buff, t1.tv_usec, decoded.values.accSmooth[0], decoded.values.accSmooth[1], decoded.values.accSmooth[2], decoded.values.gyroADC[0], decoded.values.gyroADC[1], decoded.values.gyroADC[2], decoded.values.baroAlt, decoded.values.baroTemp, decoded.values.magADC[0], decoded.values.magADC[1], decoded.values.magADC[2]);
-                                INFO_MSG((int)decoded.values.accSmooth[0] << ", " << (int)decoded.values.accSmooth[1] << ", " << (int)decoded.values.accSmooth[2] << ", " << decoded.values.gyroADC[0] << ", " << decoded.values.gyroADC[1] << ", " << decoded.values.gyroADC[2] << ", " << decoded.values.baroAlt << ", " << decoded.values.baroTemp << ", " << decoded.values.magADC[0] << ", " << decoded.values.magADC[1] << ", " << decoded.values.magADC[2] << "\n");
-				count_decode = 0;
-				count_msgs++;
-			} else {
-				buf_decode[count_decode] = buffer[i];
-				count_decode++;
-			}
-		}
-	}*/
-        
-        
         
           for(;;) {
             // dataTwbAvailable = false;
@@ -271,16 +234,20 @@ public:
                     rtU.drone_raw_data[9] = (int)decoded.values.baroAlt;
                     rtU.drone_raw_data[10] = (int)decoded.values.baroTemp;
                     for (int i = 0; i < 10; i++) {
-                        if (abs(rtU.drone_raw_data[i]) > 30000) {
+                        if (abs(rtU.drone_raw_data[i]) > 32000) {
                             rtU.enableDrone = false;
                             INFO_MSG("TREFFER");
                             break;
                         }
                     }
-                    //rt_OneStep();
+                    tcflush(fd,TCIOFLUSH);
+                    usleep(100000);
+                    rt_OneStep();
                     // TODO Process the controller and send the commands to the FC
                     // 0: ROLL, 1: PITCH, 2: YAW, 3: THROTTLE
-                    /*{
+                    tcflush(fd,TCIOFLUSH);
+                    usleep(100000);
+                    {
                       uint8_t inbuf[4] = {0,0,*((uint8_t*)&output.u_z + 1),*((uint8_t*)&output.u_z + 0)}; // 1 byte: ROLL command, 2 byte: 0 = "empty byte" to have 4 bytes for encoding with base85, 3, 4 bytes: value (3: high byte, 4: low byte)
                       encode_85(buf, inbuf, 4);                
                       write(fd, &buf, 4);
@@ -300,7 +267,9 @@ public:
                       uint8_t inbuf[4] = {3,0,0xD4,0xC2};
                       encode_85(buf, inbuf, 4);                
                       write(fd, &buf, 4);
-                    }*/
+                    }
+                    usleep(100000);
+                    tcflush(fd,TCIOFLUSH);
                     // Cleanup
                     count_decode = 0;
                     count_msgs++;
@@ -382,13 +351,13 @@ int main(int argc, char **argv) {
 
 
   // TTY stuff initialization
-  int fd = open(serialInterface.c_str(), O_RDWR | O_NONBLOCK);
+  /*int fd = open(serialInterface.c_str(), O_RDWR | O_NONBLOCK);
   if (fd < 0) {
     ERROR_MSG("Error opening " << serialInterface << ": " << strerror(errno) << "\n");
     return -1;
   }
   char buf = '#';
-  write(fd, &buf, 1);
+  write(fd, &buf, 1);*/
   
   // Init KF
   PoseEstimationController_initialize();
