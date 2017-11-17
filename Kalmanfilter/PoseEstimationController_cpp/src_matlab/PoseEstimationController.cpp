@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'PoseEstimationController'.
 //
-// Model version                  : 1.20
+// Model version                  : 1.23
 // Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
-// C/C++ source code generated on : Sun Sep 17 13:23:59 2017
+// C/C++ source code generated on : Mon Nov 13 16:01:57 2017
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Custom Processor->Custom
@@ -21,8 +21,6 @@
 #include "PoseEstimationController.h"
 #include "dbiemohljmgdohdb_norm.h"
 #include "rt_atan2d_snf.h"
-#include <MSG.h>
-
 
 // Block signals and states (auto storage)
 DW rtDW;
@@ -347,12 +345,16 @@ void PoseEstimationController_step(void)
   memcpy(&rtDW.UnitDelay[0], &rtDW.UnitDelay_DSTATE[0], 12U * sizeof(real_T));
 
   // FunctionCaller: '<S4>/Function Caller'
-  measurementTWBFcn_h(rtDW.UnitDelay, rtDW.UnitDelay_f);
+  measurementTWBFcn_h(rtDW.UnitDelay, rtDW.FunctionCaller);
+
+  // UnitDelay: '<S9>/Unit Delay'
+  rtDW.rtb_signal1_idx_0 = rtDW.UnitDelay_1_DSTATE[0];
+  rtDW.rtb_signal1_idx_1 = rtDW.UnitDelay_1_DSTATE[1];
 
   // Gain: '<S9>/acc_scale' incorporates:
   //   Inport: '<Root>/drone_raw_data'
 
-  rtDW.rtb_acc_scale_m = 0.0047900390625 * rtU.drone_raw_data[3];
+  rtDW.rtb_acc_scale_idx_0 = 0.0047900390625 * rtU.drone_raw_data[3];
 
   // SignalConversion: '<S19>/TmpSignal ConversionAt SFunction Inport1' incorporates:
   //   Gain: '<S9>/gyro_scale'
@@ -361,50 +363,29 @@ void PoseEstimationController_step(void)
 
   rtDW.TmpSignalConversionAtSFunct[0] = 0.060975609756097567 *
     rtU.drone_raw_data[0];
-  rtDW.TmpSignalConversionAtSFunct[3] = rtDW.rtb_acc_scale_m;
-
-  // Sum: '<S4>/Add'
-  rtDW.rtb_TWB_gain_idx_0 -= rtDW.UnitDelay_f[0];
-
-  // UnitDelay: '<S9>/Unit Delay'
-  rtDW.UnitDelay_f[0] = rtDW.UnitDelay_DSTATE_b[0];
 
   // Gain: '<S9>/acc_scale' incorporates:
   //   Inport: '<Root>/drone_raw_data'
 
-  rtDW.rtb_acc_scale_idx_0 = rtDW.rtb_acc_scale_m;
-  rtDW.rtb_acc_scale_m = 0.0047900390625 * rtU.drone_raw_data[4];
+  rtDW.rtb_acc_scale_idx_1 = 0.0047900390625 * rtU.drone_raw_data[4];
 
   // SignalConversion: '<S19>/TmpSignal ConversionAt SFunction Inport1' incorporates:
-  //   Gain: '<S9>/gyro_scale'
-  //   Inport: '<Root>/drone_raw_data'
-  //   MATLAB Function: '<S9>/MATLAB Function'
-
-  rtDW.TmpSignalConversionAtSFunct[1] = 0.060975609756097567 *
-    rtU.drone_raw_data[1];
-  rtDW.TmpSignalConversionAtSFunct[4] = rtDW.rtb_acc_scale_m;
-
-  // Sum: '<S4>/Add'
-  rtDW.rtb_TWB_gain_idx_1 -= rtDW.UnitDelay_f[1];
-
-  // UnitDelay: '<S9>/Unit Delay'
-  rtDW.UnitDelay_f[1] = rtDW.UnitDelay_DSTATE_b[1];
-
-  // Gain: '<S9>/acc_scale' incorporates:
-  //   Inport: '<Root>/drone_raw_data'
-
-  rtDW.rtb_acc_scale_idx_1 = rtDW.rtb_acc_scale_m;
-  rtDW.rtb_acc_scale_m = 0.0047900390625 * rtU.drone_raw_data[5];
-
-  // SignalConversion: '<S19>/TmpSignal ConversionAt SFunction Inport1' incorporates:
+  //   Constant: '<S9>/Constant'
+  //   Gain: '<S9>/acc_scale'
   //   Gain: '<S9>/gyro_scale'
   //   Gain: '<S9>/mag_scale'
   //   Inport: '<Root>/drone_raw_data'
   //   MATLAB Function: '<S9>/MATLAB Function'
+  //   Sum: '<S9>/Add'
 
+  rtDW.TmpSignalConversionAtSFunct[1] = 0.060975609756097567 *
+    rtU.drone_raw_data[1];
   rtDW.TmpSignalConversionAtSFunct[2] = 0.060975609756097567 *
     rtU.drone_raw_data[2];
-  rtDW.TmpSignalConversionAtSFunct[5] = rtDW.rtb_acc_scale_m;
+  rtDW.TmpSignalConversionAtSFunct[3] = rtDW.rtb_acc_scale_idx_0;
+  rtDW.TmpSignalConversionAtSFunct[4] = rtDW.rtb_acc_scale_idx_1;
+  rtDW.TmpSignalConversionAtSFunct[5] = 0.0047900390625 * rtU.drone_raw_data[5]
+    - 9.81;
   for (rtDW.i = 0; rtDW.i < 9; rtDW.i++) {
     rtDW.TmpSignalConversionAtSFunct[rtDW.i + 6] = 6.0E-7 *
       rtU.drone_raw_data[rtDW.i];
@@ -852,7 +833,7 @@ void PoseEstimationController_step(void)
   //      q = q + qDot * obj.SamplePeriod;
   //      obj.Quaternion = q / norm(q); % normalise quaternion
   //  end
-  measurementDroneFcn_o(rtDW.UnitDelay, rtDW.FunctionCaller);
+  measurementDroneFcn_o(rtDW.UnitDelay, rtDW.FunctionCaller_b);
 
   // Trigonometry: '<S8>/cos'
   rtDW.cos_g = std::cos(rtDW.UnitDelay[10]);
@@ -1048,10 +1029,12 @@ void PoseEstimationController_step(void)
       }
     }
 
-    rtDW.rtb_TWB_gain_idx_0 -= rtDW.b_z_f[0];
-    rtDW.rtb_TWB_gain_idx_1 -= rtDW.b_z_f[1];
-    rtDW.rtb_TWB_gain_idx_2 = (rtDW.rtb_TWB_gain_idx_2 - rtDW.UnitDelay_f[2]) -
-      rtDW.b_z_f[2];
+    rtDW.rtb_TWB_gain_idx_0 = (rtDW.rtb_TWB_gain_idx_0 - rtDW.FunctionCaller[0])
+      - rtDW.b_z_f[0];
+    rtDW.rtb_TWB_gain_idx_1 = (rtDW.rtb_TWB_gain_idx_1 - rtDW.FunctionCaller[1])
+      - rtDW.b_z_f[1];
+    rtDW.rtb_TWB_gain_idx_2 = (rtDW.rtb_TWB_gain_idx_2 - rtDW.FunctionCaller[2])
+      - rtDW.b_z_f[2];
     for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
       // DataStoreWrite: '<S10>/Data Store WriteP' incorporates:
       //   MATLAB Function: '<S10>/Correct'
@@ -1174,8 +1157,8 @@ void PoseEstimationController_step(void)
     // Sum: '<S3>/Add' incorporates:
     //   MATLAB Function: '<S9>/MATLAB Function'
 
-    rtDW.imz_p[0] = rtDW.UnitDelay_f[0];
-    rtDW.imz_p[1] = rtDW.UnitDelay_f[1];
+    rtDW.imz_p[0] = rtDW.rtb_signal1_idx_0;
+    rtDW.imz_p[1] = rtDW.rtb_signal1_idx_1;
     rtDW.imz_p[2] = rtDW.accelerometer_idx_0;
     rtDW.imz_p[3] = rtDW.accelerometer_idx_1;
     rtDW.imz_p[4] = rtDW.accelerometer_idx_2;
@@ -1184,8 +1167,8 @@ void PoseEstimationController_step(void)
     //   Sum: '<S3>/Add'
 
     for (rtDW.i0 = 0; rtDW.i0 < 5; rtDW.i0++) {
-      rtDW.rtb_UnitDelay_f_c[rtDW.i0] = (rtDW.imz_p[rtDW.i0] -
-        rtDW.FunctionCaller[rtDW.i0]) - rtDW.b_z[rtDW.i0];
+      rtDW.rtb_signal1_c[rtDW.i0] = (rtDW.imz_p[rtDW.i0] -
+        rtDW.FunctionCaller_b[rtDW.i0]) - rtDW.b_z[rtDW.i0];
     }
 
     // DataStoreWrite: '<S11>/Data Store WriteX' incorporates:
@@ -1196,7 +1179,7 @@ void PoseEstimationController_step(void)
       rtDW.cos_g = 0.0;
       for (rtDW.i1 = 0; rtDW.i1 < 5; rtDW.i1++) {
         rtDW.cos_g += rtDW.gain[12 * rtDW.i1 + rtDW.i0] *
-          rtDW.rtb_UnitDelay_f_c[rtDW.i1];
+          rtDW.rtb_signal1_c[rtDW.i1];
       }
 
       rtDW.x[rtDW.i0] += rtDW.cos_g;
@@ -1261,9 +1244,8 @@ void PoseEstimationController_step(void)
 
   // Bias: '<S1>/Bias' incorporates:
   //   Gain: '<S1>/Gain8'
-  printf("V: %i\n", rtDW.Add3);
-  rtDW.rtb_TWB_gain_idx_0 = 10.0 * rtDW.Add3 + 1500.0;
-  printf("N: %i\n", rtDW.rtb_TWB_gain_idx_0);
+
+  rtDW.rtb_TWB_gain_idx_0 = 30.0 * rtDW.Add3 + 1500.0;
 
   // Saturate: '<S1>/Saturation'
   if (rtDW.rtb_TWB_gain_idx_0 > 3000.0) {
@@ -1276,7 +1258,7 @@ void PoseEstimationController_step(void)
     // Outport: '<Root>/u'
     rtY.u[0] = rtDW.rtb_TWB_gain_idx_0;
   }
-  printf("u: %i\n", rtY.u[0]);
+
   // Bias: '<S1>/Bias' incorporates:
   //   Gain: '<S1>/Gain8'
 
@@ -1364,9 +1346,8 @@ void PoseEstimationController_step(void)
   // End of Outputs for SubSystem: '<S1>/Extended Kalman Filter'
 
   // Update for UnitDelay: '<S9>/Unit Delay'
-  rtDW.UnitDelay_DSTATE_b[0] = rtDW.rtb_acc_scale_idx_0;
-  rtDW.UnitDelay_DSTATE_b[1] = rtDW.rtb_acc_scale_idx_1;
-  rtDW.UnitDelay_DSTATE_b[2] = rtDW.rtb_acc_scale_m;
+  rtDW.UnitDelay_1_DSTATE[0] = rtDW.rtb_acc_scale_idx_0;
+  rtDW.UnitDelay_1_DSTATE[1] = rtDW.rtb_acc_scale_idx_1;
 }
 
 // Model initialize function

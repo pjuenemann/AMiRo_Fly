@@ -110,7 +110,7 @@ void rt_OneStep(void)
 {
   static boolean_T OverrunFlag = false;
   if (rtU.enableDrone) {
-      INFO_MSG("Filter");
+      INFO_MSG("Filterschritt");
   }
   /* Disable interrupts here */
 
@@ -143,7 +143,9 @@ void rt_OneStep(void)
   output.u_phi = rtY.u[2];
   output.u_theta = rtY.u[3];
   /* Get state estimation after KF step */
+  INFO_MSG("Zustandsvorhersage für Drohne");
   INFO_MSG(rtY.x[0] << ", " << rtY.x[1] << ", " << rtY.x[2] << ", " << rtY.x[3] << ", " << rtY.x[4] << ", " << rtY.x[5] << ", " << rtY.x[6] << ", " << rtY.x[7] << ", " << rtY.x[8] << ", " << rtY.x[9] << ", " << rtY.x[10] << ", " << rtY.x[11]);
+  INFO_MSG("Steueroutputs");
   INFO_MSG((int) output.u_z << ", " << (int) output.u_psi << ", " << (int) output.u_phi << ", " << (int) output.u_theta);
   /* Indicate task complete */
   OverrunFlag = false;
@@ -188,7 +190,7 @@ public:
           for(;;) {
             // dataTwbAvailable = false;
             const int count = read(fd, buffer, MAXBYTES); //TODO: check when read finished
-            INFO_MSG(count);
+            INFO_MSG("Number of bytes: " << count);
             // if (fd == 0) dann überprüfe buffer 
             // Decode
             rtU.enableDrone = false;
@@ -219,8 +221,8 @@ public:
                         }
                     }
                     // TODO Include KF
-                    INFO_MSG("DRONE");
-                    INFO_MSG((int)decoded.values.accSmooth[0] << ", " << (int)decoded.values.accSmooth[1] << ", " << (int)decoded.values.accSmooth[2] << ", " << decoded.values.gyroADC[0] << ", " << decoded.values.gyroADC[1] << ", " << decoded.values.gyroADC[2] << ", " << decoded.values.baroAlt << ", " << decoded.values.baroTemp << ", " << decoded.values.magADC[0] << ", " << decoded.values.magADC[1] << ", " << decoded.values.magADC[2] << "\n");
+                    INFO_MSG("Sensorwerte Drohne");
+                    INFO_MSG("AccX: " << decoded.values.accSmooth[0] << ", AccY: " << decoded.values.accSmooth[1] << ", AccZ: " << (int)decoded.values.accSmooth[2] << ", GyroX: " << decoded.values.gyroADC[0] << ", GyroY: " << decoded.values.gyroADC[1] << ", GyroZ: " << decoded.values.gyroADC[2] << ", BaroAlt: " << decoded.values.baroAlt << ", BaroTemp: " << decoded.values.baroTemp << ", MagX: " << decoded.values.magADC[0] << ", MagY: " << decoded.values.magADC[1] << ", MagZ: " << decoded.values.magADC[2] << "\n");
                     // Set decoded data from FC sensors
                     rtU.drone_raw_data[0] = (int)decoded.values.gyroADC[0];
                     rtU.drone_raw_data[1] = (int)decoded.values.gyroADC[1];
@@ -236,17 +238,17 @@ public:
                     for (int i = 0; i < 10; i++) {
                         if (abs(rtU.drone_raw_data[i]) > 32000) {
                             rtU.enableDrone = false;
-                            INFO_MSG("TREFFER");
+                            INFO_MSG("Fehlerhafte Sensorwerte!!!");
                             break;
                         }
                     }
                     tcflush(fd,TCIOFLUSH);
-                    usleep(100000);
-                    rt_OneStep();
+                    usleep(1000);
+                    //rt_OneStep();
                     // TODO Process the controller and send the commands to the FC
                     // 0: ROLL, 1: PITCH, 2: YAW, 3: THROTTLE
-                    tcflush(fd,TCIOFLUSH);
-                    usleep(100000);
+                    /*tcflush(fd,TCIOFLUSH);
+                    usleep(1000);
                     {
                       uint8_t inbuf[4] = {0,0,*((uint8_t*)&output.u_z + 1),*((uint8_t*)&output.u_z + 0)}; // 1 byte: ROLL command, 2 byte: 0 = "empty byte" to have 4 bytes for encoding with base85, 3, 4 bytes: value (3: high byte, 4: low byte)
                       encode_85(buf, inbuf, 4);                
@@ -267,8 +269,8 @@ public:
                       uint8_t inbuf[4] = {3,0,0xD4,0xC2};
                       encode_85(buf, inbuf, 4);                
                       write(fd, &buf, 4);
-                    }
-                    usleep(100000);
+                    }*/
+                    usleep(1000);
                     tcflush(fd,TCIOFLUSH);
                     // Cleanup
                     count_decode = 0;

@@ -127,11 +127,11 @@ int main(int argc, char* argv[]) {
     char buff[80];
     struct tm * timeinfo;
 
-    gettimeofday(&t0, 0);
+    /*gettimeofday(&t0, 0);
     FILE *fp;
     fp=fopen(argv[1], "w");
     fprintf(fp, "timestamp,accSmooth[0],accSmooth[1],accSmooth[2],gyroADC[0],gyroADC[1],gyroADC[2],baroAlt,baroTemp,magADC[0],magADC[1],magADC[2]\n");
-
+*/
     while(1) {
 		count = read(fd, buffer, MAXBYTES); //TODO: check when read finished
 		gettimeofday(&t1, 0);
@@ -150,7 +150,7 @@ int main(int argc, char* argv[]) {
 				timeinfo = localtime (&mtime);
 				strftime(buff, sizeof(buff), "%Y-%m-%dT%H:%M:%S.", timeinfo);
 				// print with timestamp formatted in same way as in data from TWB
-				fprintf(fp, "%s%06ld+02:00,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i\n", buff, t1.tv_usec, decoded.values.accSmooth[0], decoded.values.accSmooth[1], decoded.values.accSmooth[2], decoded.values.gyroADC[0], decoded.values.gyroADC[1], decoded.values.gyroADC[2], decoded.values.baroAlt, decoded.values.baroTemp, decoded.values.magADC[0], decoded.values.magADC[1], decoded.values.magADC[2]);
+				printf("%s%06ld+02:00,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i\n", buff, t1.tv_usec, decoded.values.accSmooth[0], decoded.values.accSmooth[1], decoded.values.accSmooth[2], decoded.values.gyroADC[0], decoded.values.gyroADC[1], decoded.values.gyroADC[2], decoded.values.baroAlt, decoded.values.baroTemp, decoded.values.magADC[0], decoded.values.magADC[1], decoded.values.magADC[2]);
 				count_decode = 0;
 				count_msgs++;
 			} else {
@@ -159,6 +159,6 @@ int main(int argc, char* argv[]) {
 			}
 		}
 	}
-	fclose(fp);
+	//fclose(fp);
     return 0;
 }
