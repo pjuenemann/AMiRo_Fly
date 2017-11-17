@@ -169,17 +169,12 @@ euler2Quaternion( const double roll,
 }
 
 
-class task: public rsc::threading::PeriodicTask {
+/*class task: public rsc::threading::PeriodicTask {
 public:
 
     task(const std::string interface, boost::shared_ptr<rsc::threading::SynchronizedQueue<boost::shared_ptr<twbTracking::proto::ObjectList>>>trackingQueue, int32_t markerId, const unsigned int& ms = 10) :
             rsc::threading::PeriodicTask(ms), trackingQueue(trackingQueue), markerId(markerId) {
-        fd = open(interface.c_str(), O_RDWR);
-        if (fd < 0) {
-            ERROR_MSG("Error opening " << interface << ": " << strerror(errno) << "\n");
-        }
-        char buf = '#';
-        write(fd, &buf, 1);
+        
     }
 
     virtual ~task() {
@@ -187,107 +182,14 @@ public:
 
     virtual void execute() {
         
-          for(;;) {
-            // dataTwbAvailable = false;
-            const int count = read(fd, buffer, MAXBYTES); //TODO: check when read finished
-            INFO_MSG("Number of bytes: " << count);
-            // if (fd == 0) dann überprüfe buffer 
-            // Decode
-            rtU.enableDrone = false;
-            for (int i = 0; i < count; i++) {
-                if (buffer[i] == '\n') {    //buffer leer, dann dekodieren und Berechnungen damit starten
-                    // Decode data and put into struct
-                    rtU.enableDrone = true;
-                    decode_85(decoded.data, (uint8_t*) buf_decode, 55);
-                    // Check for TWB data
-                    // TODO Add non blocking request for TWB data
-                    trackingObjectList = twbTrackingProcess::getNextTrackingObjects(trackingQueue, -1);
-                    // überprüfen ob liste leer, dann nur mit FC Daten ausführen
-                    rtU.enableTWB = false;
-                    if (trackingObjectList.size() != 0) {
-                        if (trackingObjectList.at(0).id >= 0) {
-                            for (int idx = 0; idx < trackingObjectList.size(); idx++) {
-                                if ( trackingObjectList.at(idx).id == markerId) {
-                                    // TODO Do something with the coordinates
-                                    // dataTwbAvailable = true;
-                                    rtU.enableTWB = true;
-                                    dataTWB.posX = trackingObjectList.at(idx).pos.x;
-                                    dataTWB.posY = trackingObjectList.at(idx).pos.y;
-                                    dataTWB.posZ = trackingObjectList.at(idx).pos.z;
-                                    //  trackingObjectList.at(idx).pos.theta;
-                                }
-                            
-                            }
-                        }
-                    }
-                    // TODO Include KF
-                    INFO_MSG("Sensorwerte Drohne");
-                    INFO_MSG("AccX: " << decoded.values.accSmooth[0] << ", AccY: " << decoded.values.accSmooth[1] << ", AccZ: " << (int)decoded.values.accSmooth[2] << ", GyroX: " << decoded.values.gyroADC[0] << ", GyroY: " << decoded.values.gyroADC[1] << ", GyroZ: " << decoded.values.gyroADC[2] << ", BaroAlt: " << decoded.values.baroAlt << ", BaroTemp: " << decoded.values.baroTemp << ", MagX: " << decoded.values.magADC[0] << ", MagY: " << decoded.values.magADC[1] << ", MagZ: " << decoded.values.magADC[2] << "\n");
-                    // Set decoded data from FC sensors
-                    rtU.drone_raw_data[0] = (int)decoded.values.gyroADC[0];
-                    rtU.drone_raw_data[1] = (int)decoded.values.gyroADC[1];
-                    rtU.drone_raw_data[2] = (int)decoded.values.gyroADC[2];
-                    rtU.drone_raw_data[3] = (int)decoded.values.accSmooth[0];
-                    rtU.drone_raw_data[4] = (int)decoded.values.accSmooth[1];
-                    rtU.drone_raw_data[5] = (int)decoded.values.accSmooth[2];
-                    rtU.drone_raw_data[6] = (int)decoded.values.magADC[0];
-                    rtU.drone_raw_data[7] = (int)decoded.values.magADC[1];
-                    rtU.drone_raw_data[8] = (int)decoded.values.magADC[2];
-                    rtU.drone_raw_data[9] = (int)decoded.values.baroAlt;
-                    rtU.drone_raw_data[10] = (int)decoded.values.baroTemp;
-                    for (int i = 0; i < 10; i++) {
-                        if (abs(rtU.drone_raw_data[i]) > 32000) {
-                            rtU.enableDrone = false;
-                            INFO_MSG("Fehlerhafte Sensorwerte!!!");
-                            break;
-                        }
-                    }
-                    tcflush(fd,TCIOFLUSH);
-                    usleep(1000);
-                    //rt_OneStep();
-                    // TODO Process the controller and send the commands to the FC
-                    // 0: ROLL, 1: PITCH, 2: YAW, 3: THROTTLE
-                    /*tcflush(fd,TCIOFLUSH);
-                    usleep(1000);
-                    {
-                      uint8_t inbuf[4] = {0,0,*((uint8_t*)&output.u_z + 1),*((uint8_t*)&output.u_z + 0)}; // 1 byte: ROLL command, 2 byte: 0 = "empty byte" to have 4 bytes for encoding with base85, 3, 4 bytes: value (3: high byte, 4: low byte)
-                      encode_85(buf, inbuf, 4);                
-                      write(fd, &buf, 4);
-                    }
-                    {
-                      uint8_t inbuf[4] = {1,0,0xD4,0xC2};//{1,0,*((uint8_t*)&output.u_psi + 1),*((uint8_t*)&output.u_psi + 0)};
-                      encode_85(buf, inbuf, 4);                
-                      write(fd, &buf, 4);
-                    }
-                    {
-                      uint8_t inbuf[4] = {2,0,0xD4,0xC2};//{2,0,*((uint8_t*)&output.u_phi + 1),*((uint8_t*)&output.u_phi + 0)};
-                      encode_85(buf, inbuf, 4);                
-                      write(fd, &buf, 4);
-                    }
-                    {
-                      //uint8_t inbuf[4] = {3,0,*((uint8_t*)&output.u_theta + 1),*((uint8_t*)&output.u_theta + 0)};
-                      uint8_t inbuf[4] = {3,0,0xD4,0xC2};
-                      encode_85(buf, inbuf, 4);                
-                      write(fd, &buf, 4);
-                    }*/
-                    usleep(1000);
-                    tcflush(fd,TCIOFLUSH);
-                    // Cleanup
-                    count_decode = 0;
-                    count_msgs++;
-                    break;
-                } else {    //Solange noch was in buffer ist, fülle damit buf_decode
-                    buf_decode[count_decode] = buffer[i];
-                    count_decode++;
-                }
-            }
-        }
+          
+            
 
     }
 
 private:
 
-    int fd;
+    /*int fd;
     boost::shared_ptr<rsc::threading::SynchronizedQueue<boost::shared_ptr<twbTracking::proto::ObjectList>>> trackingQueue;
     int32_t markerId;
     char buffer[MAXBYTES];
@@ -297,13 +199,24 @@ private:
     int count_decode = 0;
     int count_msgs = 0;
     twbTracking::proto::ObjectList trackingPoseList;
-    std::vector<twbTrackingProcess::TrackingObject> trackingObjectList;
+    std::vector<twbTrackingProcess::TrackingObject> trackingObjectList;*/
     // bool dataTwbAvailable;
 
-};
+//};
 
 int main(int argc, char **argv) {
   INFO_MSG("")
+  //int fd;
+    //boost::shared_ptr<rsc::threading::SynchronizedQueue<boost::shared_ptr<twbTracking::proto::ObjectList>>> trackingQueue;
+    //int32_t markerId;
+    //char buffer[MAXBYTES];
+    //char buf_decode[55];
+    //char buf;
+    //sensorData_t decoded;
+    //int count_decode = 0;
+    //int count_msgs = 0;
+    twbTracking::proto::ObjectList trackingPoseList;
+    std::vector<twbTrackingProcess::TrackingObject> trackingObjectList;
   // Handle program options
   namespace po = boost::program_options;
   
@@ -366,7 +279,121 @@ int main(int argc, char **argv) {
   
   // Periodic task excecution
   rsc::threading::ThreadedTaskExecutor exec;
-  exec.schedule(rsc::threading::TaskPtr(new task(serialInterface, trackingQueue, markerId, rsbPeriod)));
+  //exec.schedule(rsc::threading::TaskPtr(new task(serialInterface, trackingQueue, markerId, rsbPeriod)));
+  char buffer[MAXBYTES];
+	char buf_decode[55];
+	sensorData_t decoded;
+	int count, count_decode, count_msgs;
+        int fd = open("/dev/ttyACM0", O_RDWR);
+	char buf = '#';
+	uint8_t buff[5];
+	write(fd, &buf, 1);
+	count_decode = 0;
+	count_msgs = 0;
+
+   	/*gettimeofday(&t0, 0);
+	FILE *fp;
+	fp=fopen(argv[1], "w");
+	fprintf(fp, "timestamp,accSmooth[0],accSmooth[1],accSmooth[2],gyroADC[0],gyroADC[1],gyroADC[2],baroAlt,baroTemp,magADC[0],magADC[1],magADC[2]\n");
+*/
+    while(1) {
+		count = read(fd, buffer, MAXBYTES); //TODO: check when read finished
+		for (int i = 0; i < count; i++) {
+                        rtU.enableDrone = false;
+			if (buffer[i] == '\n') {
+				// decode data and put into struct
+				decode_85(decoded.data, (uint8_t*) buf_decode, 55);
+
+				printf("%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i\n", decoded.values.accSmooth[0], decoded.values.accSmooth[1], decoded.values.accSmooth[2], decoded.values.gyroADC[0], decoded.values.gyroADC[1], decoded.values.gyroADC[2], decoded.values.baroAlt, decoded.values.baroTemp, decoded.values.magADC[0], decoded.values.magADC[1], decoded.values.magADC[2]);
+                                
+                                
+                            // Decode data and put into struct
+                            rtU.enableDrone = true;
+
+                            //INFO_MSG("Sensorwerte Drohne!!!!!");
+                            //INFO_MSG("AccX: " << decoded.values.accSmooth[0] << ", AccY: " << decoded.values.accSmooth[1] << ", AccZ: " << (int)decoded.values.accSmooth[2] << ", GyroX: " << decoded.values.gyroADC[0] << ", GyroY: " << decoded.values.gyroADC[1] << ", GyroZ: " << decoded.values.gyroADC[2] << ", BaroAlt: " << decoded.values.baroAlt << ", BaroTemp: " << decoded.values.baroTemp << ", MagX: " << decoded.values.magADC[0] << ", MagY: " << decoded.values.magADC[1] << ", MagZ: " << decoded.values.magADC[2] << "\n");
+                            // Set decoded data from FC sensors
+                            rtU.drone_raw_data[0] = (int)decoded.values.gyroADC[0];
+                            rtU.drone_raw_data[1] = (int)decoded.values.gyroADC[1];
+                            rtU.drone_raw_data[2] = (int)decoded.values.gyroADC[2];
+                            rtU.drone_raw_data[3] = (int)decoded.values.accSmooth[0];
+                            rtU.drone_raw_data[4] = (int)decoded.values.accSmooth[1];
+                            rtU.drone_raw_data[5] = (int)decoded.values.accSmooth[2];
+                            rtU.drone_raw_data[6] = (int)decoded.values.magADC[0];
+                            rtU.drone_raw_data[7] = (int)decoded.values.magADC[1];
+                            rtU.drone_raw_data[8] = (int)decoded.values.magADC[2];
+                            rtU.drone_raw_data[9] = (int)decoded.values.baroAlt;
+                            rtU.drone_raw_data[10] = (int)decoded.values.baroTemp;
+                            // Check for TWB data
+                            // TODO Add non blocking request for TWB data
+                            trackingObjectList = twbTrackingProcess::getNextTrackingObjects(trackingQueue, -1);
+                            // überprüfen ob liste leer, dann nur mit FC Daten ausführen
+                            rtU.enableTWB = false;
+                            if (trackingObjectList.size() != 0) {
+                                if (trackingObjectList.at(0).id >= 0) {
+                                    for (int idx = 0; idx < trackingObjectList.size(); idx++) {
+                                        if ( trackingObjectList.at(idx).id == markerId) {
+                                            // TODO Do something with the coordinates
+                                            // dataTwbAvailable = true;
+                                            rtU.enableTWB = true;
+                                            dataTWB.posX = trackingObjectList.at(idx).pos.x;
+                                            dataTWB.posY = trackingObjectList.at(idx).pos.y;
+                                            dataTWB.posZ = trackingObjectList.at(idx).pos.z;
+                                            //  trackingObjectList.at(idx).pos.theta;
+                                        }
+                                    }
+                                }
+                            }
+    
+
+                            // TODO Include KF
+                            
+                            /*for (int i = 0; i < 10; i++) {
+                                if (abs(rtU.drone_raw_data[i]) > 32000) {
+                                    rtU.enableDrone = false;
+                                    INFO_MSG("Fehlerhafte Sensorwerte!!!");
+                                    break;
+                                }
+                            }
+                            tcflush(fd,TCIOFLUSH);
+                            usleep(1000);*/
+                            rt_OneStep();
+                            // TODO Process the controller and send the commands to the FC
+                            // 0: ROLL, 1: PITCH, 2: YAW, 3: THROTTLE
+                            //tcflush(fd,TCIOFLUSH);
+                            //usleep(1000);
+                            {
+                            uint8_t inbuf[4] = {0,0,*((uint8_t*)&output.u_z + 1),*((uint8_t*)&output.u_z + 0)}; // 1 byte: ROLL command, 2 byte: 0 = "empty byte" to have 4 bytes for encoding with base85, 3, 4 bytes: value (3: high byte, 4: low byte)
+                            encode_85(buff, inbuf, 4);                
+                            write(fd, buff, 4);
+                            }
+                            {
+                            uint8_t inbuf[4] = {1,0,0xD4,0xC2};//{1,0,*((uint8_t*)&output.u_psi + 1),*((uint8_t*)&output.u_psi + 0)};
+                            encode_85(buff, inbuf, 4);                
+                            write(fd, buff, 4);
+                            }
+                            {
+                            uint8_t inbuf[4] = {2,0,0xD4,0xC2};//{2,0,*((uint8_t*)&output.u_phi + 1),*((uint8_t*)&output.u_phi + 0)};
+                            encode_85(buff, inbuf, 4);                
+                            write(fd, buff, 4);
+                            }
+                            {
+                            //uint8_t inbuf[4] = {3,0,*((uint8_t*)&output.u_theta + 1),*((uint8_t*)&output.u_theta + 0)};
+                            uint8_t inbuf[4] = {3,0,0xD4,0xC2};
+                            encode_85(buff, inbuf, 4);                
+                            write(fd, buff, 4);
+                            }
+                            //usleep(1000);
+                            //tcflush(fd,TCIOFLUSH);
+				count_decode = 0;
+				count_msgs++;
+			} else {
+				buf_decode[count_decode] = buffer[i];
+				count_decode++;
+			}
+		}
+	}
+
 
   // Wait until finish
   rsc::misc::initSignalWaiter();
