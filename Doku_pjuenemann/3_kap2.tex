@@ -1,0 +1,104 @@
+\section{Modellbeschreibung}\label{kap3}
+In diesem Kapitel wird das Modell für die Zustandsschätzung und Positionskontrolle einer Drohne im dreidimensionalen Raum nach Santana et al. \cite{} beschrieben. Es handelt sich dabei um ein Modell, das mit Hilfe eines Extended Kalman Filters (EKF) eine Schätzung für die inneren Zustände des Drohnensystems vornimmt und diese mit Messdaten der Telewerkbank und des Flight Controllers korrigiert. Anschließend können die Steuersignale der Drohne so geregelt, dass diese in ihrer Position kontrolliert werden kann. Dies geschieht mittels vier PD-Reglern, die jeweils an ein Steuersignal gekoppelt sind. Das gesamte Modell ist in der Mathworks Entwicklungsumgebung Simulink beschrieben. Zudem wurde MatLab verwendet, um den EKF zu parametrisieren.
+
+\subsection{Extended Kalman Filter}
+Der Extended Kalman-Filter ist eine Erweiterung für nichtlineare Modelle, die aus dem ursprünglichen Kalman-Filter hervorgeht. Dieser ist ein mathematisches Modell von Rudolf E. Kalman, das zur Zustandsschätzung beziehungsweise -vorhersage dient (Zitat Daniel Rudolph). Hinter dem Filter verbirgt sich ein Algorithmus, der mit Hilfe eines Prädiktor-Schritts eine Zustandsschätzung für den nächsten Zeitschritt ermittelt. In dem darauffolgenden Korrektor-Schritt wird diese Schätzung mit aktuellen Sensordaten korrigiert und verbessert. Die sequentielle Abfolge des Prädiktor- und Korrektor-Schritts mitsamt der dazugehörigen Formeln ist in Abb 4.3 dargestellt.\\\\ 
+
+Abbildung 4.3\\\\
+
+Da es sich bei Santana et al. um ein nichtlineares Modell handelt, wird der Extended Kalman-Filter verwendet. Dieser basiert auf den Zustandsgleichung $x_k$ für die Zustandsschätzung und $z_k$ für den Messterm (Daniel).
+\begin{flalign}
+x_k &= f(\textbf{x}_{k-1}, \textbf{u}_{k-1}) + w_{k-1}\\\
+z_k &= h(\textbf{x}_k) + v_k
+\end{flalign}
+Dabei repräsentieren $f$ und $h$ differenzierbare, nichtlineare Funktionen für den Zustandsübergang sowie das Sensormodell zu einem diskreten Zeitpunkt $k$. $w$ und $v$ beschreiben das gaußsche System- beziehungsweise Messrauschen.
+
+\subsubsection{Modell der Zustandsschätzung}\label{zustandsschätzung}
+Als Zustandsvektor des Systems ist hier 
+\begin{equation}
+x = [x \\\ y \\\ z \\\ \dot{x} \\\ \dot{y} \\\ \dot{z} \\\ v_x \\\ v_y \\\ \phi \\\ \theta \\\ \psi \\\ \dot{\psi}], 
+\end{equation}
+gewählt, wobei $x, y, z, \dot{x}, \dot{y}$ und $\dot{z}$ die linearen Positionen (in \unit{m}) und Geschwindigkeiten (in $\unit{\frac{m}{s}}$) im dreidimensionalen Referenzkoordinatensystem sind. $v_x$ und $v_y$ repräsentieren die linearen Geschwindigkeiten  der Drohne (in $\unit{\frac{m}{s}}$) in ihrem eigenen Referenzsystem. 
+$\phi, \theta, \psi$ und $\dot{\psi}$ sind die Rotationen (in $\unit{^\circ}$) um die Achsen des Systems beziehungsweise die Rotationsgeschwindigkeit um die $z$-Achse (in $\unit{\frac{^\circ}{s}}$).\\\\
+Als Gleichung für den Zustandsübergang ist
+\begin{equation}
+\left( \begin{array}{c}x_{k+1} \\\ y_{k+1} \\\ z_{k+1} \\\ \dot{x}_{k+1} \\\ \dot{y}_{k+1} \\\ \dot{z}_{k+1} \\\ v_{x_{k+1}} \\\ v_{y_{k+1}} \\\ \phi_{k+1} \\\ \theta_{k+1} \\\ \psi_{k+1} \\\ \dot{\psi}_{k+1} \end{array} \right) = \left( \begin{array}{c} x_k + \delta t \cdot \dot{x}_k\ \\\ y_k + \delta t \cdot \dot{y}_k \\\ z_k + \delta t \cdot \dot{z}_k \\\ c_{\psi_k} \cdot v_{x_k} - s_{\psi_k} \cdot v_{y_k} \\\ s_{\psi_k} \cdot v_{x_k} + c_{\psi_k} \cdot v_{y_k} \\\ \dot{z} + \delta t \cdot \ddot{z}_k(\textbf{x},\textbf{u}) \\\ v_{x_k} + \delta t \cdot \dot{v}_{x_k}(\textbf{x}) \\\  v_{y_k} + \delta t \cdot \dot{v}_{y_k}(\textbf{x}) \\\  \phi_k + \delta t \cdot \dot{\phi_k}(\textbf{x},\textbf{u}) \\\  \theta_k + \delta t \cdot \dot{\theta_k}(\textbf{x},\textbf{u}) \\\ {\psi_k} + \delta t \cdot \dot{\psi_k} \\\ \dot{\psi_k} + \delta t \cdot \ddot{\psi_k}(\textbf{x},\textbf{u}) \end{array}\right),
+\end{equation}
+wobei $c_\psi$ für $\cos(\psi)$ und $s_\psi$ für $\sin(\psi)$ sowie $\delta t$ für die Dauer eines diskreten Zeitschritts (in \unit{s}) stehen. Des Weiteren werden $\dot{v}_{x_k}$ und $\dot{v}_{y_k}$ mit Hilfe der Funktionen 
+\begin{flalign}
+\dot{v}_{x} &= K_1(s_\psi s_\phi c_\theta + c_\psi s_\theta) - K_2 v_x\\
+\dot{v}_{y} &= K_3(-c_\psi s_\phi c_\theta + s_\psi s_\theta) - K_4 v_y,
+\end{flalign}
+dargestellt. $K_1, K_2, K_3$ und $K_4$ sind dabei Konstanten, die experimentell ermittelt werden müssen. Die übrigen Funktionen $\ddot{z}_k(\textbf{x},\textbf{u}), \dot{\phi_k}(\textbf{x},\textbf{u}), \dot{\theta_k}(\textbf{x},\textbf{u})$ und $\ddot{\psi_k}(\textbf{x},\textbf{u})$ lassen sich ebenso mit Hilfe der Konstanten $K_5$ bis $K_{12}$ wie folgt darstellen:
+\begin{flalign}
+\ddot{z}_k(\textbf{x},\textbf{u}) &= K_5 u_{\dot{z}} - K6 \dot{z}\\
+\ddot{\psi_k}(\textbf{x},\textbf{u}) &= K_7 u_{\dot{\psi}} - K_8 \dot{\psi}\\
+\dot{\phi_k}(\textbf{x},\textbf{u}) &= K_9 u_\phi - K_{10} \phi\\
+\dot{\theta_k}(\textbf{x},\textbf{u}) &= K_{11} u_\theta - K_{12} \theta
+\end{flalign}
+
+\subsubsection{Sensormodell}
+Neben dem Modell zur Zustandsschätzung benötigt der EKF eines zur Beobachtung des Systems, ein Sensormodell. Abweichend zu Santana et al. wird in diesem Projekt ausschließlich ein Modell mit zwei Messdatenvektoren
+\begin{equation}
+z_{k_{TWB}} = \left( \begin{array}{c} x \\ y \\ z \end{array}\right) \text{  und  }
+z_{k_{Drone}} = \left( \begin{array}{c} v_x \\ v_y \\ \phi \\ \theta \\ \psi  \end{array}\right),
+\end{equation} 
+verwendet. Die Positionen $x, y$ und $z$ der Drohne werden von der Telewerkbank ermittelt, wohingegen $v_x, v_y, \phi, \theta$ und $\psi$ durch die Sensoren auf dem Flight Controller gemessen werden.\\\\
+Da es passieren kann, dass Messdaten der TWB und des Flight Controllers nicht gleichzeitig zur Verfügung stehen, wird der Korrektor-Schritt separat für die jeweiligen Messdatenpakete angewandt. Lediglich die Beobachtungsmatrix $H$ unterscheidet sich bei der Berechnung.
+\setcounter{MaxMatrixCols}{20}
+\begin{flalign}
+y_k &= z_k - H x_k\\
+\text{mit } H_{TWB} &= \begin{bmatrix}
+1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{bmatrix}\\
+\text{und } H_{Drone} &= \begin{bmatrix}
+0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0
+\end{bmatrix}
+\end{flalign}
+
+\subsubsection{Ermittelung der Kovarianz des Messrauschens}
+Neben der Kovarianz des Prozessrauschens, die hier experimentell für das Verhalten des Filters angepasst werden kann, muss die Kovarianz des Messrauschens eingebracht werden. Sowohl für die Telewerkbank als auch für die Sensoren auf dem SPRacingF3EVO mussten diese zuvor ermittelt werden. Für Erstere wurde die Fläche unter einer Kamera der TWB vermessen. Dies geschah, indem die Position zweier unterschiedlicher Marker an 6 x 6 x 6 Stellen im dreidimensionalen Raum getrackt wurden.\\\\
+Anschließend wurde die minimale Anzahl an berechneten Markerpositionen je Stelle ermittelt und insgesamt 216 Punktwolken mit dieser Anzahl an Datensätzen gebildet. Zu jedem Datenpunkt wurde daraufhin die mittlere Abweichung innerhalb seiner Punktwolke bestimmt. Mit Hilfe der MatLab-Funktion \textsf{cov()} wurde die Kovarianzmatrix über die mittleren Abweichungen aller Datenpunkte berechnet. Für den \unit[99]{mm} mal \unit[99]{mm} großen Marker, der sich innerhalb der Untersuchungen als der geeignetste erwies, ergab sich folgende Kovarianzmatrix:
+\begin{equation}
+Q_{TWB} = \begin{bmatrix}
+1,1404 \cdot 10^{-4} & -2,8209 \cdot 10^{-6} & 1,4042 \cdot 10^{-5} \\
+-2,8209 \cdot 10^{-6} & 1,1566 \cdot 10^{-4} & 1.0895 \cdot 10^{-6} \\
+1,4042 \cdot 10^{-5} & 1.0895 \cdot 10^{-6} & 0.0014
+\end{bmatrix}
+\end{equation} 
+Um die zweite geforderte Kovarianzmatrix, die das Messrauschen der Sensoren auf dem Flight Controller beschreibt, zu erhalten, wurde ein Datensatz mit Sensormesswerten des Beschleunigungs- und Drehratensensors sowie des Kompass und des Barometers aufgenommen. Ebenso wurde mit der MatLab-Funktion \textsf{cov()} die Kovarianzmatrix berechnet.
+\begin{equation}
+Q_{Drone} = \begin{bmatrix}
+0,1285 & -0,0034 & 0,0008 &	-1,3570 \cdot 10^{-5} & 7,9558 \cdot 10^{-6} & 0,0001 & -5,9173 \cdot 10^{-6} & 1,8504 \cdot 10^{-5} & -6,2684 \cdot 10^{-5} & 0,0022 \\
+-0,0034 & 0,1086 & -0,0011 & 1,7921 \cdot 10^{-5}	& -3,9995 \cdot 10^{-6} & -0,0001 & -8,3804 \cdot 10^{-5} & -8,7701 \cdot 10^{-5} &	3,7285 \cdot 10^{-5}  & 0,0007 \\
+0,0008 & -0,0011 & 0,05915 & 5,1793 \cdot 10^{-6} & -1,4508 \cdot 10^{-5} & 6,1779 \cdot 10^{-6} & -8,5141 \cdot 10^{-5} & -0,0001 & -2,0711 \cdot 10^{-5} &	-0,0019 \\
+-1,3570 \cdot 10^{-5} & 1,7921 \cdot 10^{-5} & 5,1793 \cdot 10^{-6} & 7,4049 \cdot 10^{-7} & 4,0087 \cdot 10^{-8} & -1,3290 \cdot 10^{-7} & 	2,6485 \cdot 10^{-7} & 4,8178 \cdot 10^{-8} & 1,7061 \cdot 10^{-7} & -2,5173 \cdot 10^{-5} \\
+7,9558 \cdot 10^{-6} & -3,9995 \cdot 10^{-6} & -1,4508 \cdot 10^{-5} & 4,0087 \cdot 10^{-8} & 1,1241 \cdot 10^{-6} & 7,1047 \cdot 10^{-8} & -8,6540 \cdot 10^{-8} & -1,9957 \cdot 10^{-7} & 2,1289 \cdot 10^{-7} & 1,2967 \cdot 10^{-5} \\
+	0,0001 & -0,0001 & 6,1779 \cdot 10^{-6} & -1,3290 \cdot 10^{-7} & 7,1049 \cdot 10^{-8} & 3,3947 \cdot 10^{-6} & 4,7908 \cdot 10^{-7} & -4,3767 \cdot 10^{-7} & 6,9707 \cdot 10^{-8} & 2,4032 \cdot 10^{-5} \\
+	-5,9173 \cdot 10^{-6} & -8,3804 \cdot 10^{-5} & -8,5141 \cdot 10^{-5} & 2,6485 \cdot 10^{-7} & -8,6540 \cdot 10^{-8} & 4,7908 \cdot 10^{-7} & 3,8937 \cdot 10^{-5} & -1,5681 \cdot 10^{-6} & -2,3461 \cdot 10^{-6} & 2,0459 \cdot 10^{-5} \\
+	1,8504 \cdot 10^{-5} & -8,7701 \cdot 10^{-5} & -0,0001 & 4,8178 \cdot 10^{-8} & -1,9957 \cdot 10^{-7} & -4,3767 \cdot 10^{-7} & -1,5681 \cdot 10^{-6} & 3,8326 \cdot 10^{-5} & 1,9951 \cdot 10^{-6} & -3,8943 \cdot 10^{-5} \\
+	-6,2684 \cdot 10^{-5} & 3,7285 \cdot 10^{-5} & -2,0711 \cdot 10^{-5} & 1,7061 \cdot 10^{-7} & 2,1289 \cdot 10^{-7} & 6,9707 \cdot 10^{-8} & -2,3461 \cdot 10^{-6} & 1,9951 \cdot 10^{-6} & 2,6013 \cdot 10^{-5} & -5,2863 \cdot 10^{-5} \\
+	0,0022 & 0,0007 & -0,0019 & -2,5173 \cdot 10^{-5} & 1,2967 \cdot 10^{-5} & 2,4032 \cdot 10^{-5} & 2,0459 \cdot 10^{-5} & -3,8943 \cdot 10^{-5} & -5,28632 \cdot 10^{-5} & 0,0248
+\end{bmatrix}
+\end{equation}
+\subsection{Positionsregelung}
+Neben der Zustandsvorhersage mit Hilfe des Extended Kalman-Filters wird innerhalb des beschriebenen Modells auch die Position und Rotation um die $z$-Achse der Drohne kontrolliert. Die dazu verwendete Regelung ist ebenfalls Santana et al. entnommen. Basierend auf vier einzeln konfigurierten PD-Reglern, lässt sich die Drohne an eine vorgegebene Position $P_d = \begin{bmatrix}
+x_d & y_d & z_d & \psi_d
+\end{bmatrix}$ steuern. Dies geschieht über den Steuervektor $\textbf{u} = \begin{bmatrix}
+u_{\dot{z}} & u_{\dot{\psi}} & u_{\phi} & u_{\theta}
+\end{bmatrix}$ mit Hilfe der folgenden Gleichungen:
+\begin{flalign}
+u_{\dot{z}} &= K_{p1}(z_d - z) - K_{d1}\dot{z}\\
+u_{\dot{\psi}} &= K_{p2}(\psi_d - \psi) - K_{d2}\dot{\psi} \\
+u^{'}_{\phi} &= K_{p3}(y_d - y) - K_{d3}\dot{y} \\
+u^{'}_{\theta} &= K_{p4}(x_d - x) - K_{d4}\dot{x} \\
+u_{\phi} &= u^{'}_{\phi} s_\psi - u^{'}_{\theta} c_\psi\\
+u_{\theta} &= u^{'}_{\phi} c_\psi + u^{'}_{\theta} s_\psi
+\end{flalign}
+$K_{p1}$ bis $K_{p4}$ und $K_{d1}$ bis $K_{d4}$ stellen dabei Konstanten für den P-Anteil beziehungsweise den D-Anteil der Regler dar, die experimentell ermittelt werden müssen. 

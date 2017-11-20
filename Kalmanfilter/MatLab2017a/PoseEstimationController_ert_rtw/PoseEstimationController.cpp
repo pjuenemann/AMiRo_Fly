@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'PoseEstimationController'.
 //
-// Model version                  : 1.16
+// Model version                  : 1.23
 // Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
-// C/C++ source code generated on : Wed Jul 12 10:51:33 2017
+// C/C++ source code generated on : Mon Nov 13 16:01:57 2017
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Custom Processor->Custom
@@ -345,28 +345,51 @@ void PoseEstimationController_step(void)
   memcpy(&rtDW.UnitDelay[0], &rtDW.UnitDelay_DSTATE[0], 12U * sizeof(real_T));
 
   // FunctionCaller: '<S4>/Function Caller'
-  measurementTWBFcn_h(rtDW.UnitDelay, rtDW.UnitDelay_f);
-
-  // Sum: '<S4>/Add'
-  rtDW.rtb_TWB_gain_idx_0 -= rtDW.UnitDelay_f[0];
+  measurementTWBFcn_h(rtDW.UnitDelay, rtDW.FunctionCaller);
 
   // UnitDelay: '<S9>/Unit Delay'
-  rtDW.UnitDelay_f[0] = rtDW.UnitDelay_DSTATE_b[0];
+  rtDW.rtb_signal1_idx_0 = rtDW.UnitDelay_1_DSTATE[0];
+  rtDW.rtb_signal1_idx_1 = rtDW.UnitDelay_1_DSTATE[1];
 
-  // Sum: '<S4>/Add'
-  rtDW.rtb_TWB_gain_idx_1 -= rtDW.UnitDelay_f[1];
-
-  // UnitDelay: '<S9>/Unit Delay'
-  rtDW.UnitDelay_f[1] = rtDW.UnitDelay_DSTATE_b[1];
-
-  // DataTypeConversion: '<Root>/Data Type Conversion' incorporates:
+  // Gain: '<S9>/acc_scale' incorporates:
   //   Inport: '<Root>/drone_raw_data'
 
-  for (rtDW.i = 0; rtDW.i < 11; rtDW.i++) {
-    rtDW.DataTypeConversion[rtDW.i] = rtU.drone_raw_data[rtDW.i];
-  }
+  rtDW.rtb_acc_scale_idx_0 = 0.0047900390625 * rtU.drone_raw_data[3];
 
-  // End of DataTypeConversion: '<Root>/Data Type Conversion'
+  // SignalConversion: '<S19>/TmpSignal ConversionAt SFunction Inport1' incorporates:
+  //   Gain: '<S9>/gyro_scale'
+  //   Inport: '<Root>/drone_raw_data'
+  //   MATLAB Function: '<S9>/MATLAB Function'
+
+  rtDW.TmpSignalConversionAtSFunct[0] = 0.060975609756097567 *
+    rtU.drone_raw_data[0];
+
+  // Gain: '<S9>/acc_scale' incorporates:
+  //   Inport: '<Root>/drone_raw_data'
+
+  rtDW.rtb_acc_scale_idx_1 = 0.0047900390625 * rtU.drone_raw_data[4];
+
+  // SignalConversion: '<S19>/TmpSignal ConversionAt SFunction Inport1' incorporates:
+  //   Constant: '<S9>/Constant'
+  //   Gain: '<S9>/acc_scale'
+  //   Gain: '<S9>/gyro_scale'
+  //   Gain: '<S9>/mag_scale'
+  //   Inport: '<Root>/drone_raw_data'
+  //   MATLAB Function: '<S9>/MATLAB Function'
+  //   Sum: '<S9>/Add'
+
+  rtDW.TmpSignalConversionAtSFunct[1] = 0.060975609756097567 *
+    rtU.drone_raw_data[1];
+  rtDW.TmpSignalConversionAtSFunct[2] = 0.060975609756097567 *
+    rtU.drone_raw_data[2];
+  rtDW.TmpSignalConversionAtSFunct[3] = rtDW.rtb_acc_scale_idx_0;
+  rtDW.TmpSignalConversionAtSFunct[4] = rtDW.rtb_acc_scale_idx_1;
+  rtDW.TmpSignalConversionAtSFunct[5] = 0.0047900390625 * rtU.drone_raw_data[5]
+    - 9.81;
+  for (rtDW.i = 0; rtDW.i < 9; rtDW.i++) {
+    rtDW.TmpSignalConversionAtSFunct[rtDW.i + 6] = 6.0E-7 *
+      rtU.drone_raw_data[rtDW.i];
+  }
 
   // MATLAB Function: '<S9>/MATLAB Function'
   //     %% Process sensor data through algorithm
@@ -401,29 +424,29 @@ void PoseEstimationController_step(void)
   //  AHRS = MahonyAHRS('SamplePeriod', 1/256, 'Kp', 0.5);
   // '<S19>:1:10' quaternion = zeros(1, 4);
   // '<S19>:1:11' AHRS.Update(gyroscope(1,:) * (pi/180), accelerometer(1,:), magnetometer(1,:)); 
-  rtDW.y_idx_0 = rtDW.DataTypeConversion[0] * 0.017453292519943295;
-  rtDW.y_idx_1 = rtDW.DataTypeConversion[1] * 0.017453292519943295;
-  rtDW.y_idx_2 = rtDW.DataTypeConversion[2] * 0.017453292519943295;
+  rtDW.y_idx_0 = rtDW.TmpSignalConversionAtSFunct[0] * 0.017453292519943295;
+  rtDW.y_idx_1 = rtDW.TmpSignalConversionAtSFunct[1] * 0.017453292519943295;
+  rtDW.y_idx_2 = rtDW.TmpSignalConversionAtSFunct[2] * 0.017453292519943295;
 
   // 'MadgwickAHRS:29' q = obj.Quaternion;
   //  short name local variable for readability
   //  Normalise accelerometer measurement
   // 'MadgwickAHRS:32' if(norm(Accelerometer) == 0)
-  if (!(dbiemohljmgdohdb_norm(&rtDW.DataTypeConversion[3]) == 0.0)) {
+  if (!(dbiemohljmgdohdb_norm(&rtDW.TmpSignalConversionAtSFunct[3]) == 0.0)) {
     //  handle NaN
     // 'MadgwickAHRS:33' Accelerometer = Accelerometer / norm(Accelerometer);
-    rtDW.cos_g = dbiemohljmgdohdb_norm(&rtDW.DataTypeConversion[3]);
-    rtDW.accelerometer_idx_0 = rtDW.DataTypeConversion[3] / rtDW.cos_g;
-    rtDW.accelerometer_idx_1 = rtDW.DataTypeConversion[4] / rtDW.cos_g;
-    rtDW.accelerometer_idx_2 = rtDW.DataTypeConversion[5] / rtDW.cos_g;
+    rtDW.cos_g = dbiemohljmgdohdb_norm(&rtDW.TmpSignalConversionAtSFunct[3]);
+    rtDW.accelerometer_idx_0 = rtDW.TmpSignalConversionAtSFunct[3] / rtDW.cos_g;
+    rtDW.accelerometer_idx_1 = rtDW.TmpSignalConversionAtSFunct[4] / rtDW.cos_g;
+    rtDW.accelerometer_idx_2 = rtDW.TmpSignalConversionAtSFunct[5] / rtDW.cos_g;
 
     //  normalise magnitude
     //  Normalise magnetometer measurement
     // 'MadgwickAHRS:36' if(norm(Magnetometer) == 0)
-    if (!(dbiemohljmgdohdb_norm(&rtDW.DataTypeConversion[6]) == 0.0)) {
+    if (!(dbiemohljmgdohdb_norm(&rtDW.TmpSignalConversionAtSFunct[6]) == 0.0)) {
       //  handle NaN
       // 'MadgwickAHRS:37' Magnetometer = Magnetometer / norm(Magnetometer);
-      rtDW.cos_g = dbiemohljmgdohdb_norm(&rtDW.DataTypeConversion[6]);
+      rtDW.cos_g = dbiemohljmgdohdb_norm(&rtDW.TmpSignalConversionAtSFunct[6]);
 
       //  normalise magnitude
       //  Reference direction of Earth's magnetic feild
@@ -440,13 +463,16 @@ void PoseEstimationController_step(void)
       // 	Date          Author          Notes
       // 	27/09/2011    SOH Madgwick    Initial release
       // 'quaternConj:14' qConj = [q(:,1) -q(:,2) -q(:,3) -q(:,4)];
-      rtDW.AHRS_Quaternion_idx_3 = rtDW.DataTypeConversion[6] / rtDW.cos_g;
+      rtDW.AHRS_Quaternion_idx_3 = rtDW.TmpSignalConversionAtSFunct[6] /
+        rtDW.cos_g;
       rtDW.b_idx_1 = rtDW.AHRS_Quaternion_idx_3;
       rtDW.magnetometer_idx_0 = rtDW.AHRS_Quaternion_idx_3;
-      rtDW.AHRS_Quaternion_idx_3 = rtDW.DataTypeConversion[7] / rtDW.cos_g;
+      rtDW.AHRS_Quaternion_idx_3 = rtDW.TmpSignalConversionAtSFunct[7] /
+        rtDW.cos_g;
       rtDW.b_idx_2 = rtDW.AHRS_Quaternion_idx_3;
       rtDW.magnetometer_idx_1 = rtDW.AHRS_Quaternion_idx_3;
-      rtDW.AHRS_Quaternion_idx_3 = rtDW.DataTypeConversion[8] / rtDW.cos_g;
+      rtDW.AHRS_Quaternion_idx_3 = rtDW.TmpSignalConversionAtSFunct[8] /
+        rtDW.cos_g;
 
       // QUATERNPROD Calculates the quaternion product
       //
@@ -612,8 +638,9 @@ void PoseEstimationController_step(void)
       // 'quaternProd:17' ab(:,4) = a(:,1).*b(:,4)+a(:,2).*b(:,3)-a(:,3).*b(:,2)+a(:,4).*b(:,1); 
       //  Integrate to yield quaternion
       // 'MadgwickAHRS:63' q = q + qDot * obj.SamplePeriod;
-      rtDW.accelerometer_idx_2 = (0.0 - rtDW.step[0] / rtDW.cos_g * 0.1) *
-        0.00390625 + 1.0;
+      rtDW.accelerometer_idx_2 = ((((0.0 - 0.0 * rtDW.y_idx_0) - 0.0 *
+        rtDW.y_idx_1) - 0.0 * rtDW.y_idx_2) * 0.5 - rtDW.step[0] / rtDW.cos_g *
+        0.1) * 0.00390625 + 1.0;
       rtDW.accelerometer_idx_1 = (((0.0 * rtDW.y_idx_2 + rtDW.y_idx_0) - 0.0 *
         rtDW.y_idx_1) * 0.5 - rtDW.step[1] / rtDW.cos_g * 0.1) * 0.00390625;
       rtDW.accelerometer_idx_0 = (((rtDW.y_idx_1 - 0.0 * rtDW.y_idx_2) + 0.0 *
@@ -674,7 +701,7 @@ void PoseEstimationController_step(void)
 
   //  gyroscope units must be radians
   // '<S19>:1:12' quaternion = AHRS.Quaternion;
-  // '<S19>:1:14' euler = quatern2euler(quaternConj(quaternion)) * (180/pi);
+  // '<S19>:1:14' euler = quatern2euler(quaternConj(quaternion));
   // QUATERN2ROTMAT Converts a quaternion to its conjugate
   //
   //    qConj = quaternConj(q)
@@ -724,15 +751,13 @@ void PoseEstimationController_step(void)
   // 'quatern2euler:22' theta = -atan(R(3,1,:) ./ sqrt(1-R(3,1,:).^2) );
   // 'quatern2euler:23' psi = atan2(R(2,1,:), R(1,1,:) );
   // 'quatern2euler:25' euler = [phi(1,:)' theta(1,:)' psi(1,:)'];
-  rtDW.accelerometer_idx_0 = rt_atan2d_snf(rtDW.R[5], rtDW.R[8]) *
-    57.295779513082323;
+  rtDW.accelerometer_idx_0 = rt_atan2d_snf(rtDW.R[5], rtDW.R[8]);
   rtDW.accelerometer_idx_1 = -std::atan(rtDW.R[2] / std::sqrt(1.0 - rtDW.R[2] *
-    rtDW.R[2])) * 57.295779513082323;
-  rtDW.accelerometer_idx_2 = rt_atan2d_snf(rtDW.R[1], rtDW.R[0]) *
-    57.295779513082323;
+    rtDW.R[2]));
+  rtDW.accelerometer_idx_2 = rt_atan2d_snf(rtDW.R[1], rtDW.R[0]);
 
   // FunctionCaller: '<S3>/Function Caller'
-  //  use conjugate for sensor frame relative to Earth and convert to degrees.
+  //  use conjugate for sensor frame relative to Earth. Unit is rad.
   // '<S19>:1:15' Z = euler(1,1);
   // '<S19>:1:16' Y = euler(1,2);
   // '<S19>:1:17' X = euler(1,3);
@@ -808,7 +833,7 @@ void PoseEstimationController_step(void)
   //      q = q + qDot * obj.SamplePeriod;
   //      obj.Quaternion = q / norm(q); % normalise quaternion
   //  end
-  measurementDroneFcn_o(rtDW.UnitDelay, rtDW.FunctionCaller);
+  measurementDroneFcn_o(rtDW.UnitDelay, rtDW.FunctionCaller_b);
 
   // Trigonometry: '<S8>/cos'
   rtDW.cos_g = std::cos(rtDW.UnitDelay[10]);
@@ -1004,10 +1029,12 @@ void PoseEstimationController_step(void)
       }
     }
 
-    rtDW.rtb_TWB_gain_idx_0 -= rtDW.b_z_f[0];
-    rtDW.rtb_TWB_gain_idx_1 -= rtDW.b_z_f[1];
-    rtDW.rtb_TWB_gain_idx_2 = (rtDW.rtb_TWB_gain_idx_2 - rtDW.UnitDelay_f[2]) -
-      rtDW.b_z_f[2];
+    rtDW.rtb_TWB_gain_idx_0 = (rtDW.rtb_TWB_gain_idx_0 - rtDW.FunctionCaller[0])
+      - rtDW.b_z_f[0];
+    rtDW.rtb_TWB_gain_idx_1 = (rtDW.rtb_TWB_gain_idx_1 - rtDW.FunctionCaller[1])
+      - rtDW.b_z_f[1];
+    rtDW.rtb_TWB_gain_idx_2 = (rtDW.rtb_TWB_gain_idx_2 - rtDW.FunctionCaller[2])
+      - rtDW.b_z_f[2];
     for (rtDW.i0 = 0; rtDW.i0 < 12; rtDW.i0++) {
       // DataStoreWrite: '<S10>/Data Store WriteP' incorporates:
       //   MATLAB Function: '<S10>/Correct'
@@ -1128,21 +1155,20 @@ void PoseEstimationController_step(void)
     }
 
     // Sum: '<S3>/Add' incorporates:
-    //   Gain: '<S9>/mag_scale'
     //   MATLAB Function: '<S9>/MATLAB Function'
 
-    rtDW.imz_p[0] = rtDW.UnitDelay_f[0];
-    rtDW.imz_p[1] = rtDW.UnitDelay_f[1];
-    rtDW.imz_p[2] = 0.6 * rtDW.accelerometer_idx_0;
-    rtDW.imz_p[3] = 0.6 * rtDW.accelerometer_idx_1;
-    rtDW.imz_p[4] = 0.6 * rtDW.accelerometer_idx_2;
+    rtDW.imz_p[0] = rtDW.rtb_signal1_idx_0;
+    rtDW.imz_p[1] = rtDW.rtb_signal1_idx_1;
+    rtDW.imz_p[2] = rtDW.accelerometer_idx_0;
+    rtDW.imz_p[3] = rtDW.accelerometer_idx_1;
+    rtDW.imz_p[4] = rtDW.accelerometer_idx_2;
 
     // MATLAB Function: '<S11>/Correct' incorporates:
     //   Sum: '<S3>/Add'
 
     for (rtDW.i0 = 0; rtDW.i0 < 5; rtDW.i0++) {
-      rtDW.rtb_UnitDelay_f_c[rtDW.i0] = (rtDW.imz_p[rtDW.i0] -
-        rtDW.FunctionCaller[rtDW.i0]) - rtDW.b_z[rtDW.i0];
+      rtDW.rtb_signal1_c[rtDW.i0] = (rtDW.imz_p[rtDW.i0] -
+        rtDW.FunctionCaller_b[rtDW.i0]) - rtDW.b_z[rtDW.i0];
     }
 
     // DataStoreWrite: '<S11>/Data Store WriteX' incorporates:
@@ -1153,7 +1179,7 @@ void PoseEstimationController_step(void)
       rtDW.cos_g = 0.0;
       for (rtDW.i1 = 0; rtDW.i1 < 5; rtDW.i1++) {
         rtDW.cos_g += rtDW.gain[12 * rtDW.i1 + rtDW.i0] *
-          rtDW.rtb_UnitDelay_f_c[rtDW.i1];
+          rtDW.rtb_signal1_c[rtDW.i1];
       }
 
       rtDW.x[rtDW.i0] += rtDW.cos_g;
@@ -1319,12 +1345,9 @@ void PoseEstimationController_step(void)
   // End of Outputs for SubSystem: '<S2>/Predict'
   // End of Outputs for SubSystem: '<S1>/Extended Kalman Filter'
 
-  // Update for UnitDelay: '<S9>/Unit Delay' incorporates:
-  //   Gain: '<S9>/acc_scale'
-
-  rtDW.UnitDelay_DSTATE_b[0] = 0.0047900390625 * rtDW.DataTypeConversion[3];
-  rtDW.UnitDelay_DSTATE_b[1] = 0.0047900390625 * rtDW.DataTypeConversion[4];
-  rtDW.UnitDelay_DSTATE_b[2] = 0.0047900390625 * rtDW.DataTypeConversion[5];
+  // Update for UnitDelay: '<S9>/Unit Delay'
+  rtDW.UnitDelay_1_DSTATE[0] = rtDW.rtb_acc_scale_idx_0;
+  rtDW.UnitDelay_1_DSTATE[1] = rtDW.rtb_acc_scale_idx_1;
 }
 
 // Model initialize function

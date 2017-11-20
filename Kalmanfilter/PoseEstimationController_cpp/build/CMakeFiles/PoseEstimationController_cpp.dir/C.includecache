@@ -1,3 +1,45 @@
+<<<<<<< HEAD
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/base85.h
+stdint.h
+-
+
+/home/philipp/Desktop/AMiRo-Fly/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/src/base85.c
+string.h
+-
+stdio.h
+-
+base85.h
+/home/philipp/Desktop/AMiRo-Fly/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/src/base85.h
+
+/home/philipp/Desktop/AMiRo-Fly/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/src_matlab/iecjgdjeaimokfcj_mrdivide.c
+rtwtypes.h
+/home/philipp/Desktop/AMiRo-Fly/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/src_matlab/rtwtypes.h
+math.h
+-
+string.h
+-
+iecjgdjeaimokfcj_mrdivide.h
+/home/philipp/Desktop/AMiRo-Fly/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/src_matlab/iecjgdjeaimokfcj_mrdivide.h
+
+/home/philipp/Desktop/AMiRo-Fly/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/src_matlab/iecjgdjeaimokfcj_mrdivide.h
+rtwtypes.h
+/home/philipp/Desktop/AMiRo-Fly/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/src_matlab/rtwtypes.h
+
+/home/philipp/Desktop/AMiRo-Fly/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/src_matlab/rt_defines.h
+
+/home/philipp/Desktop/AMiRo-Fly/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/src_matlab/rtwtypes.h
+rt_defines.h
+/home/philipp/Desktop/AMiRo-Fly/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/src_matlab/rt_defines.h
+
+=======
 #IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
@@ -38,3 +80,4 @@ rtwtypes.h
 rt_defines.h
 /home/philipp/Schreibtisch/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/src_matlab/rt_defines.h
 
+>>>>>>> 50afed968f1899b516d169a606c19cf0ffd99ce0

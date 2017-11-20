@@ -7,9 +7,15 @@
 //
 // Code generated for Simulink model 'PoseEstimationController'.
 //
+<<<<<<< HEAD
+// Model version                  : 1.20
+// Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
+// C/C++ source code generated on : Sun Sep 17 13:23:59 2017
+=======
 // Model version                  : 1.23
 // Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
 // C/C++ source code generated on : Mon Nov 13 16:01:57 2017
+>>>>>>> 50afed968f1899b516d169a606c19cf0ffd99ce0
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Custom Processor->Custom
@@ -112,7 +118,11 @@ typedef struct tag_sSJPS9Vsi6dADyZ4t3tkTWD sSJPS9Vsi6dADyZ4t3tkTWD;
 // Block signals and states (auto storage) for system '<Root>'
 typedef struct {
   real_T UnitDelay_DSTATE[12];         // '<S1>/Unit Delay'
+<<<<<<< HEAD
+  real_T UnitDelay_DSTATE_b[3];        // '<S9>/Unit Delay'
+=======
   real_T UnitDelay_1_DSTATE[2];        // '<S9>/Unit Delay'
+>>>>>>> 50afed968f1899b516d169a606c19cf0ffd99ce0
   real_T P_j[144];                     // '<S2>/DataStoreMemory - P'
   real_T x[12];                        // '<S2>/DataStoreMemory - x'
   real_T Jacobian[144];
@@ -135,18 +145,31 @@ typedef struct {
   real_T dv1[6];
   real_T b_z[5];
   real_T imz_p[5];
+<<<<<<< HEAD
+  real_T FunctionCaller[5];            // '<S3>/Function Caller'
+  real_T rtb_UnitDelay_f_c[5];
+  real_T step[4];
+  real_T b_z_f[3];
+  real_T imz_g[3];
+  real_T UnitDelay_f[3];               // '<S9>/Unit Delay'
+=======
   real_T FunctionCaller_b[5];          // '<S3>/Function Caller'
   real_T rtb_signal1_c[5];
   real_T step[4];
   real_T b_z_f[3];
   real_T imz_g[3];
   real_T FunctionCaller[3];            // '<S4>/Function Caller'
+>>>>>>> 50afed968f1899b516d169a606c19cf0ffd99ce0
   real_T Add6;                         // '<S8>/Add6'
   real_T Add5;                         // '<S8>/Add5'
   real_T Add4;                         // '<S8>/Add4'
   real_T Add3;                         // '<S8>/Add3'
   real_T c_t;
   real_T cos_g;                        // '<S8>/cos'
+<<<<<<< HEAD
+  real_T rtb_acc_scale_m;
+=======
+>>>>>>> 50afed968f1899b516d169a606c19cf0ffd99ce0
   real_T ab_idx_0;
   real_T b_idx_1;
   real_T b_idx_2;
@@ -166,8 +189,11 @@ typedef struct {
   real_T rtb_TWB_gain_idx_0;
   real_T rtb_TWB_gain_idx_1;
   real_T rtb_TWB_gain_idx_2;
+<<<<<<< HEAD
+=======
   real_T rtb_signal1_idx_0;
   real_T rtb_signal1_idx_1;
+>>>>>>> 50afed968f1899b516d169a606c19cf0ffd99ce0
   real_T rtb_acc_scale_idx_0;
   real_T rtb_acc_scale_idx_1;
   real_T temp;
@@ -267,6 +293,10 @@ extern "C" {
 //  Block '<S2>/checkMeasurementFcn1Signals' : Unused code path elimination
 //  Block '<S2>/checkMeasurementFcn2Signals' : Unused code path elimination
 //  Block '<S2>/checkStateTransitionFcnSignals' : Unused code path elimination
+<<<<<<< HEAD
+//  Block '<S9>/To Workspace' : Unused code path elimination
+=======
+>>>>>>> 50afed968f1899b516d169a606c19cf0ffd99ce0
 //  Block '<S2>/DataTypeConversion_Enable1' : Eliminate redundant data type conversion
 //  Block '<S2>/DataTypeConversion_Enable2' : Eliminate redundant data type conversion
 //  Block '<S2>/DataTypeConversion_Q' : Eliminate redundant data type conversion
