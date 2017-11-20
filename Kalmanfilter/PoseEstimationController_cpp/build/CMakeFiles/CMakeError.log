@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Determining if the pthread_create exist failed with the following output:
 Change Dir: /home/philipp/Desktop/AMiRo-Fly/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/build/CMakeFiles/CMakeTmp
 
@@ -53,3 +54,60 @@ Makefile:126: recipe for target 'cmTC_e932d/fast' failed
 make: *** [cmTC_e932d/fast] Error 2
 
 
+=======
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/philipp/Schreibtisch/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b8805/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b8805.dir/build.make CMakeFiles/cmTC_b8805.dir/build
+make[1]: Verzeichnis „/home/philipp/Schreibtisch/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/build/CMakeFiles/CMakeTmp“ wird betreten
+Building C object CMakeFiles/cmTC_b8805.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_b8805.dir/CheckSymbolExists.c.o   -c /home/philipp/Schreibtisch/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_b8805
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b8805.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_b8805.dir/CheckSymbolExists.c.o  -o cmTC_b8805 -rdynamic 
+CMakeFiles/cmTC_b8805.dir/CheckSymbolExists.c.o: In Funktion `main':
+CheckSymbolExists.c:(.text+0x16): Nicht definierter Verweis auf `pthread_create'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_b8805.dir/build.make:97: die Regel für Ziel „cmTC_b8805“ scheiterte
+make[1]: *** [cmTC_b8805] Fehler 1
+make[1]: Verzeichnis „/home/philipp/Schreibtisch/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/build/CMakeFiles/CMakeTmp“ wird verlassen
+Makefile:126: die Regel für Ziel „cmTC_b8805/fast“ scheiterte
+make: *** [cmTC_b8805/fast] Fehler 2
+
+File /home/philipp/Schreibtisch/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/philipp/Schreibtisch/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ec870/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ec870.dir/build.make CMakeFiles/cmTC_ec870.dir/build
+make[1]: Verzeichnis „/home/philipp/Schreibtisch/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/build/CMakeFiles/CMakeTmp“ wird betreten
+Building C object CMakeFiles/cmTC_ec870.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_ec870.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_ec870
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ec870.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_ec870.dir/CheckFunctionExists.c.o  -o cmTC_ec870 -rdynamic -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_ec870.dir/build.make:97: die Regel für Ziel „cmTC_ec870“ scheiterte
+make[1]: *** [cmTC_ec870] Fehler 1
+make[1]: Verzeichnis „/home/philipp/Schreibtisch/AMiRo_Fly/Kalmanfilter/PoseEstimationController_cpp/build/CMakeFiles/CMakeTmp“ wird verlassen
+Makefile:126: die Regel für Ziel „cmTC_ec870/fast“ scheiterte
+make: *** [cmTC_ec870/fast] Fehler 2
+
+
+>>>>>>> 50afed968f1899b516d169a606c19cf0ffd99ce0
