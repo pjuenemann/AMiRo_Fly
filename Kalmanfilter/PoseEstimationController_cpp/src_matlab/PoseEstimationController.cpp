@@ -21,7 +21,7 @@
 #include "PoseEstimationController.h"
 #include "dbiemohljmgdohdb_norm.h"
 #include "rt_atan2d_snf.h"
-
+#include <stdio.h>
 // Block signals and states (auto storage)
 DW rtDW;
 
@@ -1244,9 +1244,7 @@ void PoseEstimationController_step(void)
 
   // Bias: '<S1>/Bias' incorporates:
   //   Gain: '<S1>/Gain8'
-
   rtDW.rtb_TWB_gain_idx_0 = 30.0 * rtDW.Add3 + 1500.0;
-
   // Saturate: '<S1>/Saturation'
   if (rtDW.rtb_TWB_gain_idx_0 > 3000.0) {
     // Outport: '<Root>/u'
@@ -1258,7 +1256,6 @@ void PoseEstimationController_step(void)
     // Outport: '<Root>/u'
     rtY.u[0] = rtDW.rtb_TWB_gain_idx_0;
   }
-
   // Bias: '<S1>/Bias' incorporates:
   //   Gain: '<S1>/Gain8'
 
@@ -1295,9 +1292,9 @@ void PoseEstimationController_step(void)
 
   // Bias: '<S1>/Bias' incorporates:
   //   Gain: '<S1>/Gain8'
-
+  printf("%f\n",rtDW.Add6);
   rtDW.rtb_TWB_gain_idx_0 = 30.0 * rtDW.Add6 + 1500.0;
-
+printf("%f\n",rtDW.rtb_TWB_gain_idx_0);
   // Saturate: '<S1>/Saturation'
   if (rtDW.rtb_TWB_gain_idx_0 > 3000.0) {
     // Outport: '<Root>/u'
