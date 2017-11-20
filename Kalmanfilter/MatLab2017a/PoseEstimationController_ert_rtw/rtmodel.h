@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'PoseEstimationController'.
 //
-// Model version                  : 1.16
+// Model version                  : 1.23
 // Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
-// C/C++ source code generated on : Wed Jul 12 10:51:33 2017
+// C/C++ source code generated on : Mon Nov 13 16:01:57 2017
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Custom Processor->Custom

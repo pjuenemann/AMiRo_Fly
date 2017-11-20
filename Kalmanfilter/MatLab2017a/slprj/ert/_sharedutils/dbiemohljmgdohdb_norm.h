@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'PoseEstimationController'.
 //
-// Model version                  : 1.8
+// Model version                  : 1.20
 // Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
-// C/C++ source code generated on : Wed Jun 21 09:25:03 2017
+// C/C++ source code generated on : Mon Sep 18 10:35:26 2017
 //
 #ifndef SHARE_dbiemohljmgdohdb_norm
 #define SHARE_dbiemohljmgdohdb_norm

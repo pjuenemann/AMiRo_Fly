@@ -2,14 +2,14 @@ clear all;
 close all; 
 clc;
 
-filename = 'JsonFilesForMatLab/x-richtung_kippen_merged_for_Matlab.txt';
-filename = 'JsonFilesForMatLab/x-richtung_merged_for_Matlab.txt';
-% filename = 'JsonFilesForMatLab/y-richtung_kippen_merged_for_Matlab.txt';
+%filename = 'JsonFilesForMatLab/x-richtung_kippen_merged_for_Matlab.txt';
+%filename = 'JsonFilesForMatLab/x-richtung_merged_for_Matlab.txt';
+ filename = 'JsonFilesForMatLab/y-richtung_kippen_merged_for_Matlab.txt';
 % filename = 'JsonFilesForMatLab/y-richtung_merged_for_Matlab.txt';
 % filename = 'JsonFilesForMatLab/z-richtung_merged_for_Matlab.txt';
-filename = 'JsonFilesForMatLab/z-richtung_merged_0206.txt';
+%filename = 'JsonFilesForMatLab/z-richtung_merged_0206.txt';
 filename = 'JsonFilesForMatLab/x-richtung_merged_0206.txt';
-filename = 'JsonFilesForMatLab/y-richtung_merged_0206.txt';
+%filename = 'JsonFilesForMatLab/y-richtung_merged_0206.txt';
 [sensordataTWB, sensordataFC] = importFCsensorData(filename);
 
 
@@ -97,6 +97,7 @@ initialState = zeros(12,1);
 initialState([1:3],1) = sensordataTWB(1,[2:4]);
 x_d = [sensordataTWB(end,[2:4]), 0];
 sim('ControllerForOriginSensordata');
+sensorv = sensorValues();
 state = simout();
 t = state(:,1);
 u = simout1();
@@ -139,3 +140,21 @@ plot(t,u(:,4));
 legend('u\_theta');
 xlabel('t/s');
 ylabel('u\theta/-');
+
+%% Plotting FC sensor data
+figure();
+subplot(3,1,1);
+plot(t,sensorValues(:,1),t,sensorValues(:,2),t,sensorValues(:,3));
+legend('x','y','z');
+title('Gyro');
+
+subplot(3,1,2);
+plot(t,sensorValues(:,4),t,sensorValues(:,5),t,sensorValues(:,6));
+legend('x','y','z');
+title('Acc');
+
+sensorValues(:,[7:9]) = rad2deg(sensorValues(:,[7:9]));
+subplot(3,1,3);
+plot(t,sensorValues(:,7),t,sensorValues(:,8),t,sensorValues(:,9));
+legend('x','y','z');
+title('Mag');
